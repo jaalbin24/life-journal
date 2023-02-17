@@ -6,23 +6,75 @@
 
 @layer base {
   body {
-    @apply dark:bg-neutral-800 dark:text-white
+    @apply dark:bg-neutral-800 dark:text-white h-screen flex flex-row
+  }
+  blockquote {
+    @apply italic text-slate-400 font-semibold text-center text-xl
+  }
+  .quote-source {
+    @apply text-neutral-500 text-end
+  }
+  h1 {
+    @apply text-6xl
+  }
+  h2 {
+    @apply text-4xl
+  }
+  h3 {
+    @apply text-2xl
+  }
+  h4 {
+    @apply text-xl
+  }
+  h5 {
+    @apply text-lg
+  }
+  h6 {
+    @apply text-base
   }
   .input-field {
-    @apply block bg-transparent shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full dark:text-white;
+    @apply block bg-transparent shadow rounded-md border border-gray-400 outline-none px-3 py-2 w-full
+  }
+
+  .btn {
+    @apply rounded bg-slate-700 hover:bg-slate-600 py-2 px-4 text-white font-medium cursor-pointer
+  }
+
+  .btn-sm {
+    @apply rounded bg-slate-700 hover:bg-slate-600 py-1 px-2 text-white font-medium cursor-pointer
   }
 
   .btn-primary {
-    @apply rounded-lg py-3 px-5 bg-sky-900 hover:bg-sky-800 text-white inline-block font-medium cursor-pointer;
+    @apply rounded bg-slate-700 hover:bg-slate-600 py-2 px-4 text-white font-medium cursor-pointer
   }
 
   .btn-secondary {
-    @apply rounded-lg py-3 px-5 bg-gray-400 hover:bg-gray-600 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white inline-block font-medium cursor-pointer;
+    @apply rounded-lg py-3 px-5 bg-gray-400 hover:bg-gray-600 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white inline-block font-medium cursor-pointer
   }
 }
 
 @layer components {
   .card {
-    @apply bg-primary-light-900
+    @apply border-gray-400 rounded border flex flex-col
+  }
+
+  .card-body {
+    @apply p-4 grow
+  }
+
+  .card.profile-card {
+    @apply bg-slate-700 border-gray-600 hover:bg-slate-600 transition-colors
+  }
+
+  .nav-bar {
+    @apply flex flex-col h-full bg-slate-700 p-4
+  }
+
+  .nav-list {
+    @apply flex flex-col
+  }
+
+  .nav-item {
+    @apply hover:bg-slate-600 p-2 rounded transition-colors
   }
 }

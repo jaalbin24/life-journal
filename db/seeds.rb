@@ -5,3 +5,18 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+require 'english_language'
+include EnglishLanguage
+
+20.times do
+    Person.create(
+        first_name: random_first_name,
+        last_name:  random_last_name,
+        age:        rand(18..90),
+        sex:        'M',
+    )
+end
+
+
+
+puts "Created #{Person.count} people." if Person.count > 0
