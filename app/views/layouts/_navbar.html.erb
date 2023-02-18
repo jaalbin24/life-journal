@@ -1,13 +1,35 @@
-<nav class="nav-bar flex-shrink-0">
-    <div class="nav-list grow">
-        <a class="nav-item" href="#">Home</a>
-        <a class="nav-item" href="#">Entries</a>
-        <a class="nav-item" href="#">People</a>
-        <a class="nav-item" href="#">Quotes</a>
-        <a class="nav-item" href="#">Timeline</a>
-    </div>
-    <div class="nav-list">
-        <a class="" href="#">Sign out</a>
-        Jeremy Albin
-    </div>
-</nav>
+<%if user_signed_in?%>
+    <nav class="nav-bar flex-shrink-0">
+        <div class="nav-list grow">
+            <div class="nav-item">
+                <a class="nav-link" href="#">
+                    <%=image_tag 'dashboard_icon.svg', width: 50%>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#">
+                    <%=image_tag 'journal_icon.svg', width: 50%>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#">
+                    <%=image_tag 'people_icon.svg', width: 50%>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#">
+                    <%=image_tag 'quotation_mark_icon.svg', width: 50%>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#">
+                    <%=image_tag 'timeline_icon.svg', width: 50%>
+                </a>
+            </div>
+        </div>
+        <div class="nav-list">
+            <%=button_to "Sign out", user_sign_out_path, method: :delete, class: "nav-item"%>
+            <div class="mt-5">Jeremy A.</div>
+        </div>
+    </nav>
+<%end%>

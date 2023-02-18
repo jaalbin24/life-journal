@@ -8,6 +8,11 @@
 require 'english_language'
 include EnglishLanguage
 
+User.create(
+    email: "j@j.j",
+    password: "123"
+)
+
 20.times do
     Person.create(
         first_name: random_first_name,
@@ -19,4 +24,5 @@ end
 
 
 
-puts "Created #{Person.count} people." if Person.count > 0
+puts "Created #{User.count} users."         if User.count > 0
+puts "Created #{Person.count} people."      if Person.count > 0
