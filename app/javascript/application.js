@@ -1,27 +1,24 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
-import "@hotwired/turbo-rails"
 import "controllers"
+import barba from '@barba/core'
 
 
 
-
-
-
-
-window.addEventListener('load', () => {
-    console.log("Loaded!");
-    document.body.classList.add('fade-in', 'active');
-    const links = document.querySelectorAll('');
-    links.forEach(link => {
-        link.addEventListener('click', e => {
-            console.log("Clicked!");
-            e.preventDefault();
-            const href = link.getAttribute('href');
-            document.body.classList.add('fade-out');
-            setTimeout(() => {
-                window.location.href = href;
-            }, 500);
-        });
-    });
+barba.init({
+  transitions: [{
+    name: 'opacity-transition',
+    leave(data) {
+      console.log("leave()");
+      return gsap.to(data.current.container, {
+        position: 'absolute',
+        opacity: 0
+      });
+    },
+    enter(data) {
+      console.log("enter()");
+      return gsap.from(data.next.container, {
+        opacity: 0
+      });
+    }
+  }]
 });
-

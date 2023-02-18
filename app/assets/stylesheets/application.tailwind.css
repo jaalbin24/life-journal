@@ -9,7 +9,7 @@
     @apply dark:bg-neutral-800 dark:text-white h-screen flex flex-row
   }
   main {
-    @apply flex flex-row w-full transition-opacity opacity-100
+    @apply w-full
   }
   blockquote {
     @apply italic text-slate-400 font-semibold text-center text-xl
