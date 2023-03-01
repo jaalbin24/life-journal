@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply dark:bg-neutral-800 dark:text-white h-screen flex flex-row
+    @apply dark:bg-zinc-900 dark:text-slate-200 h-screen flex flex-row overflow-auto
   }
   main {
     @apply w-full
@@ -58,11 +58,15 @@
 
 @layer components {
   .card {
-    @apply border-gray-400 rounded border flex flex-col
+    @apply border-gray-600 rounded border flex flex-col bg-neutral-800
   }
 
   .card-body {
     @apply p-4 grow
+  }
+
+  .card-header {
+    @apply rounded-t bg-slate-700 py-1 px-2
   }
 
   .card.profile-card {
@@ -70,7 +74,7 @@
   }
 
   .nav-bar {
-    @apply flex flex-col h-full bg-slate-700 p-4
+    @apply flex flex-col h-full bg-slate-800 p-4
   }
 
   .nav-list {

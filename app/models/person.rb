@@ -11,6 +11,15 @@
 #  updated_at :datetime         not null
 #
 class Person < ApplicationRecord
+
+    has_many(
+        :mentions,
+        class_name: "Mention",
+        foreign_key: :person_id,
+        inverse_of: :person,
+        dependent: :destroy
+    )
+
     def name
         [first_name, last_name].reject(&:blank?).join(" ")
     end

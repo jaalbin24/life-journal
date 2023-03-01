@@ -1,14 +1,30 @@
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Entries</h1>
-    <%= link_to 'New entry', new_entry_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+<div class="w-full h-full">
+  <div class="p-4 m-4 rounded border border-neutral-700 bg-slate-800">
+    <%=link_to "New entry", new_entry_path, class: "btn-primary"%>
   </div>
-
-  <div id="entries" class="min-w-full">
-    <%= render @entries %>
+  <div class="p-4 w-full">
+    <div class="grid grid-cols-2 gap-4">
+      <%@entries.each do |e|%>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="font-bold"><%=e.title.blank? ? "Untitled" : e.title%></h3>
+            <div class="flex flex-row align-center gap-3">
+              <h6><%=e.published_at.blank? ? "Unknown date" : e.published_at.strftime("%b %d, %Y")%></h6>
+              <div class="flex flex-row">
+                <%e.mentions.each_with_index do |m, i|%>
+                  <%=image_tag 'default_profile_picture.png', size: 24, class: "#{'-ml-2' unless i == 0} rounded-full border border-neutral-700"%>
+                <%end%>
+              </div>
+            </div>
+          </div>
+          <div class="card-body max-h-48 overflow-hidden flex flex-row gap-5 justify-between">
+            <%=e.text_content%>
+            <%if e.picture_of_the_day.attached?%>
+              <%=image_tag e.picture_of_the_day, class: "rounded"%>
+            <%end%>
+          </div>
+        </div>
+      <%end%>
+    </div>
   </div>
 </div>

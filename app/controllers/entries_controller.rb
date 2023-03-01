@@ -4,7 +4,7 @@ class EntriesController < ApplicationController
 
   # GET /entries
   def index
-    @entries = current_user.entries
+    @entries = current_user.entries.order(published_at: :desc)
   end
 
   # GET /entries/1
@@ -54,6 +54,6 @@ class EntriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def entry_params
-      params.require(:entry).permit(:published_at, :text_content)
+      params.require(:entry).permit(:text_content, :title, :picture_of_the_day)
     end
 end
