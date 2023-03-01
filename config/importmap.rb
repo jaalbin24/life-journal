@@ -6,3 +6,5 @@ pin "@hotwired/stimulus-loading",           to: "stimulus-loading.js",  preload:
 pin_all_from "app/javascript/controllers",  under: "controllers"
 
 pin "@barba/core", to: "https://ga.jspm.io/npm:@barba/core@2.9.7/dist/barba.umd.js"
+pin "trix"
+pin "@rails/actiontext", to: "actiontext.js"

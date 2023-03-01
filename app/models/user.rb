@@ -13,5 +13,12 @@ class User < ApplicationRecord
     has_secure_password
     include PubliclyIdentifiable
 
+    has_many(
+        :entries,
+        class_name: "Entry",
+        foreign_key: :author_id,
+        inverse_of: :author,
+        dependent: :destroy
+    )
 
 end

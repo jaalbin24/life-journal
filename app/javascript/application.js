@@ -21,4 +21,5 @@ barba.init({
       });
     }
   }]
-});
+});import "trix"
+import "@rails/actiontext"

@@ -52,7 +52,7 @@
   }
 
   .btn-secondary {
-    @apply rounded-lg py-3 px-5 bg-gray-400 hover:bg-gray-600 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white inline-block font-medium cursor-pointer
+    @apply rounded py-2 px-4 bg-gray-400 hover:bg-gray-600 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white inline-block font-medium cursor-pointer
   }
 }
 
@@ -84,4 +84,4 @@
   .nav-link {
     @apply hover:bg-slate-600 p-2 rounded transition hover:shadow-xl
   }
-}
+}@import 'actiontext.css';
