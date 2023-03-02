@@ -1,0 +1,8 @@
+import { Controller } from "@hotwired/stimulus"
+
+// Connects to data-controller="people"
+export default class extends Controller {
+  connect() {
+    
+  }
+}
