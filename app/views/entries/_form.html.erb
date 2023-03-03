@@ -4,7 +4,7 @@
       <%=f.text_field :title, class: "p-0 input-field border-none text-2xl font-bold shadow-none", placeholder: "Title"%>
       <div class="flex flex-row align-center gap-3">
         <h6><%=entry.published_at.blank? ? DateTime.now.strftime("%b %d, %Y") : e.published_at.strftime("%b %d, %Y")%></h6>
-        <div class="flex flex-row">
+        <div class="flex flex-row" id="mentions-avatar-container">
           <%entry.mentions.each_with_index do |m, i|%>
             <%=image_tag 'default_profile_picture.png', size: 24, class: "#{'-ml-2' unless i == 0} rounded-full border border-neutral-700"%>
           <%end%>
@@ -16,29 +16,31 @@
         <%=f.rich_text_area :text_content, class: "grow"%>
       </div>
       <div class="flex flex-col items-center justify-center basis-1/4 gap-3">
-        <div class="grow w-full flex flex-col gap-2">
-          <%=f.label :mentions, class: "font-bold"%>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <div class="grow w-full flex flex-col gap-2" data-controller="people">
+          <div class="" data-action="focusin->people#search focusout->people#hideSearchResults" tabindex="-1">
+            <%=f.label :mentions, class: "font-bold"%>
+            <div id="people-search-box" class="border border-gray-500 rounded-t-lg rounded-b-lg hover:bg-zinc-700 hover:shadow-lg hover:border-transparent focus-within:bg-zinc-700 focus-within:shadow-lg focus-within:border-transparent relative">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              </div>
+              <input id="people-search-field" data-action="input->people#search" type="search" autocomplete="off" id="search" class="bg-transparent block w-full p-4 pl-10 text-sm border-none focus:ring-0" placeholder="Search">
             </div>
-            <input type="search" autocomplete="off" id="search" class="bg-transparent block w-full p-4 pl-10 text-sm border border-gray-300 rounded-lg" placeholder="Search" required>
-            <button type="submit" class="btn-sm absolute right-2.5 bottom-2.5">Search</button>
+            <div id="people-search-results-area" class="relative hidden" data-search-path="<%=search_people_path%>">
+              <div class="absolute inset-0" tabindex="-1">
+                <div class="bg-zinc-700">
+                  <div class="mx-3 border border-x-0 border-b-0 border-gray-500"></div>
+                </div>
+                <ul class="list-none py-2 bg-zinc-700 rounded-b-lg text-center" id="people-search-mount-point">
+                  <!-- Search results will go here -->
+                </ul>
+              </div>
+            </div>
           </div>
           <div class="card grow">
             <div class="card-body">
-              <div class="flex flex-wrap gap-2">
-                <div class="flex gap-1 rounded-full pr-1 pl-2 py-1 bg-slate-700">
-                  Kelsey Roberts
-                  <button class="bg-slate-700 rounded-full px-1 hover:bg-slate-600" type="button"><%=x_icon(color: '#ffffff', size: 16)%></button>
-                </div>
-                <div class="rounded-full px-2 py-1 bg-slate-700">
-                  Kelsey Roberts
-                </div>
-                <div class="rounded-full px-2 py-1 bg-slate-700">
-                  Kelsey Roberts
-                </div>
-              </div>
+              <ul class="flex flex-wrap gap-2" id="people-name-mount-point">
+
+              </ul>
             </div>
           </div>
         </div>

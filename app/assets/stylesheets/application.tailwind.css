@@ -38,19 +38,15 @@
   .input-field {
     @apply block bg-transparent shadow rounded-md border border-gray-400 outline-none px-3 py-2 w-full
   }
-
   .btn {
     @apply rounded bg-slate-700 hover:bg-slate-600 py-2 px-4 text-white font-medium cursor-pointer
   }
-
   .btn-sm {
     @apply rounded bg-slate-700 hover:bg-slate-600 py-1 px-2 text-white font-medium cursor-pointer
   }
-
   .btn-primary {
     @apply rounded bg-slate-700 hover:bg-slate-600 py-2 px-4 text-white font-medium cursor-pointer
   }
-
   .btn-secondary {
     @apply rounded py-2 px-4 bg-gray-400 hover:bg-gray-600 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white inline-block font-medium cursor-pointer
   }
@@ -60,32 +56,42 @@
   .card {
     @apply border-gray-600 rounded border flex flex-col bg-neutral-800
   }
-
   .card-body {
     @apply p-4 grow
   }
-
   .card-header {
     @apply rounded-t bg-slate-700 py-1 px-2
   }
-
   .card.profile-card {
     @apply bg-slate-700 border-gray-600 hover:bg-slate-600 transition-colors
   }
-
   .nav-bar {
     @apply flex flex-col h-full bg-slate-800 p-4
   }
-
   .nav-list {
     @apply flex flex-col
   }
-
   .nav-item {
     @apply flex
   }
-
   .nav-link {
     @apply hover:bg-slate-600 p-2 rounded transition hover:shadow-xl
   }
-}@import 'actiontext.css';
+  .search-result-item {
+    @apply flex gap-1 px-4 py-1 w-full
+  }
+  .search-result-item.actionable {
+    @apply hover:bg-zinc-600 cursor-pointer
+  }
+  .person-avatar {
+    @apply rounded-full border border-neutral-700
+  }
+  .person-name {
+    @apply flex items-center gap-1 rounded-full pr-1 pl-2 py-1 bg-slate-700
+  }
+  .person-name .close-button {
+    @apply bg-slate-700 p-3 rounded-full hover:bg-slate-600
+  }
+}
+
+@import 'actiontext.css';

@@ -45,12 +45,12 @@
                         <%365.times do |i|%>
                             <%if rand(1..2).even?%>
                                 <%if rand(0..20) == 5%>
-                                    <div class="h-5 w-5 bg-red-400 rounded" data-milestone="" data-entry=""></div>
+                                    <div class="h-5 w-5 bg-red-400 rounded hover:scale-110" data-milestone="" data-entry=""></div>
                                 <%else%>
-                                    <div class="h-5 w-5 bg-gray-700 rounded" data-milestone="" data-entry=""></div>
+                                    <div class="h-5 w-5 bg-gray-700 rounded hover:scale-110" data-milestone="" data-entry=""></div>
                                 <%end%>
                             <%else%>
-                                <div class="h-5 w-5 bg-green-700 rounded" data-milestone="" data-entry=""></div>
+                                <div class="h-5 w-5 bg-green-700 rounded hover:scale-110" data-milestone="" data-entry=""></div>
                             <%end%>
                         <%end%>
                     </div>

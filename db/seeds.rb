@@ -29,13 +29,14 @@ me = User.create(
     )
 end
 
-20.times do
-    Person.create(
+100.times do
+    person = me.people.create(
         first_name: random_first_name,
         last_name:  random_last_name,
         age:        rand(18..90),
         sex:        'M',
     )
+    person.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default_profile_picture.png')), filename: 'avatar.png')
 end
 
 Entry.all.each do |e|

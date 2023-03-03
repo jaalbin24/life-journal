@@ -4,6 +4,9 @@ module PubliclyIdentifiable
     included do
         validates :public_id, presence: true
         before_validation :generate_public_id, on: :create 
+        def to_param
+            public_id
+        end
     end
     private
 

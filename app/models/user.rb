@@ -21,4 +21,12 @@ class User < ApplicationRecord
         dependent: :destroy
     )
 
+    has_many(
+        :people,
+        class_name: "Person",
+        foreign_key: :created_by_id,
+        inverse_of: :created_by,
+        dependent: :destroy
+    )
+
 end

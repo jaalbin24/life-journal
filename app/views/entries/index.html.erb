@@ -12,13 +12,16 @@
               <h6><%=e.published_at.blank? ? "Unknown date" : e.published_at.strftime("%b %d, %Y")%></h6>
               <div class="flex flex-row">
                 <%e.mentions.each_with_index do |m, i|%>
-                  <%=image_tag 'default_profile_picture.png', size: 24, class: "#{'-ml-2' unless i == 0} rounded-full border border-neutral-700"%>
+                  <%=image_tag m.person.avatar, size: 24, class: "#{'-ml-2' unless i == 0} rounded-full border border-neutral-700"%>
                 <%end%>
               </div>
             </div>
           </div>
-          <div class="card-body max-h-48 overflow-hidden flex flex-row gap-5 justify-between">
-            <%=e.text_content%>
+          <div class="card-body max-h-48 flex flex-row gap-5 justify-between">
+            <div class="overflow-hidden relative">
+              <div class="w-full h-full bg-gradient-to-b from-transparent to-neutral-800 absolute"></div>
+              <%=e.text_content%>
+            </div>
             <%if e.picture_of_the_day.attached?%>
               <%=image_tag e.picture_of_the_day, class: "rounded"%>
             <%end%>
