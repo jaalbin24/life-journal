@@ -1,12 +1,18 @@
-<%= form_with(model: entry, class: "grow flex flex-col mt-4") do |f| %>
+<%= form_with(model: entry, class: "grow flex flex-col mt-4", id: "entry_form") do |f| %>
+  <%entry.mentions.each do |m|%>
+    <%=f.fields_for :mentions, m do |mf|%>
+      <%=mf.hidden_field :person_id%>
+    <%end%>
+  <%end%>
+
   <div class="card grow">
     <div class="card-header">
       <%=f.text_field :title, class: "p-0 input-field border-none text-2xl font-bold shadow-none", placeholder: "Title"%>
       <div class="flex flex-row align-center gap-3">
-        <h6><%=entry.published_at.blank? ? DateTime.now.strftime("%b %d, %Y") : e.published_at.strftime("%b %d, %Y")%></h6>
+        <h6><%=entry.published_at.blank? ? DateTime.now.strftime("%b %d, %Y") : entry.published_at.strftime("%b %d, %Y")%></h6>
         <div class="flex flex-row" id="mentions-avatar-container">
-          <%entry.mentions.each_with_index do |m, i|%>
-            <%=image_tag 'default_profile_picture.png', size: 24, class: "#{'-ml-2' unless i == 0} rounded-full border border-neutral-700"%>
+          <%entry.people.each_with_index do |p, i|%>
+            <%=image_tag p.avatar, size: 24, class: "#{'-ml-2' unless i == 0} person-avatar"%>
           <%end%>
         </div>
       </div>
@@ -39,7 +45,13 @@
           <div class="card grow">
             <div class="card-body">
               <ul class="flex flex-wrap gap-2" id="people-name-mount-point">
-
+                <%entry.people.each do |p|%>
+                  <li class="person-name" data-id="0f0267f4-8c10-4edc-8246-5150e55f6d15">
+                    <%= image_tag p.avatar, size: 24, class: "person-avatar" %>
+                    <%=p.name%>
+                    <button class="close-button" type="button"></button>
+                  </li>
+                <%end%>
               </ul>
             </div>
           </div>

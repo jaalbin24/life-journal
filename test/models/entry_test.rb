@@ -2,14 +2,14 @@
 #
 # Table name: entries
 #
-#  id           :bigint           not null, primary key
+#  id           :uuid             not null, primary key
 #  draft?       :boolean
 #  published_at :datetime
 #  text_content :string
 #  title        :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  author_id    :bigint
+#  author_id    :uuid
 #
 # Indexes
 #

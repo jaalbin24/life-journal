@@ -2,11 +2,11 @@
 #
 # Table name: mentions
 #
-#  id         :bigint           not null, primary key
+#  id         :uuid             not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  entry_id   :bigint
-#  person_id  :bigint
+#  entry_id   :uuid
+#  person_id  :uuid
 #
 # Indexes
 #
@@ -32,4 +32,5 @@ class Mention < ApplicationRecord
         foreign_key: :entry_id,
         inverse_of: :mentions
     )
+
 end

@@ -54,7 +54,7 @@
 
 @layer components {
   .card {
-    @apply border-gray-600 rounded border flex flex-col bg-neutral-800
+    @apply border-neutral-700 rounded border flex flex-col bg-neutral-800
   }
   .card-body {
     @apply p-4 grow
@@ -84,7 +84,7 @@
     @apply hover:bg-zinc-600 cursor-pointer
   }
   .person-avatar {
-    @apply rounded-full border border-neutral-700
+    @apply rounded-full shadow hover:scale-125 transition-transform hover:delay-100
   }
   .person-name {
     @apply flex items-center gap-1 rounded-full pr-1 pl-2 py-1 bg-slate-700

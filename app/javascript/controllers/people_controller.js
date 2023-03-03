@@ -7,6 +7,7 @@ export default class extends Controller {
     this.searchField = document.getElementById('people-search-field');
     this.searchBox = document.getElementById('people-search-box');
     this.searchMountPoint = document.getElementById('people-search-mount-point');
+    this.entryForm = document.querySelector("form[id='entry_form']")
     this.people = [];
   }
   search() {
@@ -38,9 +39,9 @@ export default class extends Controller {
       } else {
         data.forEach(e => {
           // Add person to people array if they're not already there.
-          if (!this.people.some(el => el.publicId === e.public_id)) {
+          if (!this.people.some(el => el.id === e.id)) {
             this.people.push({
-              publicId: e.public_id,
+              id: e.id,
               name: e.name,
               showPath: e.show_path,
               avatarUrl: e.avatar_url,
@@ -50,7 +51,7 @@ export default class extends Controller {
           let personEl = document.createElement('button');
           personEl.classList.add('search-result-item', 'actionable', 'grow');
           personEl.setAttribute('type', 'button');
-          personEl.setAttribute('data-public-id', e.public_id);
+          personEl.setAttribute('data-id', e.id);
           personEl.setAttribute('data-action', 'click->people#addPersonToEntry');
           personEl.addEventListener('focusin', (e)=>{
             e.stopPropagation();
@@ -91,20 +92,20 @@ export default class extends Controller {
     this.searchBox.classList.add('rounded-b-lg');
     this.searchResultsEl.classList.add('hidden');
   }
-  //{name, avatar_url, delete_mention_path(entry_public_id, person_public_id)}
+  //{name, avatar_url, delete_mention_path(entry_id, person_id)}
   addPersonToEntry(e) {
     e.stopPropagation();
     console.log("IT WORKS BWAHAHAHAHAHA");
-    let person = this.people.find(el => el.publicId == e.currentTarget.getAttribute('data-public-id'))
+    let person = this.people.find(el => el.id == e.currentTarget.getAttribute('data-id'))
     this.showPersonName(person);
-    //attachPersonInputField(person);
+    this.attachPersonInputField(person);
     this.hideSearchResults();
   }
 
   showPersonName(person) {
     const parser = new DOMParser();
     const htmlString = 
-    `<li class="person-name" data-public-id="${person.publicId}">
+    `<li class="person-name" data-id="${person.id}">
       ${genImgEl(person.avatarUrl).outerHTML}
       ${person.name}
       <button class="close-button" type="button"></button>
@@ -112,6 +113,26 @@ export default class extends Controller {
     const doc = parser.parseFromString(htmlString, 'text/html');
     const personName = doc.querySelector('li');
     document.getElementById('people-name-mount-point').append(personName);
+  }
+
+  attachPersonInputField(person) {
+    console.log("GO SEE MATTHEW");
+    let flagged = true;
+    let count = 0;
+    while(flagged) {
+      let name = `entry[mentions_attributes][${count}][person_id]`;
+      let inputField = document.querySelector(`input[name='${name}']`);
+      if(inputField === null) { // If there is no input element with that name...
+        flagged = false;
+        inputField = document.createElement('input');
+        inputField.setAttribute('type', 'hidden');
+        inputField.setAttribute('name', name);
+        inputField.setAttribute('value', person.id);
+        this.entryForm.appendChild(inputField);
+      } else {
+        count += 1;
+      }
+    }
   }
 }
 

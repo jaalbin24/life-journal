@@ -12,7 +12,7 @@ module Authentication
         user = User.find_by(email: email)
         if user&.authenticate(password)
             reset_session
-            session[:current_user_public_id] = user.public_id
+            session[:current_user_id] = user.id
             true
         else
             false
@@ -26,7 +26,7 @@ module Authentication
     private
 
     def current_user
-        Current.user ||= User.find_by(public_id: session[:current_user_public_id])
+        Current.user ||= User.find_by(id: session[:current_user_id])
     end
 
     def user_signed_in?

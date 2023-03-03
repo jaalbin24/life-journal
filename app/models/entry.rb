@@ -2,14 +2,14 @@
 #
 # Table name: entries
 #
-#  id           :bigint           not null, primary key
+#  id           :uuid             not null, primary key
 #  draft?       :boolean
 #  published_at :datetime
 #  text_content :string
 #  title        :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  author_id    :bigint
+#  author_id    :uuid
 #
 # Indexes
 #
@@ -20,7 +20,6 @@
 #  fk_rails_...  (author_id => users.id)
 #
 class Entry < ApplicationRecord
-
     has_rich_text :text_content
     has_one_attached :picture_of_the_day
 
@@ -32,12 +31,18 @@ class Entry < ApplicationRecord
         dependent: :destroy
     )
 
+    has_many(
+        :people,
+        through: :mentions
+    )
+
     belongs_to(
         :author,
         class_name: "User",
         foreign_key: :author_id,
         inverse_of: :entries
     )
+    accepts_nested_attributes_for :mentions
 
 
     before_create do

@@ -24,7 +24,7 @@ class EntriesController < ApplicationController
   def create
     @entry = current_user.entries.build(entry_params)
 
-    if @entry.save
+    if @entry.save!
       redirect_to @entry, notice: "Entry was successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -47,13 +47,22 @@ class EntriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_entry
-      @entry = Entry.find(params[:id])
-    end
+  
+  # Use callbacks to share common setup or constraints between actions.
+  def set_entry
+    @entry = Entry.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def entry_params
-      params.require(:entry).permit(:text_content, :title, :picture_of_the_day)
-    end
+  # Only allow a list of trusted parameters through.
+  def entry_params
+    params.require(:entry).permit(
+      :text_content,
+      :title,
+      :picture_of_the_day,
+      mentions_attributes: [
+        :id,
+        :person_id
+      ]
+    )
+  end
 end
