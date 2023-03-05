@@ -12,7 +12,7 @@
         <h6><%=entry.published_at.blank? ? DateTime.now.strftime("%b %d, %Y") : entry.published_at.strftime("%b %d, %Y")%></h6>
         <div class="flex flex-row" id="mentions-avatar-container">
           <%entry.people.each_with_index do |p, i|%>
-            <%=image_tag p.avatar, size: 24, class: "#{'-ml-2' unless i == 0} person-avatar"%>
+            <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}, tooltip: true%>
           <%end%>
         </div>
       </div>

@@ -1,0 +1,11 @@
+<%tooltip ||= false%>
+<%css_class ||= ''%>
+<%size ||= 16%>
+<a href="<%=person_path(person)%>" class="<%=["#{tooltip ? "tooltip" : ''}", css_class].reject(&:blank?).join(' ')%>">
+  <img class="person-avatar" width="<%=size%>" height="<%=size%>" src="<%=url_for(person.avatar)%>">
+  <%if tooltip%>
+    <div class="tooltip-content">
+      <%=person.name%>
+    </div>
+  <%end%>
+</a>

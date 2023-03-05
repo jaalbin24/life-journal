@@ -8,14 +8,17 @@
 require 'english_language'
 include EnglishLanguage
 
+traits = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
+quotes = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
+
 me = User.create(
     email: "j@j.j",
     password: "123"
 )
 
-10.times do
+100.times do
     me.entries.create(
-        published_at: 10.weeks.ago,
+        published_at: rand(5..1000).days.ago,
         title: "Eget gravida cum sociis natoque penatibus",
         text_content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae congue mauris rhoncus aenean vel elit scelerisque mauris pellentesque. Aliquet porttitor lacus luctus accumsan tortor posuere ac. Sit amet porttitor eget dolor morbi non arcu. A arcu cursus vitae congue mauris rhoncus aenean vel. Quis varius quam quisque id diam vel quam elementum pulvinar. Sem integer vitae justo eget magna fermentum iaculis eu non. Mauris rhoncus aenean vel elit scelerisque mauris. Nec dui nunc mattis enim ut tellus elementum. Massa placerat duis ultricies lacus sed turpis tincidunt id. Ac turpis egestas maecenas pharetra convallis posuere. Ipsum suspendisse ultrices gravida dictum.
 
@@ -29,6 +32,14 @@ me = User.create(
     )
 end
 
+traits.each do |k, v|
+    Trait.create!(
+        word:           k,
+        score:          v['score'],
+        description:    "LA LA LA DEE DAH"
+    )
+end
+
 100.times do
     person = me.people.create(
         first_name: random_first_name,
@@ -36,6 +47,11 @@ end
         age:        rand(18..90),
         sex:        'M',
     )
+    rand(2..5).times do 
+        person.personality.create!(
+            trait: Trait.all.sample
+        )
+    end
     person.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default_profile_picture.png')), filename: 'avatar.png')
 end
 

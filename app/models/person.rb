@@ -7,6 +7,7 @@
 #  first_name    :string
 #  last_name     :string
 #  sex           :string
+#  traits        :text
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  created_by_id :uuid
@@ -29,11 +30,13 @@ class Person < ApplicationRecord
         inverse_of: :person,
         dependent: :destroy
     )
-
     has_many(
         :entries,
         through: :mentions
     )
+
+    has_many :personality
+    has_many :traits, through: :personality
 
     belongs_to(
         :created_by,

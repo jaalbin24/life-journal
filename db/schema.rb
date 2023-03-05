@@ -74,6 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 901) do
   end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "traits"
     t.string "first_name"
     t.string "last_name"
     t.string "sex"
@@ -82,6 +83,23 @@ ActiveRecord::Schema[7.0].define(version: 901) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_people_on_created_by_id"
+  end
+
+  create_table "personalities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "person_id", null: false
+    t.uuid "trait_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_personalities_on_person_id"
+    t.index ["trait_id"], name: "index_personalities_on_trait_id"
+  end
+
+  create_table "traits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "word"
+    t.integer "score"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -97,4 +115,6 @@ ActiveRecord::Schema[7.0].define(version: 901) do
   add_foreign_key "mentions", "entries"
   add_foreign_key "mentions", "people"
   add_foreign_key "people", "users", column: "created_by_id"
+  add_foreign_key "personalities", "people"
+  add_foreign_key "personalities", "traits"
 end

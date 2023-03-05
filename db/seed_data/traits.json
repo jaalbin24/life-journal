@@ -1,0 +1,785 @@
+{
+  "Arrogant": {
+    "score": 10
+  },
+  "Aggressive": {
+    "score": 20
+  },
+  "Ambitious": {
+    "score": 80
+  },
+  "Brave": {
+    "score": 90
+  },
+  "Calm": {
+    "score": 80
+  },
+  "Charismatic": {
+    "score": 90
+  },
+  "Compassionate": {
+    "score": 95
+  },
+  "Creative": {
+    "score": 85
+  },
+  "Cruel": {
+    "score": 10
+  },
+  "Curious": {
+    "score": 75
+  },
+  "Decisive": {
+    "score": 75
+  },
+  "Determined": {
+    "score": 85
+  },
+  "Disorganized": {
+    "score": 20
+  },
+  "Disloyal": {
+    "score": 10
+  },
+  "Empathetic": {
+    "score": 95
+  },
+  "Flexible": {
+    "score": 75
+  },
+  "Intelligent": {
+    "score": 90
+  },
+  "Introverted": {
+    "score": 50
+  },
+  "Judgmental": {
+    "score": 20
+  },
+  "Kind": {
+    "score": 95
+  },
+  "Naive": {
+    "score": 20
+  },
+  "Optimistic": {
+    "score": 85
+  },
+  "Organized": {
+    "score": 85
+  },
+  "Outgoing": {
+    "score": 90
+  },
+  "Patient": {
+    "score": 90
+  },
+  "Perfectionist": {
+    "score": 75
+  },
+  "Persuasive": {
+    "score": 85
+  },
+  "Polite": {
+    "score": 90
+  },
+  "Practical": {
+    "score": 75
+  },
+  "Proactive": {
+    "score": 85
+  },
+  "Proud": {
+    "score": 20
+  },
+  "Reliable": {
+    "score": 90
+  },
+  "Resourceful": {
+    "score": 85
+  },
+  "Respected": {
+    "score": 90
+  },
+  "Responsible": {
+    "score": 90
+  },
+  "Sarcastic": {
+    "score": 20
+  },
+  "Selfless": {
+    "score": 95
+  },
+  "Sensitive": {
+    "score": 75
+  },
+  "Serious": {
+    "score": 75
+  },
+  "Sociable": {
+    "score": 90
+  },
+  "Supportive": {
+    "score": 95
+  },
+  "Talkative": {
+    "score": 90
+  },
+  "Tempered": {
+    "score": 20
+  },
+  "Tenacious": {
+    "score": 85
+  },
+  "Thoughtful": {
+    "score": 95
+  },
+  "Tolerant": {
+    "score": 95
+  },
+  "Trusting": {
+    "score": 90
+  },
+  "Unselfish": {
+    "score": 95
+  },
+  "Wise": {
+    "score": 90
+  },
+  "Witty": {
+    "score": 85
+  },
+  "Zealous": {
+    "score": 80
+  },
+  "Adaptable": {
+    "score": 75
+  },
+  "Adventurous": {
+    "score": 85
+  },
+  "Affectionate": {
+    "score": 95
+  },
+  "Analytical": {
+    "score": 85
+  },
+  "Assertive": {
+    "score": 75
+  },
+  "Authentic": {
+    "score": 90
+  },
+  "Bold": {
+    "score": 85
+  },
+  "Carefree": {
+    "score": 75
+  },
+  "Careful": {
+    "score": 85
+  },
+  "Charming": {
+    "score": 90
+  },
+  "Clever": {
+    "score": 85
+  },
+  "Committed": {
+    "score": 90
+  },
+  "Competitive": {
+    "score": 75
+  },
+  "Confident": {
+    "score": 85
+  },
+  "Considerate": {
+    "score": 95
+  },
+  "Cooperative": {
+    "score": 90
+  },
+  "Courageous": {
+    "score": 90
+  },
+  "Cultured": {
+    "score": 80
+  },
+  "Daring": {
+    "score": 85
+  },
+  "Decent": {
+    "score": 85
+  },
+  "Delightful": {
+    "score": 90
+  },
+  "Dependable": {
+    "score": 90
+  },
+  "Diligent": {
+    "score": 85
+  },
+  "Disciplined": {
+    "score": 85
+  },
+  "Dynamic": {
+    "score": 80
+  },
+  "Eccentric": {
+    "score": 50
+  },
+  "Effective": {
+    "score": 80
+  },
+  "Efficient": {
+    "score": 85
+  },
+  "Elegant": {
+    "score": 85
+  },
+  "Energetic": {
+    "score": 85
+  },
+  "Enigmatic": {
+    "score": 50
+  },
+  "Entertaining": {
+    "score": 80
+  },
+  "Enthusiastic": {
+    "score": 85
+  },
+  "Exacting": {
+    "score": 75
+  },
+  "Exciting": {
+    "score": 85
+  },
+  "Experienced": {
+    "score": 90
+  },
+  "Expert": {
+    "score": 90
+  },
+  "Extroverted": {
+    "score": 80
+  },
+  "Fair": {
+    "score": 85
+  },
+  "Faithful": {
+    "score": 95
+  },
+  "Fearless": {
+    "score": 90
+  },
+  "Fierce": {
+    "score": 75
+  },
+  "Flawless": {
+    "score": 80
+  },
+  "Forgiving": {
+    "score": 95
+  },
+  "Frank": {
+    "score": 75
+  },
+  "Free-spirited": {
+    "score": 85
+  },
+  "Friendly": {
+    "score": 90
+  },
+  "Frugal": {
+    "score": 75
+  },
+  "Fun-loving": {
+    "score": 85
+  },
+  "Generous": {
+    "score": 95
+  },
+  "Gentle": {
+    "score": 90
+  },
+  "Goal-oriented": {
+    "score": 85
+  },
+  "Good-humored": {
+    "score": 90
+  },
+  "Graceful": {
+    "score": 85
+  },
+  "Gracious": {
+    "score": 90
+  },
+  "Grounded": {
+    "score": 85
+  },
+  "Hardworking": {
+    "score": 90
+  },
+  "Healthy": {
+    "score": 85
+  },
+  "Helpful": {
+    "score": 90
+  },
+  "High-spirited": {
+    "score": 85
+  },
+  "Honest": {
+    "score": 90
+  },
+  "Humble": {
+    "score": 85
+  },
+  "Idealistic": {
+    "score": 80
+  },
+  "Imaginative": {
+    "score": 85
+  },
+  "Impartial": {
+    "score": 85
+  },
+  "Independent": {
+    "score": 80
+  },
+  "Industrious": {
+    "score": 85
+  },
+  "Inquisitive": {
+    "score": 85
+  },
+  "Insightful": {
+    "score": 85
+  },
+  "Inspirational": {
+    "score": 90
+  },
+  "Intellectual": {
+    "score": 85
+  },
+  "Intense": {
+    "score": 75
+  },
+  "Intuitive": {
+    "score": 85
+  },
+  "Inventive": {
+    "score": 85
+  },
+  "Joyful": {
+    "score": 90
+  },
+  "Just": {
+    "score": 85
+  },
+  "Keen": {
+    "score": 85
+  },
+  "Knowledgeable": {
+    "score": 90
+  },
+  "Laid-back": {
+    "score": 75
+  },
+  "Leader": {
+    "score": 90
+  },
+  "Lively": {
+    "score": 85
+  },
+  "Logical": {
+    "score": 85
+  },
+  "Long-suffering": {
+    "score": 95
+  },
+  "Loving": {
+    "score": 95
+  },
+  "Loyal": {
+    "score": 90
+  },
+  "Meticulous": {
+    "score": 85
+  },
+  "Methodical": {
+    "score": 85
+  },
+  "Modest": {
+    "score": 85
+  },
+  "Multi-talented": {
+    "score": 85
+  },
+  "Mysterious": {
+    "score": 50
+  },
+  "Objective": {
+    "score": 85
+  },
+  "Abusive": {
+    "score": 10
+  },
+  "Agonizing": {
+    "score": 10
+  },
+  "Angry": {
+    "score": 20
+  },
+  "Anxious": {
+    "score": 20
+  },
+  "Apathetic": {
+    "score": 20
+  },
+  "Awkward": {
+    "score": 20
+  },
+  "Bitter": {
+    "score": 20
+  },
+  "Boastful": {
+    "score": 20
+  },
+  "Bossy": {
+    "score": 10
+  },
+  "Brutal": {
+    "score": 10
+  },
+  "Careless": {
+    "score": 20
+  },
+  "Clumsy": {
+    "score": 20
+  },
+  "Cold": {
+    "score": 20
+  },
+  "Combative": {
+    "score": 20
+  },
+  "Compulsive": {
+    "score": 20
+  },
+  "Condescending": {
+    "score": 20
+  },
+  "Confused": {
+    "score": 20
+  },
+  "Cowardly": {
+    "score": 10
+  },
+  "Critical": {
+    "score": 20
+  },
+  "Cynical": {
+    "score": 20
+  },
+  "Deceitful": {
+    "score": 10
+  },
+  "Defeatist": {
+    "score": 20
+  },
+  "Delusional": {
+    "score": 20
+  },
+  "Dependent": {
+    "score": 20
+  },
+  "Desperate": {
+    "score": 20
+  },
+  "Detached": {
+    "score": 20
+  },
+  "Dishonest": {
+    "score": 10
+  },
+  "Disrespectful": {
+    "score": 10
+  },
+  "Distracted": {
+    "score": 20
+  },
+  "Divisive": {
+    "score": 20
+  },
+  "Domineering": {
+    "score": 10
+  },
+  "Doubtful": {
+    "score": 20
+  },
+  "Dramatic": {
+    "score": 20
+  },
+  "Egotistical": {
+    "score": 10
+  },
+  "Envious": {
+    "score": 20
+  },
+  "Erratic": {
+    "score": 20
+  },
+  "Excessive": {
+    "score": 20
+  },
+  "Extravagant": {
+    "score": 20
+  },
+  "Fake": {
+    "score": 10
+  },
+  "Fearful": {
+    "score": 20
+  },
+  "Foolish": {
+    "score": 20
+  },
+  "Forgetful": {
+    "score": 20
+  },
+  "Frustrated": {
+    "score": 20
+  },
+  "Greedy": {
+    "score": 10
+  },
+  "Grouchy": {
+    "score": 20
+  },
+  "Harsh": {
+    "score": 20
+  },
+  "Hateful": {
+    "score": 10
+  },
+  "Hostile": {
+    "score": 20
+  },
+  "Ignorant": {
+    "score": 10
+  },
+  "Impatient": {
+    "score": 20
+  },
+  "Impulsive": {
+    "score": 20
+  },
+  "Inconsiderate": {
+    "score": 10
+  },
+  "Indecisive": {
+    "score": 20
+  },
+  "Indifferent": {
+    "score": 20
+  },
+  "Inflexible": {
+    "score": 20
+  },
+  "Insecure": {
+    "score": 20
+  },
+  "Insincere": {
+    "score": 10
+  },
+  "Intolerant": {
+    "score": 10
+  },
+  "Irritable": {
+    "score": 20
+  },
+  "Jealous": {
+    "score": 20
+  },
+  "Lazy": {
+    "score": 10
+  },
+  "Lethargic": {
+    "score": 20
+  },
+  "Malicious": {
+    "score": 10
+  },
+  "Manipulative": {
+    "score": 10
+  },
+  "Moody": {
+    "score": 20
+  },
+  "Narrow-minded": {
+    "score": 10
+  },
+  "Nervous": {
+    "score": 20
+  },
+  "Needy": {
+    "score": 20
+  },
+  "Negative": {
+    "score": 10
+  },
+  "Nonchalant": {
+    "score": 20
+  },
+  "Obnoxious": {
+    "score": 10
+  },
+  "Obsessive": {
+    "score": 20
+  },
+  "Opinionated": {
+    "score": 10
+  },
+  "Oppressive": {
+    "score": 10
+  },
+  "Overbearing": {
+    "score": 10
+  },
+  "Paranoid": {
+    "score": 20
+  },
+  "Passive": {
+    "score": 20
+  },
+  "Pessimistic": {
+    "score": 20
+  },
+  "Petty": {
+    "score": 10
+  },
+  "Possessive": {
+    "score": 10
+  },
+  "Pretentious": {
+    "score": 10
+  },
+  "Procrastinating": {
+    "score": 20
+  },
+  "Quarrelsome": {
+    "score": 10
+  },
+  "Rash": {
+    "score": 20
+  },
+  "Reckless": {
+    "score": 20
+  },
+  "Rude": {
+    "score": 10
+  },
+  "Self-centered": {
+    "score": 10
+  },
+  "Selfish": {
+    "score": 10
+  },
+  "Short-tempered": {
+    "score": 20
+  },
+  "Shy": {
+    "score": 20
+  },
+  "Skeptical": {
+    "score": 20
+  },
+  "Sneaky": {
+    "score": 10
+  },
+  "Solemn": {
+    "score": 20
+  },
+  "Spiteful": {
+    "score": 10
+  },
+  "Stubborn": {
+    "score": 20
+  },
+  "Stupid": {
+    "score": 10
+  },
+  "Superficial": {
+    "score": 10
+  },
+  "Suspicious": {
+    "score": 20
+  },
+  "Temperamental": {
+    "score": 20
+  },
+  "Timid": {
+    "score": 20
+  },
+  "Unambitious": {
+    "score": 20
+  },
+  "Unconfident": {
+    "score": 20
+  },
+  "Uncooperative": {
+    "score": 10
+  },
+  "Undependable": {
+    "score": 10
+  },
+  "Unenthusiastic": {
+    "score": 20
+  },
+  "Unforgiving": {
+    "score": 20
+  },
+  "Unfriendly": {
+    "score": 30
+  },
+  "Ungrateful": {
+    "score": 30
+  },
+  "Unhelpful": {
+    "score": 40
+  },
+  "Unimaginative": {
+    "score": 50
+  },
+  "Uninformed": {
+    "score": 30
+  },
+  "Uninterested": {
+    "score": 20
+  },
+  "Unreliable": {
+    "score": 10
+  },
+  "Unresponsive": {
+    "score": 30
+  },
+  "Unstable": {
+    "score": 20
+  },
+  "Vain": {
+    "score": 10
+  },
+  "Vengeful": {
+    "score": 10
+  },
+  "Withdrawn": {
+    "score": 40
+  },
+  "Wrathful": {
+    "score": 10
+  }
+}

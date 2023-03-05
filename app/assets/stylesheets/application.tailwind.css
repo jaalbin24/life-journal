@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import 'actiontext.css';
 
 
 @layer base {
@@ -57,7 +57,7 @@
     @apply border-neutral-700 rounded border flex flex-col bg-neutral-800
   }
   .card-body {
-    @apply p-4 grow
+    @apply p-4 grow overflow-hidden
   }
   .card-header {
     @apply rounded-t bg-slate-700 py-1 px-2
@@ -84,7 +84,7 @@
     @apply hover:bg-zinc-600 cursor-pointer
   }
   .person-avatar {
-    @apply rounded-full shadow hover:scale-125 transition-transform hover:delay-100
+    @apply rounded-full shadow hover:scale-125 transition-transform hover:delay-100 hover:z-50
   }
   .person-name {
     @apply flex items-center gap-1 rounded-full pr-1 pl-2 py-1 bg-slate-700
@@ -92,6 +92,13 @@
   .person-name .close-button {
     @apply bg-slate-700 p-3 rounded-full hover:bg-slate-600
   }
+  .tooltip {
+    @apply relative inline-block
+  }
+  .tooltip-content {
+    @apply invisible text-center rounded p-1 bg-slate-900 shadow-lg absolute z-10 w-36
+  }
+  .tooltip:hover .tooltip-content {
+    @apply visible delay-100 translate-x-1/2 right-1/2 top-10
+  }
 }
-
-@import 'actiontext.css';

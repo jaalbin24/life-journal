@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :entries
+  resources :entries do
+    get 'page/:page', action: :index, on: :collection
+  end
   resources :users
   resources :people
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
