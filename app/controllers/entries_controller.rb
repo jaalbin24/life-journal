@@ -4,7 +4,7 @@ class EntriesController < ApplicationController
 
   # GET /entries
   def index
-    @entries = current_user.entries.order(published_at: :desc).page(page: params[:page], per_page: 10)
+    @entries = current_user.entries.order(published_at: :desc).page params[:page]
   end
 
   # GET /entries/1
