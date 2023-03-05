@@ -33,7 +33,11 @@ class EntriesController < ApplicationController
 
   # PATCH/PUT /entries/1
   def update
-    if @entry.update(entry_params)
+    if @entry.update(entry_params.reject {|e| e['picture_of_the_day']})
+      if entry_params[:picture_of_the_day].present?
+        @entry.picture_of_the_day.purge if @entry.picture_of_the_day.attached?
+        @entry.picture_of_the_day.attach(entry_params[:picture_of_the_day])
+      end
       redirect_to @entry, notice: "Entry was successfully updated."
     else
       render :edit, status: :unprocessable_entity

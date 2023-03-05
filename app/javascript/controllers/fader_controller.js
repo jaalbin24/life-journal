@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="fader"
 export default class extends Controller {
   connect() {
+
   }
 
   fadeIn(e) {
@@ -27,12 +28,18 @@ export default class extends Controller {
     e.stopImmediatePropagation();
     console.log('fadeOut() fired for %O', e.target);
     let targetId = e.currentTarget.getAttribute('data-target');
+    console.log("targetId: %s", targetId);
     if(targetId == null) {
-      e.currentTarget.style.opacity = 0;
+      setTimeout(()=>{
+        e.currentTarget.style.opacity = 0;
+      }, 100);
       e.currentTarget.addEventListener('transitionend', addHidingClass);
     } else {
       let target = document.getElementById(targetId);
-      target.style.opacity = 0;
+      console.log("target: %O", target);
+      setTimeout(()=>{
+        target.style.opacity = 0;
+      }, 100);
       target.addEventListener('transitionend', addHidingClass);
     }
   }

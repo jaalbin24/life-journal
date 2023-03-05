@@ -3,7 +3,7 @@
 
     <div class="card col-span-6 row-span-2">
         <div class="card-body flex flex-row gap-3 items-center pl-6">
-            <%=render partial: 'people/avatar', locals: {person: @person, size: 200}%>
+            <%= image_tag @person.avatar, class: "person-avatar", size: 180%>
             <div class="my-auto flex flex-col gap-2">
                 <h1><%=@person.name%></h1>
                 <ul class="flex gap-2">
@@ -23,7 +23,7 @@
             <h3 class="mb-3">Mentions</h3>
             <div class="overflow-auto grow">
                 <ul class="flex flex-wrap gap-2">
-                    <%@person.entries.each do |e|%>
+                    <%@person.entries.order(published_at: :desc).each do |e|%>
                         <li class="py-1 px-2 bg-slate-700 rounded-lg shrink w-2/5 h-fit">
                             <div class="flex">
                                 <a href="<%=entry_path(e)%>" class="shrink flex font-bold hover:scale-101 max-w-full">
@@ -34,7 +34,7 @@
                                 <h6 class="my-auto"><%=e.published_at.blank? ? "Unknown date" : e.published_at.strftime("%b %d, %Y")%></h6>
                                 <div class="flex flex-row">
                                     <%e.people.each_with_index do |p, i|%>
-                                    <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 24, tooltip: true}%>
+                                        <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
                                     <%end%>
                                 </div>
                             </div>

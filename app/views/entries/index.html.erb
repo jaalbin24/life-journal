@@ -16,7 +16,7 @@
               <h6 class="my-auto"><%=e.published_at.blank? ? "Unknown date" : e.published_at.strftime("%b %d, %Y")%></h6>
               <div class="flex flex-row">
                 <%e.people.each_with_index do |p, i|%>
-                  <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 24, tooltip: true}%>
+                  <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
                 <%end%>
               </div>
             </div>
@@ -27,7 +27,7 @@
               <%=e.text_content%>
             </div>
             <%if e.picture_of_the_day.attached?%>
-              <%=image_tag e.picture_of_the_day, class: "rounded"%>
+              <%=image_tag e.picture_of_the_day, class: "picture-of-the-day"%>
             <%end%>
           </div>
         </div>

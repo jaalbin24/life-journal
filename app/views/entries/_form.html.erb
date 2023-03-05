@@ -12,7 +12,7 @@
         <h6><%=entry.published_at.blank? ? DateTime.now.strftime("%b %d, %Y") : entry.published_at.strftime("%b %d, %Y")%></h6>
         <div class="flex flex-row" id="mentions-avatar-container">
           <%entry.people.each_with_index do |p, i|%>
-            <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}, tooltip: true%>
+            <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
           <%end%>
         </div>
       </div>
@@ -58,14 +58,30 @@
         </div>
         <div class="w-full">
           <%=f.label :picture_of_the_day, class: "font-bold"%>
-          <label for="picture-of-the-day" class="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-              <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                  <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+          <%if entry.picture_of_the_day.attached?%>
+            <div id="potd-card" class="relative" data-controller="fader" data-action="mousemove->fader#fadeIn mouseleave->fader#fadeOut" data-target="potd-fader">
+              <div id="potd-fader"class="h-full w-full border-dashed border-gray-600 border flex rounded-lg bg-slate-900/50 z-20 absolute hiding opacity-0 transition-opacity">
+                <div class="m-auto flex gap-2">
+                  <label class="btn-primary">
+                    Replace
+                    <%=f.file_field :picture_of_the_day, class: "hidden", id: "picture-of-the-day"%>
+                  </label>
+                  <button data-action="click->entry#" class="btn-primary" type="button">Remove</button>
+                </div>
               </div>
-              <%=f.file_field :picture_of_the_day, class: "hidden", id: "picture-of-the-day"%>
-          </label>
+              <%= image_tag entry.picture_of_the_day, class: 'picture-of-the-day'%>
+            </div>
+          <%end%>
+          <div id="potd-field">
+            <label for="picture-of-the-day" class="flex flex-col <%='hidden' if entry.picture_of_the_day.attached?%> items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                </div>
+                <%=f.file_field :picture_of_the_day, class: "hidden", id: "picture-of-the-day"%>
+            </label>
+          </div>
         </div>
       </div> 
     </div>

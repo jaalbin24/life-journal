@@ -96,9 +96,12 @@
     @apply relative inline-block
   }
   .tooltip-content {
-    @apply invisible text-center rounded p-1 bg-slate-900 shadow-lg absolute z-10 w-36
+    @apply invisible text-center rounded py-1 px-2 bg-slate-900 shadow-lg absolute z-10 truncate text-ellipsis max-w-xs
   }
   .tooltip:hover .tooltip-content {
     @apply visible delay-100 translate-x-1/2 right-1/2 top-10
+  }
+  .picture-of-the-day {
+    @apply rounded-lg
   }
 }

@@ -1,4 +1,4 @@
-<%tooltip ||= false%>
+<%tooltip ||= true%>
 <%css_class ||= ''%>
 <%size ||= 16%>
 <a href="<%=person_path(person)%>" class="<%=["#{tooltip ? "tooltip" : ''}", css_class].reject(&:blank?).join(' ')%>">

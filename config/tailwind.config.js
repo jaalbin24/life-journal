@@ -29,7 +29,7 @@ module.exports = {
       },
       scale: {
         '101': '1.01',
-      }
+      },
     },
   },
   plugins: [
