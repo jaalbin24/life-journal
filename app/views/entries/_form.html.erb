@@ -46,10 +46,10 @@
             <div class="card-body">
               <ul class="flex flex-wrap gap-2" id="people-name-mount-point">
                 <%entry.people.each do |p|%>
-                  <li class="person-name" data-id="0f0267f4-8c10-4edc-8246-5150e55f6d15">
+                  <li class="person-name" data-id="<%=p.id%>">
                     <%= image_tag p.avatar, size: 24, class: "person-avatar" %>
-                    <%=p.name%>
-                    <button class="close-button" type="button"></button>
+                    <span name="person-name"><%=p.name%></span>
+                    <button class="close-button" type="button" data-action="click->people#removePersonFromEntry"></button>
                   </li>
                 <%end%>
               </ul>

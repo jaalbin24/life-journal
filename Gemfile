@@ -74,4 +74,6 @@ group :test do
   gem "webdrivers"
 end
 
+gem 'foreman'
+
 gem 'kaminari'

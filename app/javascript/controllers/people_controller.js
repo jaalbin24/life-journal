@@ -8,7 +8,15 @@ export default class extends Controller {
     this.searchBox = document.getElementById('people-search-box');
     this.searchMountPoint = document.getElementById('people-search-mount-point');
     this.entryForm = document.querySelector("form[id='entry_form']")
+    this.nameMountPoint = document.getElementById('people-name-mount-point');
     this.people = [];
+    this.nameMountPoint.querySelectorAll('li[data-id]').forEach(el => this.people.push({
+      id: el.getAttribute('data-id'),
+      name: el.querySelector("span[name='person-name']"),
+      avatarUrl: el.querySelector("img").getAttribute('src'),
+      preAttached: true,
+    }));
+    console.log(`INITIALIZED WITH SIZE = ${this.people.length}`)
   }
   search() {
     console.log('Searching...')
@@ -43,8 +51,8 @@ export default class extends Controller {
             this.people.push({
               id: e.id,
               name: e.name,
-              showPath: e.show_path,
               avatarUrl: e.avatar_url,
+              preAttached: false,
             });
           }
 
@@ -96,23 +104,39 @@ export default class extends Controller {
   addPersonToEntry(e) {
     e.stopPropagation();
     console.log("IT WORKS BWAHAHAHAHAHA");
-    let person = this.people.find(el => el.id == e.currentTarget.getAttribute('data-id'))
-    this.showPersonName(person);
-    this.attachPersonInputField(person);
-    this.hideSearchResults();
+    let person = this.people.find(el => el.id == e.currentTarget.getAttribute('data-id'));
+    if (this.nameMountPoint.querySelector(`[data-id='${person.id}']`) == null) {
+      this.renderPersonName(person);
+      this.attachPersonInputField(person);
+      this.hideSearchResults();
+    }
   }
 
-  showPersonName(person) {
+  removePersonFromEntry(e) {
+    let person = this.people.find(el => el.id == e.currentTarget.parentElement.getAttribute('data-id'));
+    this.removePersonName(person);
+    if (person.preAttached) {
+      this.setInputFieldToDestroy(person);
+    } else {
+      this.removeInputField(person);
+    }
+  }
+
+  renderPersonName(person) {
     const parser = new DOMParser();
     const htmlString = 
     `<li class="person-name" data-id="${person.id}">
       ${genImgEl(person.avatarUrl).outerHTML}
       ${person.name}
-      <button class="close-button" type="button"></button>
+      <button class="close-button" type="button" data-action="click->people#removePersonFromEntry"></button>
     </li>`;
     const doc = parser.parseFromString(htmlString, 'text/html');
     const personName = doc.querySelector('li');
     document.getElementById('people-name-mount-point').append(personName);
+  }
+
+  removePersonName(person) {
+    this.nameMountPoint.querySelector(`li[data-id='${person.id}']`).remove();
   }
 
   attachPersonInputField(person) {
@@ -133,6 +157,18 @@ export default class extends Controller {
         count += 1;
       }
     }
+  }
+
+  setInputFieldToDestroy(person) {
+    let inputFields = document.querySelectorAll(`input[type='hidden'][value='${person.id}']`)
+    inputFields.forEach(el => el.setAttribute('name', el.getAttribute('name').replace('person_id', '_destroy')));
+  }
+  unsetInputFieldToDestroy(person) {
+    let inputFields = document.querySelectorAll(`input[type='hidden'][value='${person.id}']`)
+    inputFields.forEach(el => el.setAttribute('name', el.getAttribute('name').replace('_destroy', 'person_id')));
+  }
+  removeInputField(person) {
+    document.querySelector(`input[type='hidden'][value='${person.id}']`).remove();
   }
 }
 

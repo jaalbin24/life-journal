@@ -42,7 +42,7 @@ class Entry < ApplicationRecord
         foreign_key: :author_id,
         inverse_of: :entries
     )
-    accepts_nested_attributes_for :mentions
+    accepts_nested_attributes_for :mentions, allow_destroy: true
 
 
     before_create do

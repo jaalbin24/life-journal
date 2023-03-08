@@ -65,7 +65,8 @@ class EntriesController < ApplicationController
       :picture_of_the_day,
       mentions_attributes: [
         :id,
-        :person_id
+        :person_id,
+        :_destroy
       ]
     )
   end
