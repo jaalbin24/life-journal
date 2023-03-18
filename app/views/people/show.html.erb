@@ -3,7 +3,7 @@
 
     <div class="card col-span-6 row-span-2">
         <div class="card-body flex flex-row gap-3 items-center pl-6">
-            <%= image_tag @person.avatar, class: "person-avatar", size: 180%>
+            <%=person_avatar(@person, class: "person-avatar hover:scale-100", size: 180)%>
             <div class="my-auto flex flex-col gap-2">
                 <h1><%=@person.name%></h1>
                 <ul class="flex gap-2">

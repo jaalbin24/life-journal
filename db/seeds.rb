@@ -43,8 +43,6 @@ end
     person = me.people.create!(
         first_name: Faker::Name.first_name,
         last_name:  Faker::Name.last_name,
-        age:        rand(18..50),
-        sex:        ['F', 'M'].sample
     )
     rand(2..5).times do 
         person.personality.create!(

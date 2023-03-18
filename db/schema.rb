@@ -74,11 +74,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_18_165427) do
   end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "traits"
     t.string "first_name"
     t.string "last_name"
-    t.string "sex"
-    t.integer "age"
     t.uuid "created_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

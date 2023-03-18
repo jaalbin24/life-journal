@@ -50,5 +50,4 @@ class Entry < ApplicationRecord
     before_create do
        self.published_at = DateTime.now if published_at.blank?
     end
-
 end

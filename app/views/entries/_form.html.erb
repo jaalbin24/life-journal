@@ -47,7 +47,7 @@
               <ul class="flex flex-wrap gap-2" id="people-name-mount-point">
                 <%entry.people.each do |p|%>
                   <li class="person-name" data-id="<%=p.id%>">
-                    <%= image_tag p.avatar, size: 24, class: "person-avatar" %>
+                    <%=person_avatar(p, class: "person-avatar", size: 24)%>
                     <span name="person-name"><%=p.name%></span>
                     <button class="close-button" type="button" data-action="click->people#removePersonFromEntry"></button>
                   </li>

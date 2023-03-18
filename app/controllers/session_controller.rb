@@ -11,8 +11,10 @@ class SessionController < ApplicationController
 
     # POST /sign_in
     def create
+
         if sign_in(email: allowed_params[:email], password: allowed_params[:password])
             redirect_to after_sign_in_path
+            cookies.delete(:after_sign_in_path)
         else
             @user = User.new
             flash.alert = "Username or password is incorrect"
@@ -36,6 +38,11 @@ class SessionController < ApplicationController
     end
 
     def after_sign_in_path
-        @continue_path ? @continue_path : root_path
+        puts "====================== session[:after_sign_in_path] = #{cookies[:after_sign_in_path]} ======================="
+        if cookies[:after_sign_in_path].blank?
+            root_path
+        else
+            cookies[:after_sign_in_path]
+        end
     end
 end

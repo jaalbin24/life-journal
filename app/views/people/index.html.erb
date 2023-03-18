@@ -1,0 +1,21 @@
+<div class="w-full h-full flex flex-col">
+  <div class="p-4 m-4 rounded border border-neutral-700 bg-slate-800">
+    <%=link_to "New person", new_person_path, class: "btn-primary"%>
+  </div>
+  <div class="p-4 w-full">
+    <div class="grid grid-cols-6 gap-3">
+      <%@people.each do |p|%>
+        <a class="card profile-card" href="<%=person_path(p)%>">
+          <div class="card-body flex items-center gap-3 p-2">
+            <%=person_avatar(p, class: "person-avatar hover:scale-100", size: 48)%>
+            <%=p.name%>
+          </div>
+        </a>
+      <%end%>
+    </div>
+  </div>
+  <div class="mx-auto flex gap-2 pb-10">
+    <%=link_to "Previous", path_to_prev_page(@people), class: "btn-primary"%>
+    <%=link_to "Next", path_to_next_page(@people), class: "btn-primary"%>
+  </div>
+</div>

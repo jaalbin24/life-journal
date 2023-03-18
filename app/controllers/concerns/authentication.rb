@@ -8,7 +8,6 @@ module Authentication
     end
 
     def sign_in(email:, password:)
-        puts "Signing in #{email} using '#{password}' as the password"
         user = User.find_by(email: email)
         if user&.authenticate(password)
             reset_session
@@ -34,6 +33,10 @@ module Authentication
     end
 
     def redirect_unauthenticated
-        redirect_to user_sign_in_path(continue_path: request.path) unless user_signed_in?
+        unless user_signed_in?
+            cookies[:after_sign_in_path] = request.path
+            puts "====================== session[:after_sign_in_path] = #{request.path} ======================="
+            redirect_to user_sign_in_path
+        end
     end
 end

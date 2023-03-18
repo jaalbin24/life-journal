@@ -1,0 +1,5 @@
+<%=form_with(model: person) do |f|%>
+  <%=f.text_field :first_name, class: "input-field"%>
+  <%=f.text_field :last_name, class: "input-field"%>
+  <%=f.submit class: "btn-primary"%>
+<%end%>
