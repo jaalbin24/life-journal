@@ -16,6 +16,13 @@ me = User.create(
     password: "123"
 )
 
+quotes.each do |q|
+    Quote.create(
+        body: q['body'],
+        author: (q['author'] unless q['author'].blank?)
+    )
+end
+
 100.times do
     me.entries.create!(
         published_at: rand(5..1000).days.ago,
@@ -63,3 +70,4 @@ puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."
 puts "Created #{ActionController::Base.helpers.pluralize Person.count, 'person'}."      if Person.count     > 0
 puts "Created #{ActionController::Base.helpers.pluralize Mention.count, 'mention'}."    if Mention.count    > 0
 puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."        if Trait.count      > 0
+puts "Created #{ActionController::Base.helpers.pluralize Quote.count, 'quote'}."        if Quote.count      > 0

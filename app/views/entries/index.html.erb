@@ -26,8 +26,8 @@
               <div class="w-full h-full bg-gradient-to-b from-transparent to-neutral-800 absolute"></div>
               <%=e.text_content%>
             </div>
-            <%if e.picture_of_the_day.attached?%>
-              <%=image_tag e.picture_of_the_day, class: "picture-of-the-day"%>
+            <%if e.pictures.count >= 1%>
+              <%=image_tag e.pictures.first.file, class: "picture-of-the-day"%>
             <%end%>
           </div>
         </div>

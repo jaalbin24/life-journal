@@ -1,2 +1,2 @@
-web: bin/rails server -p 3000
-tailwinds: bin/rails tailwindcss:watch
+web: rails server -p 3000
+tailwinds: rails tailwindcss:watch

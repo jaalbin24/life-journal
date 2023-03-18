@@ -36,6 +36,8 @@ class Entry < ApplicationRecord
         through: :mentions
     )
 
+    has_many :pictures
+
     belongs_to(
         :author,
         class_name: "User",
