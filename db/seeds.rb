@@ -18,7 +18,7 @@ me = User.create(
 
 quotes.each do |q|
     Quote.create(
-        body: q['body'],
+        content: q['body'],
         author: (q['author'] unless q['author'].blank?)
     )
 end
@@ -49,7 +49,10 @@ end
             trait: Trait.where.not(id: person.traits.pluck(:id)).sample
         )
     end
-    person.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default_profile_picture.png')), filename: 'avatar.png')
+    if rand(1..10) > 2
+        file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*").sample
+        person.avatar.attach(io: File.open(file_path), filename: File.basename(file_path))
+    end
 end
 
 Entry.all.each do |e|
@@ -58,10 +61,23 @@ Entry.all.each do |e|
             person: Person.where.not(id: e.people.pluck(:id)).sample
         )
     end
-    e.picture_of_the_day.attach(io: File.open(Dir.glob("#{Rails.root.join('db', 'seed_data')}/*").sample), filename: 'potd.jpg')
+    rand(0..3).times do
+        picture = e.pictures.create!(
+            description: Faker::Lorem.sentences(number: rand(1..5)).join(" ")
+        )
+        file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'entry_pictures')}/*").sample
+        picture.file.attach(io: File.open(file_path), filename: File.basename(file_path))
+    end
 end
 
-
+Person.all.each do |p|
+    rand(2..10).times do
+        p.lessons.create!(
+            user: me,
+            content: Faker::Quote.yoda
+        )
+    end
+end
 
 puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."          if User.count       > 0
 puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."        if Entry.count      > 0
@@ -69,3 +85,4 @@ puts "Created #{ActionController::Base.helpers.pluralize Person.count, 'person'}
 puts "Created #{ActionController::Base.helpers.pluralize Mention.count, 'mention'}."    if Mention.count    > 0
 puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."        if Trait.count      > 0
 puts "Created #{ActionController::Base.helpers.pluralize Quote.count, 'quote'}."        if Quote.count      > 0
+puts "Created #{ActionController::Base.helpers.pluralize Lesson.count, 'lesson'}."      if Lesson.count      > 0

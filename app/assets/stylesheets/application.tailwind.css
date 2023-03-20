@@ -54,7 +54,7 @@
 
 @layer components {
   .card {
-    @apply border-neutral-700 rounded border flex flex-col bg-neutral-800
+    @apply rounded-lg flex flex-col bg-neutral-800 shadow-lg
   }
   .card-body {
     @apply p-4 grow overflow-hidden
@@ -83,8 +83,14 @@
   .search-result-item.actionable {
     @apply hover:bg-zinc-600 cursor-pointer
   }
+  .person-avatar-container {
+    @apply relative rounded-full overflow-hidden hover:scale-125 transition-transform hover:delay-100 hover:z-50
+  }
+  .person-avatar-container .person-avatar {
+    @apply absolute h-full rounded-none object-cover
+  }
   .person-avatar {
-    @apply rounded-full shadow hover:scale-125 transition-transform hover:delay-100 hover:z-50
+    @apply rounded-full shadow
   }
   .person-name {
     @apply flex items-center gap-1 rounded-full pr-1 pl-2 py-1 bg-slate-700

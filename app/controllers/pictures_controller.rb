@@ -1,4 +1,5 @@
 class PicturesController < ApplicationController
+    before_action :redirect_unauthenticated
 
     # GET entries/:entry_id/pictures/new
     def new

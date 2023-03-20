@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_18_165427) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_19_232144) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -64,6 +64,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_18_165427) do
     t.index ["author_id"], name: "index_entries_on_author_id"
   end
 
+  create_table "lessons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "person_id", null: false
+    t.uuid "user_id", null: false
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_lessons_on_person_id"
+    t.index ["user_id"], name: "index_lessons_on_user_id"
+  end
+
   create_table "mentions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "person_id"
     t.uuid "entry_id"
@@ -75,7 +85,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_18_165427) do
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name"
+    t.string "middle_name"
     t.string "last_name"
+    t.string "notes"
+    t.string "biography"
     t.uuid "created_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -100,7 +113,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_18_165427) do
   end
 
   create_table "quotes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "body"
+    t.string "content"
     t.string "author"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -124,6 +137,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_18_165427) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "entries", "users", column: "author_id"
+  add_foreign_key "lessons", "people"
+  add_foreign_key "lessons", "users"
   add_foreign_key "mentions", "entries"
   add_foreign_key "mentions", "people"
   add_foreign_key "people", "users", column: "created_by_id"

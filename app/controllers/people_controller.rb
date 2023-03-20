@@ -1,6 +1,6 @@
 class PeopleController < ApplicationController
-  before_action :set_person, only: %i[ show edit update destroy ]
   before_action :redirect_unauthenticated
+  before_action :set_person, only: %i[ show edit update destroy ]
 
   def search
     people = current_user.people.search(search_params).first(10)

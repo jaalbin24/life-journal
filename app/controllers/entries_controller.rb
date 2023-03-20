@@ -1,6 +1,6 @@
 class EntriesController < ApplicationController
-  before_action :set_entry, only: %i[ show edit update destroy ]
   before_action :redirect_unauthenticated
+  before_action :set_entry, only: %i[ show edit update destroy ]
 
   # GET /entries
   def index

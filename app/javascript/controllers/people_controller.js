@@ -178,5 +178,10 @@ function genImgEl(src) {
   img.setAttribute('width', 24);
   img.setAttribute('height', 24);
   img.classList.add('person-avatar');
-  return img;
+  let div = document.createElement('div');
+  div.classList.add('person-avatar-container');
+  div.style.width = '24px';
+  div.style.paddingBottom = '24px';
+  div.appendChild(img);
+  return div;
 }

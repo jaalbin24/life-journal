@@ -25,5 +25,6 @@ class User < ApplicationRecord
         inverse_of: :created_by,
         dependent: :destroy
     )
+    has_many :lessons
 
 end

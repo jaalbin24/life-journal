@@ -27,7 +27,7 @@
               <%=e.text_content%>
             </div>
             <%if e.pictures.count >= 1%>
-              <%=image_tag e.pictures.first.file, class: "picture-of-the-day"%>
+              <%=image_tag e.pictures.sample.file, class: "picture-of-the-day"%>
             <%end%>
           </div>
         </div>
