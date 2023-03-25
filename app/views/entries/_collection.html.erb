@@ -1,0 +1,50 @@
+<div class="pb-4 w-full">
+  <div class="grid grid-cols-2 gap-3">
+    <%entries.each do |e|%>
+      <div class="card border-slate-700">
+        <div class="card-header flex justify-between">
+          <div>
+            <div class="flex">
+              <a href="<%=entry_path(e)%>" class="shrink flex font-bold hover:scale-101 h3">
+                <h3 class="shrink"><%=e.title.blank? ? "Untitled" : e.title%></h3>
+              </a>
+            </div>
+            <div class="flex flex-row align-center gap-3">
+              <h6 class="my-auto"><%=e.published_at.blank? ? "Unknown date" : e.published_at.strftime("%b %d, %Y")%></h6>
+              <div class="flex flex-row">
+                <%e.people.each_with_index do |p, i|%>
+                  <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
+                <%end%>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center opacity-0 hover:opacity-100 transition-opacity">            
+            <a class="nav-link" href="#" data-confirm="Sure?">
+              <%= image_tag 'edit_icon.svg', size: 24%>
+            </a>
+            <%=button_to entry_path(e), method: :delete, class: "nav-link", data: {controller: "confirmation-modal", action: "open", message: "Are you sure you want to delete the entry titled “#{e.title}”?"} do%>
+              <%= image_tag 'trash_icon.svg', size: 24%>
+            <%end%>
+          </div>
+        </div>
+        <div class="card-body max-h-48 flex flex-row gap-5 justify-between">
+          <div class="overflow-hidden relative">
+            <div class="w-full h-full bg-gradient-to-b from-transparent to-neutral-800 absolute"></div>
+            <%=e.text_content%>
+          </div>
+          <%if e.pictures.count >= 1%>
+            <%=image_tag e.pictures.sample.file, class: "picture-of-the-day"%>
+          <%end%>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>
+<div class="flex gap-2 pb-10">
+  <div class="flex w-full justify-end">
+    <%=link_to "Previous", path_to_prev_page(entries), class: "btn-primary"%>
+  </div>
+  <div class="flex w-full">
+    <%=link_to "Next", path_to_next_page(entries), class: "btn-primary"%>
+  </div>
+</div>

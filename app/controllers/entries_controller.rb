@@ -4,7 +4,13 @@ class EntriesController < ApplicationController
 
   # GET /entries
   def index
-    @entries = current_user.entries.order(published_at: :desc).page params[:page]
+    @entries = current_user.entries.published.order(published_at: :desc).page params[:page]
+  end
+
+  # GET /entries/drafts
+  def drafts
+    @entries = current_user.entries.drafts.order(created_at: :desc).page params[:page]
+    render :drafts
   end
 
   # GET /entries/1
@@ -13,7 +19,9 @@ class EntriesController < ApplicationController
 
   # GET /entries/new
   def new
-    @entry = Entry.new
+    @entry = current_user.entries.build(
+      status: "draft"
+    )
   end
 
   # GET /entries/1/edit
@@ -46,8 +54,12 @@ class EntriesController < ApplicationController
 
   # DELETE /entries/1
   def destroy
-    @entry.destroy
-    redirect_to entries_url, notice: "Entry was successfully destroyed."
+    @entry.mark_as_deleted
+    if @entry.save
+      redirect_to entries_url, notice: "Entry was deleted."
+    else
+      redirect_to @continue_path, notice: "Entry could not be destroyed."
+    end
   end
 
   private
@@ -62,7 +74,7 @@ class EntriesController < ApplicationController
     params.require(:entry).permit(
       :text_content,
       :title,
-      :picture_of_the_day,
+      :published,
       mentions_attributes: [
         :id,
         :person_id,

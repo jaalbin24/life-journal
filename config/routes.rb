@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
-  resources :entries do
+  resources :entries, shallow: true do
+    collection do
+      get 'draft', action: :drafts
+      get 'page/:page', action: :index
+    end
+    resources :pictures, only: [:index]
+  end
+  # resources :users
+  resources :people do
     get 'page/:page', action: :index, on: :collection
   end
-  resources :users
-  resources :people
+  # resources :pictures
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   root 'pages#home'

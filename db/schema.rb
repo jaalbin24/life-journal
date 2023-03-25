@@ -55,10 +55,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_19_232144) do
 
   create_table "entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "published_at"
+    t.datetime "deleted_at"
     t.string "title"
     t.string "text_content"
+    t.string "status"
     t.uuid "author_id"
-    t.boolean "draft?"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_entries_on_author_id"

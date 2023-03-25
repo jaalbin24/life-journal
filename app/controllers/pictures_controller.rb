@@ -29,6 +29,12 @@ class PicturesController < ApplicationController
 
     end
 
+    # GET entries/:entry_id/pictures
+    def index
+        entry = current_user.entries.find(params[:entry_id])
+        @pictures = entry.pictures.find(params[:id])
+    end
+
     private
 
     def picture_params

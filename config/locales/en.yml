@@ -34,5 +34,5 @@ en:
   helpers:
     submit:
       entry:
-        create: "Publish"
-        update: "Update"
+        create: "Save"
+        update: "Save"

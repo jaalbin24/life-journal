@@ -3,8 +3,9 @@
 # Table name: entries
 #
 #  id           :uuid             not null, primary key
-#  draft?       :boolean
+#  deleted_at   :datetime
 #  published_at :datetime
+#  status       :string
 #  text_content :string
 #  title        :string
 #  created_at   :datetime         not null
@@ -20,34 +21,52 @@
 #  fk_rails_...  (author_id => users.id)
 #
 class Entry < ApplicationRecord
-    has_rich_text :text_content
-    has_one_attached :picture_of_the_day
+  has_rich_text :text_content
+  has_one_attached :picture_of_the_day
 
-    has_many(
-        :mentions,
-        class_name: "Mention",
-        foreign_key: :entry_id,
-        inverse_of: :entry,
-        dependent: :destroy
-    )
+  scope :published,   ->  {where(status: "published")}
+  scope :drafts,      ->  {where(status: "draft")}
+  scope :deleted,     ->  {where(status: "deleted")}
 
-    has_many(
-        :people,
-        through: :mentions
-    )
+  has_many(
+    :mentions,
+    class_name: "Mention",
+    foreign_key: :entry_id,
+    inverse_of: :entry,
+    dependent: :destroy
+  )
 
-    has_many :pictures
+  has_many(
+    :people,
+    through: :mentions
+  )
 
-    belongs_to(
-        :author,
-        class_name: "User",
-        foreign_key: :author_id,
-        inverse_of: :entries
-    )
-    accepts_nested_attributes_for :mentions, allow_destroy: true
+  has_many :pictures
 
+  belongs_to(
+    :author,
+    class_name: "User",
+    foreign_key: :author_id,
+    inverse_of: :entries
+  )
+  accepts_nested_attributes_for :mentions, allow_destroy: true
 
-    before_create do
-       self.published_at = DateTime.now if published_at.blank?
+  before_create do
+    self.status = 'draft' if status.blank?
+  end
+
+  before_save do
+    if status_changed? && published?
+      self.published_at = DateTime.now if published_at.blank?
     end
+  end
+
+  def mark_as_deleted
+    self.status = "deleted"
+    self.deleted_at = DateTime.now
+  end
+
+  def published?
+    status == 'published'
+  end
 end

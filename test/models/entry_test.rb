@@ -3,8 +3,9 @@
 # Table name: entries
 #
 #  id           :uuid             not null, primary key
-#  draft?       :boolean
+#  deleted_at   :datetime
 #  published_at :datetime
+#  status       :string
 #  text_content :string
 #  title        :string
 #  created_at   :datetime         not null
