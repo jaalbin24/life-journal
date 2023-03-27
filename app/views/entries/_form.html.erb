@@ -1,20 +1,29 @@
-<%= form_with(model: entry, class: "grow flex flex-col mt-4", id: "entry_form") do |f| %>
+<%= form_with(model: entry, class: "grow flex flex-col gap-3 mt-4", id: "entry_form") do |f| %>
   <%entry.mentions.each do |m|%>
     <%=f.fields_for :mentions, m do |mf|%>
       <%=mf.hidden_field :person_id%>
     <%end%>
   <%end%>
 
-  <div class="card grow">
-    <div class="card-header">
-      <%=f.text_field :title, class: "p-0 input-field border-none text-2xl font-bold shadow-none", placeholder: "Title"%>
-      <div class="flex flex-row align-center gap-3">
-        <h6><%=entry.published_at.blank? ? DateTime.now.strftime("%b %d, %Y") : entry.published_at.strftime("%b %d, %Y")%></h6>
-        <div class="flex flex-row" id="mentions-avatar-container">
-          <%entry.people.each_with_index do |p, i|%>
-            <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
-          <%end%>
+  <div class="card">
+    <div class="card-header flex items-center justify-between">
+      <div class="grow">
+        <%=f.text_field :title, class: "p-0 input-field border-none text-2xl font-bold shadow-none", placeholder: "Title"%>
+        <div class="flex flex-row align-center gap-3">
+          <h6><%=entry.published_at.blank? ? DateTime.now.strftime("%b %d, %Y") : entry.published_at.strftime("%b %d, %Y")%></h6>
+          <div class="flex flex-row" id="mentions-avatar-container">
+            <%entry.people.each_with_index do |p, i|%>
+              <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
+            <%end%>
+          </div>
         </div>
+      </div>
+      <div class="flex flex-row gap-3">
+        <%unless entry.published?%>
+          <button data-controller="entry-form" data-action="click->entry-form#publish" class="btn-primary">Publish</button>
+        <%end%>
+        <%= f.submit class: "btn-primary" %>
+        <%=link_to "Back", @continue_path, class: "btn-primary"%>
       </div>
     </div>
     <div class="card-body flex flex-row gap-4 h-full">
@@ -65,10 +74,9 @@
                     Replace
                     <%=f.file_field :picture_of_the_day, class: "hidden", id: "picture-of-the-day"%>
                   </label>
-                  <button data-action="click->entry#" class="btn-primary" type="button">Remove</button>
+                  <button data-action="click->entry#" class="btn-primary" type="button">Delete</button>
                 </div>
               </div>
-              <%= image_tag entry.picture_of_the_day, class: 'picture-of-the-day'%>
             </div>
           <%end%>
           <div class="flex flex-col gap-2">
@@ -85,6 +93,7 @@
               <%=chevron_icon%>
             </a>
           </div>
+          <!--
           <div id="potd-field">
             <label for="picture-of-the-day" class="flex flex-col <%='hidden' if entry.picture_of_the_day.attached?%> items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -95,15 +104,51 @@
                 <%=f.file_field :picture_of_the_day, class: "hidden", id: "picture-of-the-day"%>
             </label>
           </div>
+          -->
         </div>
       </div> 
     </div>
   </div>
-  <div class="flex flex-row gap-3 mt-6">
-    <%unless entry.published?%>
-      <button data-controller="entry-form" data-action="click->entry-form#publish" class="btn-primary">Publish</button>
-    <%end%>
-    <%= f.submit class: "btn-secondary" %>
-    <%=link_to "Back", @continue_path, class: "btn-secondary"%>
+  <div class="grid grid-cols-3 gap-3">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="font-bold">Pictures</h5>
+      </div>
+      <div class="card-body grid grid-cols-3 gap-2">
+        <%entry.pictures.each do |p|%>
+          <div class="rounded-lg overflow-hidden">
+            <%= image_tag p.file, class: "h-48 w-full object-cover" %>
+          </div>
+        <%end%>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h5 class="font-bold">Lessons</h5>
+      </div>
+      <div class="card-body grid grid-cols-3 gap-2">
+        <%entry.lessons.each do l|%>
+          <div class="rounded-lg overflow-hidden">
+            <%=l.content%>
+          </div>
+        <%end%>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h5 class="font-bold">Milestones</h5>
+      </div>
+      <div class="card-body grid grid-cols-3 gap-2">
+        <%entry.pictures.each do |p|%>
+          <div class="rounded-lg overflow-hidden">
+            <%= image_tag p.file, class: "h-48 w-full object-cover" %>
+          </div>
+        <%end%>
+      </div>
+    </div>
+    
+    
+
+
   </div>
 <%end%>

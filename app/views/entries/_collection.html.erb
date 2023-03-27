@@ -19,7 +19,7 @@
             </div>
           </div>
           <div class="flex items-center opacity-0 hover:opacity-100 transition-opacity">            
-            <a class="nav-link" href="#" data-confirm="Sure?">
+            <a class="nav-link" href="<%=edit_entry_path(e)%>" data-confirm="Sure?">
               <%= image_tag 'edit_icon.svg', size: 24%>
             </a>
             <%=button_to entry_path(e), method: :delete, class: "nav-link", data: {controller: "confirmation-modal", action: "open", message: "Are you sure you want to delete the entry titled “#{e.title}”?"} do%>

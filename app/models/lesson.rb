@@ -27,4 +27,6 @@ class Lesson < ApplicationRecord
     inverse_of: :lessons
   )
   belongs_to :user, inverse_of: :lessons
+  has_many :lesson_applications
+  has_many :entries, through: :lesson_applications
 end

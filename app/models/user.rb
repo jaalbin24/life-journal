@@ -26,5 +26,5 @@ class User < ApplicationRecord
         dependent: :destroy
     )
     has_many :lessons
-
+    has_many :milestones
 end

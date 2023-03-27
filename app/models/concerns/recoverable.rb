@@ -1,4 +1,4 @@
-module PubliclyIdentifiable
+module Recoverable
     extend ActiveSupport::Concern
 
     # included do

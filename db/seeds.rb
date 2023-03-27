@@ -10,6 +10,7 @@ include EnglishLanguage
 
 traits = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
 quotes = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
+milestones = JSON.parse(File.read(Rails.root.join('db/seed_data/milestones.json')))
 
 me = User.create(
     email: "j@j.j",
@@ -24,11 +25,20 @@ quotes.each do |q|
 end
 
 100.times do
-    me.entries.create!(
-        status: 'published',
+    entry = me.entries.create!(
+        status: (rand(0..9) == 0 ? 'draft' : 'published'),
         published_at: rand(5..1000).days.ago,
         title: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5),
         text_content: Faker::Lorem.paragraphs(number: 16, supplemental: true).join("\n\n")
+    ) 
+end
+
+milestones.each do |m|
+    entry = Entry.all.sample if rand(0..9) < 4
+    Milestone.create(
+        content: m,
+        reached_at: (entry.nil? ? rand(0..18250).days.ago : entry.created_at),
+        entry: entry
     )
 end
 
@@ -62,9 +72,9 @@ Entry.all.each do |e|
             person: Person.where.not(id: e.people.pluck(:id)).sample
         )
     end
-    rand(0..3).times do
+    rand(2..8).times do
         picture = e.pictures.create!(
-            description: Faker::Lorem.sentences(number: rand(1..5)).join(" ")
+            description: Faker::Lorem.sentences(number: rand(3..5)).join(" ")
         )
         file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'entry_pictures')}/*").sample
         picture.file.attach(io: File.open(file_path), filename: File.basename(file_path))
@@ -80,10 +90,12 @@ Person.all.each do |p|
     end
 end
 
-puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."          if User.count       > 0
-puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."        if Entry.count      > 0
-puts "Created #{ActionController::Base.helpers.pluralize Person.count, 'person'}."      if Person.count     > 0
-puts "Created #{ActionController::Base.helpers.pluralize Mention.count, 'mention'}."    if Mention.count    > 0
-puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."        if Trait.count      > 0
-puts "Created #{ActionController::Base.helpers.pluralize Quote.count, 'quote'}."        if Quote.count      > 0
-puts "Created #{ActionController::Base.helpers.pluralize Lesson.count, 'lesson'}."      if Lesson.count      > 0
+puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."          if User.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."        if Entry.count > 0
+puts "-- #{Entry.published.count} published"                                            if Entry.published.count > 0
+puts "-- #{ActionController::Base.helpers.pluralize Entry.drafts.count, 'draft'}"       if Entry.drafts.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Person.count, 'person'}."      if Person.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Mention.count, 'mention'}."    if Mention.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."        if Trait.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Quote.count, 'quote'}."        if Quote.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Lesson.count, 'lesson'}."      if Lesson.count > 0

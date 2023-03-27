@@ -35,13 +35,11 @@ class Entry < ApplicationRecord
     inverse_of: :entry,
     dependent: :destroy
   )
-
-  has_many(
-    :people,
-    through: :mentions
-  )
-
+  has_many :people, through: :mentions
+  has_many :lesson_applications
+  has_many :lessons, through: :lesson_applications
   has_many :pictures
+  has_many :milestones
 
   belongs_to(
     :author,

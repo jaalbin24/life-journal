@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_19_232144) do
+ActiveRecord::Schema[7.0].define(version: 920) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -65,6 +65,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_19_232144) do
     t.index ["author_id"], name: "index_entries_on_author_id"
   end
 
+  create_table "lesson_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "entry_id", null: false
+    t.uuid "lesson_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entry_id"], name: "index_lesson_applications_on_entry_id"
+    t.index ["lesson_id"], name: "index_lesson_applications_on_lesson_id"
+  end
+
   create_table "lessons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "person_id", null: false
     t.uuid "user_id", null: false
@@ -82,6 +91,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_19_232144) do
     t.datetime "updated_at", null: false
     t.index ["entry_id"], name: "index_mentions_on_entry_id"
     t.index ["person_id"], name: "index_mentions_on_person_id"
+  end
+
+  create_table "milestones", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "content"
+    t.datetime "reached_at"
+    t.uuid "entry_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entry_id"], name: "index_milestones_on_entry_id"
+    t.index ["user_id"], name: "index_milestones_on_user_id"
   end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -138,10 +158,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_19_232144) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "entries", "users", column: "author_id"
+  add_foreign_key "lesson_applications", "entries"
+  add_foreign_key "lesson_applications", "lessons"
   add_foreign_key "lessons", "people"
   add_foreign_key "lessons", "users"
   add_foreign_key "mentions", "entries"
   add_foreign_key "mentions", "people"
+  add_foreign_key "milestones", "entries"
+  add_foreign_key "milestones", "users"
   add_foreign_key "people", "users", column: "created_by_id"
   add_foreign_key "personalities", "people"
   add_foreign_key "personalities", "traits"

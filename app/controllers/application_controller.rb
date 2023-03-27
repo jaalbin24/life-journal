@@ -6,4 +6,8 @@ class ApplicationController < ActionController::Base
     def configure_continue_path
         @continue_path ||= params[:continue_path]
     end
+
+    def continue_path(args={fallback_location: fbl_path})
+        @continue_path ? @continue_path : fbl_path
+    end
 end
