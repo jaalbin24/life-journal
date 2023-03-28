@@ -6,7 +6,7 @@
 #  content    :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  person_id  :uuid             not null
+#  person_id  :uuid
 #  user_id    :uuid             not null
 #
 # Indexes
@@ -24,7 +24,8 @@ class Lesson < ApplicationRecord
     :taught_by,
     class_name: "Person",
     foreign_key: :person_id,
-    inverse_of: :lessons
+    inverse_of: :lessons,
+    optional: true
   )
   belongs_to :user, inverse_of: :lessons
   has_many :lesson_applications

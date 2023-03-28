@@ -4,12 +4,17 @@
       <%=mf.hidden_field :person_id%>
     <%end%>
   <%end%>
+  <%entry.pictures.each do |pic|%>
+    <%=f.fields_for :pictures, pic do |pf|%>
+      <%=pf.hidden_field :id%>
+    <%end%>
+  <%end%>
 
-  <div class="card">
+  <div class="card grow">
     <div class="card-header flex items-center justify-between">
       <div class="grow">
         <%=f.text_field :title, class: "p-0 input-field border-none text-2xl font-bold shadow-none", placeholder: "Title"%>
-        <div class="flex flex-row align-center gap-3">
+        <div class="flex items-center gap-3">
           <h6><%=entry.published_at.blank? ? DateTime.now.strftime("%b %d, %Y") : entry.published_at.strftime("%b %d, %Y")%></h6>
           <div class="flex flex-row" id="mentions-avatar-container">
             <%entry.people.each_with_index do |p, i|%>
@@ -67,18 +72,9 @@
         </div>
         <div class="w-full">
           <%if entry.pictures.count > 0%>
-            <div id="potd-card" class="relative" data-controller="fader" data-action="mousemove->fader#fadeIn mouseleave->fader#fadeOut" data-target="potd-fader">
-              <div id="potd-fader"class="h-full w-full border-dashed border-gray-600 border flex rounded-lg bg-slate-900/50 z-20 absolute hiding opacity-0 transition-opacity">
-                <div class="m-auto flex gap-2">
-                  <label class="btn-primary">
-                    Replace
-                    <%=f.file_field :picture_of_the_day, class: "hidden", id: "picture-of-the-day"%>
-                  </label>
-                  <button data-action="click->entry#" class="btn-primary" type="button">Delete</button>
-                </div>
-              </div>
-            </div>
+            
           <%end%>
+          <!--
           <div class="flex flex-col gap-2">
             <a href="#" class="font-bold rounded-lg p-2 bg-slate-700 hover:bg-slate-600 flex justify-between items-center">
               <span>Pictures</span>
@@ -93,7 +89,7 @@
               <%=chevron_icon%>
             </a>
           </div>
-          <!--
+
           <div id="potd-field">
             <label for="picture-of-the-day" class="flex flex-col <%='hidden' if entry.picture_of_the_day.attached?%> items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -114,36 +110,57 @@
       <div class="card-header">
         <h5 class="font-bold">Pictures</h5>
       </div>
-      <div class="card-body grid grid-cols-3 gap-2">
-        <%entry.pictures.each do |p|%>
-          <div class="rounded-lg overflow-hidden">
-            <%= image_tag p.file, class: "h-48 w-full object-cover" %>
-          </div>
-        <%end%>
+      <div class="card-body">
+        <div class="grid grid-cols-3 gap-2" data-controller="fader">
+          <%entry.pictures.each do |p|%>
+            <div id="<%=p.id%>-card" class="relative rounded-lg overflow-hidden" data-action="mousemove->fader#fadeIn mouseleave->fader#fadeOut" data-target="<%=p.id%>-fader">
+              <div id="<%=p.id%>-fader"class="h-full w-full border-dashed border-gray-600 border flex rounded-lg bg-slate-900/50 z-20 absolute hiding opacity-0 transition-opacity">
+                <div class="m-auto flex gap-2">
+                  <button data-action="click->entry#" class="btn-danger" type="button"><%=trashcan_icon%></button>
+                </div>
+              </div>
+              <%= image_tag p.file, class: "h-48 w-full object-cover" %>
+            </div>
+          <%end%>
+          <label for="picture-of-the-day" class="col-span-3 flex flex-col <%='hidden' if entry.picture_of_the_day.attached?%> items-center justify-center border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+              <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+              <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+            </div>
+            <%=f.file_field :pictures, class: "hidden", name: ""%>
+          </label>
+        </div>
       </div>
     </div>
     <div class="card">
       <div class="card-header">
         <h5 class="font-bold">Lessons</h5>
       </div>
-      <div class="card-body grid grid-cols-3 gap-2">
-        <%entry.lessons.each do l|%>
-          <div class="rounded-lg overflow-hidden">
-            <%=l.content%>
-          </div>
-        <%end%>
+      <div class="card-body">
+        <div class="flex flex-wrap gap-2">
+          <%entry.lessons.each do |l|%>
+            <div class="rounded-lg bg-cyan-800 p-2 max-w-fit basis-1/2 grow flex items-center">
+              <span class="font-bold"><%=l.content%></span>
+              <button class="close-button mb-auto" type="button" data-action="click->"></button>
+            </div>
+          <%end%>
+        </div>
       </div>
     </div>
     <div class="card">
       <div class="card-header">
         <h5 class="font-bold">Milestones</h5>
       </div>
-      <div class="card-body grid grid-cols-3 gap-2">
-        <%entry.pictures.each do |p|%>
-          <div class="rounded-lg overflow-hidden">
-            <%= image_tag p.file, class: "h-48 w-full object-cover" %>
-          </div>
-        <%end%>
+      <div class="card-body">
+        <div class="flex flex-wrap gap-2">
+          <%entry.milestones.each do |m|%>
+            <div class="rounded-lg bg-purple-800 p-2 max-w-fit basis-1/2 grow flex items-center">
+              <span><%=m.content%></span>
+              <button class="close-button mb-auto" type="button" data-action="click->"></button>
+            </div>
+          <%end%>
+        </div>
       </div>
     </div>
     

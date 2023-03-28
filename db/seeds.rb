@@ -24,23 +24,42 @@ quotes.each do |q|
     )
 end
 
-100.times do
+25.times do
     entry = me.entries.create!(
         status: (rand(0..9) == 0 ? 'draft' : 'published'),
         published_at: rand(5..1000).days.ago,
         title: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5),
         text_content: Faker::Lorem.paragraphs(number: 16, supplemental: true).join("\n\n")
-    ) 
+    )
+    10.times do
+        entry.milestones.create!(
+            content: milestones.sample,
+            reached_at: entry.created_at,
+            user: entry.author
+        )
+    end
+    10.times do
+        entry.lessons.create!(
+            user: me,
+            content: Faker::Quote.yoda
+        )
+    end
 end
 
-milestones.each do |m|
-    entry = Entry.all.sample if rand(0..9) < 4
-    Milestone.create(
-        content: m,
-        reached_at: (entry.nil? ? rand(0..18250).days.ago : entry.created_at),
-        entry: entry
-    )
-end
+# milestones.each do |m|
+#     entry = Entry.all.sample if rand(0..9) < 4
+#     if entry
+#         entry.milestones.create(
+#             content: m,
+#             reached_at: entry.created_at,
+#         )
+#     else
+#         Milestone.create(
+#             content: m,
+#             reached_at: rand(0..18250).days.ago,
+#         )
+#     end
+# end
 
 traits.each do |k, v|
     Trait.create!(
@@ -90,12 +109,13 @@ Person.all.each do |p|
     end
 end
 
-puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."          if User.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."        if Entry.count > 0
-puts "-- #{Entry.published.count} published"                                            if Entry.published.count > 0
-puts "-- #{ActionController::Base.helpers.pluralize Entry.drafts.count, 'draft'}"       if Entry.drafts.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Person.count, 'person'}."      if Person.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Mention.count, 'mention'}."    if Mention.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."        if Trait.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Quote.count, 'quote'}."        if Quote.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Lesson.count, 'lesson'}."      if Lesson.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."              if User.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."            if Entry.count > 0
+puts "-- #{Entry.published.count} published"                                                if Entry.published.count > 0
+puts "-- #{ActionController::Base.helpers.pluralize Entry.drafts.count, 'draft'}"           if Entry.drafts.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Person.count, 'person'}."          if Person.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Mention.count, 'mention'}."        if Mention.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."            if Trait.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Quote.count, 'quote'}."            if Quote.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Lesson.count, 'lesson'}."          if Lesson.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Milestone.count, 'milestone'}."    if Milestone.count > 0

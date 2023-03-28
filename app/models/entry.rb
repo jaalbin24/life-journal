@@ -35,10 +35,13 @@ class Entry < ApplicationRecord
     inverse_of: :entry,
     dependent: :destroy
   )
+  accepts_nested_attributes_for :mentions, allow_destroy: true
+  has_many :pictures
+  accepts_nested_attributes_for :pictures, allow_destroy: true
+
   has_many :people, through: :mentions
   has_many :lesson_applications
   has_many :lessons, through: :lesson_applications
-  has_many :pictures
   has_many :milestones
 
   belongs_to(
@@ -47,7 +50,6 @@ class Entry < ApplicationRecord
     foreign_key: :author_id,
     inverse_of: :entries
   )
-  accepts_nested_attributes_for :mentions, allow_destroy: true
 
   before_create do
     self.status = 'draft' if status.blank?

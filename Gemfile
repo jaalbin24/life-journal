@@ -82,3 +82,6 @@ end
 gem 'foreman'
 
 gem 'kaminari'
+
+# For backing up DB to a seed.rb file
+gem 'dump'

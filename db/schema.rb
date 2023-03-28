@@ -75,7 +75,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
   end
 
   create_table "lessons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "person_id", null: false
+    t.uuid "person_id"
     t.uuid "user_id", null: false
     t.string "content"
     t.datetime "created_at", null: false

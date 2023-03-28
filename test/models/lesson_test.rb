@@ -6,7 +6,7 @@
 #  content    :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  person_id  :uuid             not null
+#  person_id  :uuid
 #  user_id    :uuid             not null
 #
 # Indexes
