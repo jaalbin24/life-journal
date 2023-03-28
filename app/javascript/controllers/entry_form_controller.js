@@ -6,6 +6,7 @@ export default class extends Controller {
     this.formEl = document.querySelector("form#entry_form");
     this.pictureInputField = form.querySelector("input[type='file'][]");
   }
+  // Triggered when 'publish' button is pressed
   publish(e) {
     e.preventDefault();
     let formEl = document.querySelector("form#entry_form");
@@ -19,4 +20,6 @@ export default class extends Controller {
   renderPicture(file) {
 
   }
+
+
 }

@@ -140,7 +140,7 @@
       <div class="card-body">
         <div class="flex flex-wrap gap-2">
           <%entry.lessons.each do |l|%>
-            <div class="rounded-lg bg-cyan-800 p-2 max-w-fit basis-1/2 grow flex items-center">
+            <div class="rounded-lg bg-cyan-800 p-2 max-w-fit basis-1/2 grow flex items-center mb-auto">
               <span class="font-bold"><%=l.content%></span>
               <button class="close-button mb-auto" type="button" data-action="click->"></button>
             </div>
@@ -155,7 +155,7 @@
       <div class="card-body">
         <div class="flex flex-wrap gap-2">
           <%entry.milestones.each do |m|%>
-            <div class="rounded-lg bg-purple-800 p-2 max-w-fit basis-1/2 grow flex items-center">
+            <div class="rounded-lg bg-purple-800 p-2 max-w-fit basis-1/2 grow flex items-center mb-auto">
               <span><%=m.content%></span>
               <button class="close-button mb-auto" type="button" data-action="click->"></button>
             </div>

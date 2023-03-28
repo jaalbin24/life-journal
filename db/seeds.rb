@@ -11,6 +11,7 @@ include EnglishLanguage
 traits = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
 quotes = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
 milestones = JSON.parse(File.read(Rails.root.join('db/seed_data/milestones.json')))
+lessons = JSON.parse(File.read(Rails.root.join('db/seed_data/lessons.json')))
 
 me = User.create(
     email: "j@j.j",
@@ -41,7 +42,7 @@ end
     10.times do
         entry.lessons.create!(
             user: me,
-            content: Faker::Quote.yoda
+            content: lessons.sample
         )
     end
 end
@@ -91,7 +92,7 @@ Entry.all.each do |e|
             person: Person.where.not(id: e.people.pluck(:id)).sample
         )
     end
-    rand(2..8).times do
+    rand(2..6).times do
         picture = e.pictures.create!(
             description: Faker::Lorem.sentences(number: rand(3..5)).join(" ")
         )
@@ -104,7 +105,7 @@ Person.all.each do |p|
     rand(2..10).times do
         p.lessons.create!(
             user: me,
-            content: Faker::Quote.yoda
+            content: lessons.sample
         )
     end
 end

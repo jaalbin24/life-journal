@@ -17,36 +17,70 @@
     </div>
   </div>
   <div class="flex p-3 gap-3 h-full">
-    <div class="basis-1/2 card">
+    <div class="basis-3/5 card">
       <div class="card-body">
         <%=@entry.text_content%>
       </div>
     </div>
-    <div class="basis-1/2">
-      <%if @entry.pictures.count == 0%>
-        <div class="border-dashed border-neutral-600 h-full rounded-lg border-2 flex">
-          <div class="m-auto">
-            <h5 class="text-gray-300">This entry has no pictures.</h5>
+    <div class="basis-2/5 flex flex-col gap-3">
+      <div>
+        <%if @entry.pictures.count == 0%>
+          <div class="border-dashed border-neutral-600 h-full rounded-lg border-2 flex">
+            <div class="m-auto">
+              <h5 class="text-gray-300">This entry has no pictures.</h5>
+            </div>
+          </div>
+        <%else%>
+          <div class="grid grid-cols-2 gap-1" data-controller="fader">
+            <%@entry.pictures.each do |p|%>
+              <div id="<%=p.id%>-card" class="relative rounded-lg overflow-hidden" data-action="mousemove->fader#fadeIn mouseleave->fader#fadeOut" data-target="<%=p.id%>-fader">
+                <button id="<%=p.id%>-fader" class="h-full w-full flex rounded-lg bg-slate-900/70 z-20 absolute hiding opacity-0 transition-opacity delay-200">
+                  <div class="m-auto p-3 flex gap-2">
+                    <span class="text-center"><%=p.description%></span>
+                  </div>
+                </button>
+                <%= image_tag p.file, class: "h-48 w-full object-cover" %>
+              </div>
+            <%end%>
           </div>
         </div>
-      <%else%>
-        <div class="grid grid-cols-2 gap-3">
-          <%@entry.pictures.each do |p|%>
-            <div class="basis-1/3 grow">
-              <div class="flex flex-col overflow-hidden card h-full">
-                <div class="h-72 bg-zinc-900">
-                  <%=image_tag p.file, class: "h-full w-full object-cover hover:object-contain"%>
+      <%end%>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="font-bold">Lessons</h5>
+        </div>
+        <div class="card-body">
+          <%if @entry.lessons.count == 0%>
+
+          <%else%>
+            <div class="flex flex-wrap gap-2">
+              <%@entry.lessons.each do |l|%>
+                <div class="rounded-lg bg-cyan-800 p-2 max-w-fit basis-1/2 grow flex items-center mb-auto">
+                  <span class="font-bold"><%=l.content%></span>
                 </div>
-                <div class="card-body flex justify-center items-center">
-                  <p class="text-center opacity-50">
-                    <%=p.description%>
-                  </p>
-                </div>
-              </div>
+              <%end%>
             </div>
           <%end%>
         </div>
-      <%end%>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="font-bold">Milestones</h5>
+        </div>
+        <div class="card-body">
+          <%if @entry.milestones.count == 0%>
+
+          <%else%>
+            <div class="flex flex-wrap gap-2">
+              <%@entry.milestones.each do |m|%>
+                <div class="rounded-lg bg-purple-800 p-2 max-w-fit basis-1/2 grow flex items-center mb-auto">
+                  <span><%=m.content%></span>
+                </div>
+              <%end%>
+            </div>
+          <%end%>
+        </div>
+      </div>
     </div>
   </div>
 </div>
