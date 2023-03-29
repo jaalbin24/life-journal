@@ -10,4 +10,8 @@ module IconsHelper
     def trashcan_icon(args={color: :white, size: 24})
         render inline: Rails.root.join("app", "assets", "images", "trash_icon.svg").read, locals: {color: args[:color], size: args[:size]}
     end
+
+    def edit_icon(args={color: :white, size: 24})
+        render inline: Rails.root.join("app", "assets", "images", "edit_icon.svg").read, locals: {color: args[:color], size: args[:size]}
+    end
 end

@@ -6,11 +6,11 @@
   <%end%>
   <%entry.pictures.each do |pic|%>
     <%=f.fields_for :pictures, pic do |pf|%>
-      <%=pf.hidden_field :id%>
+      <%pf.file_field :file, class: "hidden"%>
     <%end%>
   <%end%>
 
-  <div class="card grow">
+  <div class="card grow basis-1/2" data-controller="entry-form">
     <div class="card-header flex items-center justify-between">
       <div class="grow">
         <%=f.text_field :title, class: "p-0 input-field border-none text-2xl font-bold shadow-none", placeholder: "Title"%>
@@ -25,7 +25,7 @@
       </div>
       <div class="flex flex-row gap-3">
         <%unless entry.published?%>
-          <button data-controller="entry-form" data-action="click->entry-form#publish" class="btn-primary">Publish</button>
+          <button data-action="click->entry-form#publish" class="btn-primary">Publish</button>
         <%end%>
         <%= f.submit class: "btn-primary" %>
         <%=link_to "Back", @continue_path, class: "btn-primary"%>
@@ -62,7 +62,7 @@
                 <%entry.people.each do |p|%>
                   <li class="person-name" data-id="<%=p.id%>">
                     <%=person_avatar(p, class: "person-avatar", size: 24)%>
-                    <span name="person-name"><%=p.name%></span>
+                    <span name="person-name" class="truncate"><%=p.name%></span>
                     <button class="close-button" type="button" data-action="click->people#removePersonFromEntry"></button>
                   </li>
                 <%end%>
@@ -71,9 +71,6 @@
           </div>
         </div>
         <div class="w-full">
-          <%if entry.pictures.count > 0%>
-            
-          <%end%>
           <!--
           <div class="flex flex-col gap-2">
             <a href="#" class="font-bold rounded-lg p-2 bg-slate-700 hover:bg-slate-600 flex justify-between items-center">
@@ -110,41 +107,60 @@
       <div class="card-header">
         <h5 class="font-bold">Pictures</h5>
       </div>
-      <div class="card-body">
-        <div class="grid grid-cols-3 gap-2" data-controller="fader">
+      <div class="card-body flex flex-col gap-2">
+        <div class="grid grid-cols-3 gap-2" data-controller="fader" id="pictures-mount-point">
           <%entry.pictures.each do |p|%>
             <div id="<%=p.id%>-card" class="relative rounded-lg overflow-hidden" data-action="mousemove->fader#fadeIn mouseleave->fader#fadeOut" data-target="<%=p.id%>-fader">
               <div id="<%=p.id%>-fader"class="h-full w-full border-dashed border-gray-600 border flex rounded-lg bg-slate-900/50 z-20 absolute hiding opacity-0 transition-opacity">
-                <div class="m-auto flex gap-2">
-                  <button data-action="click->entry#" class="btn-danger" type="button"><%=trashcan_icon%></button>
+                <div class="m-auto flex flex-col gap-2">
+                  <button data-action="" class="btn-primary" type="button"><%=edit_icon%></button>
+                  <button data-action="" class="btn-danger" type="button"><%=trashcan_icon%></button>
                 </div>
               </div>
               <%= image_tag p.file, class: "h-48 w-full object-cover" %>
             </div>
           <%end%>
-          <label for="picture-of-the-day" class="col-span-3 flex flex-col <%='hidden' if entry.picture_of_the_day.attached?%> items-center justify-center border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-              <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-              <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-            </div>
-            <%=f.file_field :pictures, class: "hidden", name: ""%>
-          </label>
         </div>
+        <label for="entry_pictures" class="w-full flex flex-col <%='hidden' if entry.picture_of_the_day.attached?%> items-center justify-center border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+          <div class="flex flex-col items-center justify-center pt-5 pb-6">
+            <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+          </div>
+          <input class="hidden" name="" data-action="change->entry-form#addPicturesToForm" type="file" id="entry_pictures">
+        </label>
       </div>
     </div>
     <div class="card">
       <div class="card-header">
         <h5 class="font-bold">Lessons</h5>
       </div>
-      <div class="card-body">
+      <div class="card-body flex flex-col">
         <div class="flex flex-wrap gap-2">
           <%entry.lessons.each do |l|%>
             <div class="rounded-lg bg-cyan-800 p-2 max-w-fit basis-1/2 grow flex items-center mb-auto">
               <span class="font-bold"><%=l.content%></span>
-              <button class="close-button mb-auto" type="button" data-action="click->"></button>
+              <button class="close-button mb-auto" type="button" data-action=""></button>
             </div>
           <%end%>
+        </div>
+        <div class="mt-auto">
+          <div id="lessons-search-box" class="border border-gray-500 rounded-t-lg rounded-b-lg hover:bg-zinc-700 hover:shadow-lg hover:border-transparent focus-within:bg-zinc-700 focus-within:shadow-lg focus-within:border-transparent relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input id="lessons-search-field" data-action="input->lessons#search" type="search" autocomplete="off" id="search" class="bg-transparent block w-full p-4 pl-10 text-sm border-none focus:ring-0" placeholder="Search">
+          </div>
+          <div id="lessons-search-results-area" class="relative hidden" data-search-path="<%#search_lessons_path%>">
+            <div class="absolute inset-0 z-50" tabindex="-1">
+              <div class="bg-zinc-700">
+                <div class="mx-3 border border-x-0 border-b-0 border-gray-500"></div>
+              </div>
+              <ul class="list-none py-2 bg-zinc-700 rounded-b-lg text-center" id="lessons-search-mount-point">
+                <!-- Search results will go here -->
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -157,15 +173,11 @@
           <%entry.milestones.each do |m|%>
             <div class="rounded-lg bg-purple-800 p-2 max-w-fit basis-1/2 grow flex items-center mb-auto">
               <span><%=m.content%></span>
-              <button class="close-button mb-auto" type="button" data-action="click->"></button>
+              <button class="close-button mb-auto" type="button" data-action=""></button>
             </div>
           <%end%>
         </div>
       </div>
     </div>
-    
-    
-
-
   </div>
 <%end%>

@@ -79,6 +79,11 @@ class EntriesController < ApplicationController
         :id,
         :person_id,
         :_destroy
+      ],
+      pictures_attributes: [
+        :file,
+        :id,
+        :_destroy
       ]
     )
   end

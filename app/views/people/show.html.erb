@@ -4,8 +4,8 @@
     <div class="card col-span-6 row-span-2">
         <div class="card-body flex flex-row gap-3 items-center pl-6">
             <%=person_avatar(@person, class: "person-avatar hover:scale-100", size: 180)%>
-            <div class="my-auto flex flex-col gap-2">
-                <h1><%=@person.name%></h1>
+            <div class="my-auto flex flex-col gap-2 w-full">
+                <h2 class="truncate w-full font-bold"><%=@person.name%></h2>
                 <ul class="flex gap-2">
                     <%@person.traits.order(score: :desc).each do |t|%>
                         <li class="rounded-full px-2 py-1 <%=color_class(t)%>">
@@ -13,6 +13,7 @@
                         </li>
                     <%end%>
                 </ul>
+                <p class="opacity-50 text-sm">Remember people are complex and cannot be meaningfully reduced to a list of traits. You should always look for the best in people.</p>
             </div>
         </div>
     </div>
@@ -24,10 +25,10 @@
             <div class="overflow-auto grow">
                 <ul class="flex flex-wrap gap-2">
                     <%@person.entries.order(published_at: :desc).each do |e|%>
-                        <li class="py-1 px-2 bg-slate-700 rounded-lg shrink w-2/5 h-fit">
+                        <li class="py-1 px-2 bg-slate-700 rounded-lg shrink min-w-fit w-2/5 h-fit">
                             <div class="flex">
                                 <a href="<%=entry_path(e)%>" class="shrink flex font-bold hover:scale-101 max-w-full">
-                                    <h3 class="shrink truncate max-w-full"><%=e.title.blank? ? "Untitled" : e.title%></h3>
+                                    <h3 class="shrink truncate max-w-full hover:underline"><%=e.title.blank? ? "Untitled" : e.title%></h3>
                                 </a>
                             </div>
                             <div class="flex flex-row align-center gap-3">
