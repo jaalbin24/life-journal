@@ -183,14 +183,24 @@
 <%end%>
 
 <div class="bg-gray-800 bg-opacity-90 fixed h-screen w-screen top-0 left-0 flex">
-  <button class="close-button absolute p-6 right-0"></button>
+  <button class="close-button absolute p-6 right-0 z-20"></button>
   <div class="flex gap-3 h-full w-full p-6">
-    <div id="picture-viewer-mount-point" class="basis-2/3 grow overflow-hidden w-full flex">
-      <%=image_tag entry.pictures.first.file, class: "object-contain w-full my-auto rounded-lg"%>
+    <div id="picture-viewer-mount-point" class="basis-2/3 shrink grow overflow-hidden w-full flex">
+      <%=image_tag entry.pictures.last.file, class: "object-contain h-full m-auto rounded-lg"%>
     </div>
-    <div class="card grow basis-1/3">
-      <div class="card-body">
-        
+    <div class="card grow basis-1/3 drop-shadow-md">
+      <div class="card-body flex">
+        <form id="edit_picture" class="my-auto flex flex-col gap-3 w-full">
+          <div>
+            <label class="font-bold">Title</label>
+            <input class="input-field" placeholder="Title">
+          </div>
+          <div>
+            <label class="font-bold">Description</label>
+            <textarea class="input-field resize-none" rows="10" placeholder="Description"></textarea>
+          </div>
+          <button class="btn-primary w-fit">Submit</button>
+        </form>
       </div>
     </div>
   </div>
