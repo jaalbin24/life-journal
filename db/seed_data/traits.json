@@ -404,6 +404,9 @@
   "Elegant": {
     "positivity": 20
   },
+  "Inquisitive": {
+    "positivity": 30
+  },
   "Curious": {
     "positivity": 50
   },
@@ -586,9 +589,6 @@
   },
   "Industrious": {
     "positivity": 70
-  },
-  "Inquisitive": {
-    "positivity": 30
   },
   "Insightful": {
     "positivity": 70
