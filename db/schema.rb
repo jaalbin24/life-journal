@@ -77,6 +77,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
   create_table "lessons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "person_id"
     t.uuid "user_id", null: false
+    t.string "status"
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -109,6 +110,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.string "middle_name"
     t.string "last_name"
     t.string "notes"
+    t.string "status"
     t.string "biography"
     t.uuid "created_by_id"
     t.datetime "created_at", null: false
@@ -142,7 +144,9 @@ ActiveRecord::Schema[7.0].define(version: 920) do
 
   create_table "traits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "word"
-    t.integer "score"
+    t.integer "positivity"
+    t.integer "importance"
+    t.string "status"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -151,6 +155,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

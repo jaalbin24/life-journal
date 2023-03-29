@@ -4,7 +4,9 @@
 #
 #  id          :uuid             not null, primary key
 #  description :string
-#  score       :integer
+#  importance  :integer
+#  positivity  :integer
+#  status      :string
 #  word        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

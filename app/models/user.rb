@@ -5,6 +5,7 @@
 #  id              :uuid             not null, primary key
 #  email           :string
 #  password_digest :string
+#  status          :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
