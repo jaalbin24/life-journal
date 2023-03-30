@@ -36,7 +36,7 @@
     @apply text-base
   }
   .input-field {
-    @apply block bg-transparent shadow rounded-md border border-gray-400 outline-none px-3 py-2 w-full
+    @apply block bg-transparent shadow rounded-md border border-gray-400 outline-none px-3 py-2 w-full focus:ring-0 focus:border-gray-400
   }
   .btn {
     @apply rounded bg-slate-700 hover:bg-slate-600 py-2 px-4 text-white font-medium cursor-pointer

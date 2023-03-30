@@ -7,7 +7,7 @@
             <div class="my-auto flex flex-col gap-2 w-full">
                 <h2 class="truncate w-full font-bold"><%=@person.name%></h2>
                 <ul class="flex gap-2">
-                    <%@person.traits.order(score: :desc).each do |t|%>
+                    <%@person.traits.order(positivity: :desc).each do |t|%>
                         <li class="rounded-full px-2 py-1 <%=color_class(t)%>">
                             <%=t.word%>
                         </li>
