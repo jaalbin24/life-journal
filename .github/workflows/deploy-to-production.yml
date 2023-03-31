@@ -1,6 +1,10 @@
 name: Deploy to Production
 run-name: ${{ github.actor }} is deploying to production 🚀
-on: [push]
+on:
+  push:
+    branches: [ production ]
+  pull_request:
+    branches: [ production ]
 jobs:
   Deploy-to_Production:
     runs-on: ubuntu-latest
