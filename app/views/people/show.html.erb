@@ -25,7 +25,7 @@
             <div class="overflow-auto grow">
                 <ul class="flex flex-wrap gap-2">
                     <%@person.entries.order(published_at: :desc).each do |e|%>
-                        <li class="py-1 px-2 bg-slate-700 rounded-lg shrink min-w-fit w-2/5 h-fit">
+                        <li class="py-1 px-2 bg-slate-700 rounded-lg shrink min-w-fit w-2/5 h-fit shadow shadow-black/50">
                             <div class="flex">
                                 <a href="<%=entry_path(e)%>" class="shrink flex font-bold hover:scale-101 max-w-full">
                                     <h3 class="shrink truncate max-w-full hover:underline"><%=e.title.blank? ? "Untitled" : e.title%></h3>
@@ -60,7 +60,7 @@
             <div class="overflow-auto grow">
                 <ul class="flex flex-wrap gap-2">
                     <%@person.lessons.order(created_at: :desc).each do |l|%>
-                        <li class="py-1 px-2 bg-slate-700 rounded-lg max-w-fit basis-1/2 grow">
+                        <li class="py-1 px-2 bg-slate-700 rounded-lg max-w-fit basis-1/2 grow shadow shadow-black/50">
                             <div class="flex flex-col justify-between h-full">
                                 <h5 class=""><%=l.content%></h5>
                                 <p class="opacity-50">Learned <%=l.created_at.strftime("%b %d, %Y")%></p>
