@@ -18,15 +18,26 @@ class PicturesController < ApplicationController
         end
     end
 
+    # GET /pictures/:id
+    def show
+        picture = Picture.find(params[:id])
+        render json: picture
+    end
+
     # DELETE entries/:entry_id/pictures/:picture_id
     def delete
         @entry = Entry.find(params[:entry_id])
         @picture = @entry.pictures.find(params[:picture_id])
     end
 
-    # PATCH/PUT entries/:entry_id/pictures/:picture_id
+    # PATCH/PUT pictures/:id
     def update
-
+        picture = Picture.find(params[:id])
+        if picture.update(picture_params)
+            head 200
+        else
+            head 400
+        end
     end
 
     # GET entries/:entry_id/pictures
@@ -38,8 +49,9 @@ class PicturesController < ApplicationController
     private
 
     def picture_params
-        params.require(:picture).allow(
+        params.require(:picture).permit(
             :description,
+            :title,
             :file
         )
     end

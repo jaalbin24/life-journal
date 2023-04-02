@@ -1,5 +1,6 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "controllers"
+import "./resources/picture"
 import barba from '@barba/core'
 import "trix"
 import "@rails/actiontext"
@@ -22,14 +23,12 @@ barba.init({
       },
     },
     leave(data) {
-      console.log("leave()");
       return gsap.to(data.current.container, {
         position: 'absolute',
         opacity: 0
       });
     },
     enter(data) {
-      console.log("enter()");
       return gsap.from(data.next.container, {
         opacity: 0
       });

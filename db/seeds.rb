@@ -27,6 +27,36 @@ quotes.each do |q|
     )
 end
 
+traits.each do |k, v|
+    Trait.create!(
+        word:           k,
+        positivity:     v['positivity'],
+        description:    Faker::Lorem.paragraphs(number: 2, supplemental: true).join("\n\n")
+    )
+end
+
+20.times do
+    person = me.people.create!(
+        first_name: Faker::Name.first_name,
+        last_name:  Faker::Name.last_name,
+    )
+    rand(2..5).times do 
+        person.personality.create!(
+            trait: Trait.where.not(id: person.traits.pluck(:id)).sample
+        )
+    end
+    if rand(1..10) > 2
+        file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*").sample
+        person.avatar.attach(io: File.open(file_path), filename: File.basename(file_path))
+    end
+    rand(2..10).times do
+        person.lessons.create!(
+            user: me,
+            content: lessons.sample
+        )
+    end
+end
+
 25.times do
     entry = me.entries.create!(
         status: (rand(0..9) == 0 ? 'draft' : 'published'),
@@ -47,6 +77,19 @@ end
             content: lessons.sample
         )
     end
+    rand(1..5).times do
+        entry.mentions.create!(
+            person: Person.where.not(id: entry.people.pluck(:id)).sample
+        )
+    end
+    rand(2..6).times do
+        picture = entry.pictures.create!(
+            description: Faker::Lorem.sentences(number: rand(3..5)).join(" "),
+            title: Faker::Fantasy::Tolkien.poem
+        )
+        file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'entry_pictures')}/*").sample
+        picture.file.attach(io: File.open(file_path), filename: File.basename(file_path))
+    end
 end
 
 # milestones.each do |m|
@@ -63,54 +106,6 @@ end
 #         )
 #     end
 # end
-
-traits.each do |k, v|
-    Trait.create!(
-        word:           k,
-        positivity:          v['positivity'],
-        description:    Faker::Lorem.paragraphs(number: 2, supplemental: true).join("\n\n")
-    )
-end
-
-20.times do
-    person = me.people.create!(
-        first_name: Faker::Name.first_name,
-        last_name:  Faker::Name.last_name,
-    )
-    rand(2..5).times do 
-        person.personality.create!(
-            trait: Trait.where.not(id: person.traits.pluck(:id)).sample
-        )
-    end
-    if rand(1..10) > 2
-        file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*").sample
-        person.avatar.attach(io: File.open(file_path), filename: File.basename(file_path))
-    end
-end
-
-Entry.all.each do |e|
-    rand(1..5).times do
-        e.mentions.create!(
-            person: Person.where.not(id: e.people.pluck(:id)).sample
-        )
-    end
-    rand(2..6).times do
-        picture = e.pictures.create!(
-            description: Faker::Lorem.sentences(number: rand(3..5)).join(" ")
-        )
-        file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'entry_pictures')}/*").sample
-        picture.file.attach(io: File.open(file_path), filename: File.basename(file_path))
-    end
-end
-
-Person.all.each do |p|
-    rand(2..10).times do
-        p.lessons.create!(
-            user: me,
-            content: lessons.sample
-        )
-    end
-end
 
 puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."              if User.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."            if Entry.count > 0

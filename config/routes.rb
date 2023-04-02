@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :people do
     get 'page/:page', action: :index, on: :collection
   end
-  # resources :pictures
+  resources :pictures, only: [:show, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   root 'pages#home'

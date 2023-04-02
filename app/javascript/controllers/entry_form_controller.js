@@ -21,7 +21,6 @@ export default class extends Controller {
   }
   // Called when file input field changes
   addPicturesToForm() {
-    console.log("Added picture!");
     // Iterate over files w/ e.currentTarget.files
     for (const file of this.pictureInputFieldEl.files) {
       this.renderPicture(file)

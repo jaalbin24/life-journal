@@ -44,14 +44,17 @@
   .btn-sm {
     @apply rounded bg-slate-700 hover:bg-slate-600 py-1 px-2 text-white font-medium cursor-pointer
   }
-  .btn-primary {
+  .btn-primary:not([disabled='']) {
     @apply rounded hover:shadow hover:shadow-black/40 hover:scale-105 transition-all bg-slate-700 hover:bg-slate-600 py-2 px-4 text-white font-medium cursor-pointer
   }
   .btn-secondary {
     @apply rounded hover:shadow hover:shadow-black/40 py-2 px-4 hover:scale-105 transition-all bg-gray-400 hover:bg-gray-600 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white inline-block font-medium cursor-pointer
   }
   .btn-danger {
-    @apply rounded py-2 px-4 bg-red-600 hover:bg-red-500 hover:scale-105 transition-all text-white inline-block font-medium cursor-pointer 
+    @apply rounded hover:shadow hover:shadow-black/40 py-2 px-4 bg-red-700 hover:bg-red-600 hover:scale-105 transition-all text-white inline-block font-medium cursor-pointer 
+  }
+  .btn-primary[disabled=''] {
+    @apply rounded bg-slate-700 py-2 px-4 text-white font-medium cursor-default opacity-50
   }
 }
 

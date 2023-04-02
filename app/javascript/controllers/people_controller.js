@@ -16,10 +16,8 @@ export default class extends Controller {
       avatarUrl: el.querySelector("img").getAttribute('src'),
       preAttached: true,
     }));
-    console.log(`INITIALIZED WITH SIZE = ${this.people.length}`)
   }
   search() {
-    console.log('Searching...')
     if (this.searchField.value.length <= 2) {
       this.hideSearchResults();
       return;
@@ -74,12 +72,9 @@ export default class extends Controller {
         });
       }
       this.showSearchResults();
-      console.log(this.people);
     });
   }
   showSearchResults() {
-    console.log('Focused inside div');
-    console.log(`value=${this.searchField.value}`);
     if (this.searchField.value == '') {
       this.searchMountPoint.innerHTML = '';
       this.hideSearchResults();
@@ -90,20 +85,17 @@ export default class extends Controller {
   }
   hideSearchResults(e) {
     if(e != null) {
-      console.log(e.target);
       setTimeout(()=>{
         this.hideSearchResults();
       }, 200);
       return;
     }
-    console.log('Focused outside div');
     this.searchBox.classList.add('rounded-b-lg');
     this.searchResultsEl.classList.add('hidden');
   }
   //{name, avatar_url, delete_mention_path(entry_id, person_id)}
   addPersonToEntry(e) {
     e.stopPropagation();
-    console.log("IT WORKS BWAHAHAHAHAHA");
     let person = this.people.find(el => el.id == e.currentTarget.getAttribute('data-id'));
     if (this.nameMountPoint.querySelector(`[data-id='${person.id}']`) == null) {
       this.renderPersonName(person);
@@ -140,7 +132,6 @@ export default class extends Controller {
   }
 
   attachPersonInputField(person) {
-    console.log("GO SEE MATTHEW");
     let flagged = true;
     let count = 0;
     while(flagged) {

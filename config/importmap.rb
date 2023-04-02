@@ -4,7 +4,10 @@ pin "application",                                                      preload:
 pin "@hotwired/stimulus",                   to: "stimulus.min.js",      preload: true
 pin "@hotwired/stimulus-loading",           to: "stimulus-loading.js",  preload: true
 pin_all_from "app/javascript/controllers",  under: "controllers"
+pin_all_from "app/javascript/resources",    under: "resources"
 
 pin "@barba/core", to: "https://ga.jspm.io/npm:@barba/core@2.9.7/dist/barba.umd.js"
 pin "trix"
 pin "@rails/actiontext", to: "actiontext.js"
+
+pin "picture", preload: true, to: %w[picture.js]

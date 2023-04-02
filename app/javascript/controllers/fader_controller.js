@@ -8,7 +8,6 @@ export default class extends Controller {
 
   fadeIn(e) {
     e.stopImmediatePropagation();
-    console.log('fadeIn() fired for %O', e.target);
     let targetId = e.currentTarget.getAttribute('data-target');
     if(targetId == null) {
       e.currentTarget.classList.remove('hiding');
@@ -26,9 +25,7 @@ export default class extends Controller {
 
   fadeOut(e) {
     e.stopImmediatePropagation();
-    console.log('fadeOut() fired for %O', e.target);
     let targetId = e.currentTarget.getAttribute('data-target');
-    console.log("targetId: %s", targetId);
     if(targetId == null) {
       setTimeout(()=>{
         e.currentTarget.style.opacity = 0;
@@ -36,7 +33,6 @@ export default class extends Controller {
       e.currentTarget.addEventListener('transitionend', addHidingClass);
     } else {
       let target = document.getElementById(targetId);
-      console.log("target: %O", target);
       setTimeout(()=>{
         target.style.opacity = 0;
       }, 100);
@@ -46,7 +42,6 @@ export default class extends Controller {
 }
 
 function addHidingClass(e) {
-  console.log('addHidingClass() fired!');
   if (e.currentTarget.style.opacity !== '0') {
     return;
   }
