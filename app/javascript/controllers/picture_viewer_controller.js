@@ -10,7 +10,12 @@ export default class extends Controller {
     this.titleField = this.pictureViewerEl.querySelector('input#picture_title')
     this.descriptionField = this.pictureViewerEl.querySelector('textarea#picture_description')
     this.imgEl = this.pictureViewerEl.querySelector('img#picture-viewer-img')
+    this.imgContainerEl = this.pictureViewerEl.querySelector('#picture-viewer-img-container')
+    this.uploadLabelEl = this.pictureViewerEl.querySelector('label#new-picture-label')
+    this.uploadField = this.pictureViewerEl.querySelector('input#picture_file')
     this.saveMessageContainer = this.pictureViewerEl.querySelector('#save-message-container');
+    this.entryId = document.querySelector('[data-entry-id]').getAttribute('data-entry-id');
+    console.log(`ENTRY ID = ${this.entryId}`)
     this.changeMode('show');
     this.pictures = new Array();
     console.log("MORE GLEE");
@@ -42,26 +47,43 @@ export default class extends Controller {
         // Hide
         break;
       case 'new':
+        this.imgContainerEl.classList.add('hiding');
+        this.uploadLabelEl.classList.remove('hiding');
+        // Replace img element with upload element
+        // 
         break;
-
       case 'edit':
+        this.imgContainerEl.classList.remove('hiding');
+        this.uploadLabelEl.classList.add('hiding');
 
         break;
     }
+    if (this.currentPicture != null) {
+      this.mount(this.currentPicture);
+    }
   }
   mount(picture) {
-    this.imgEl.setAttribute('src', picture.fileUrl);
     this.titleField.value = picture.title;
     this.descriptionField.value = picture.description;
-    this.formEl.setAttribute('action', `/pictures/${picture.id}`);
-    this.formEl.setAttribute('method', 'patch');
-    // replace textContent of title and description elements
+    if (picture.id) {
+      this.formEl.setAttribute('action', `/pictures/${picture.id}`);
+      this.formEl.setAttribute('method', 'patch');
+    } else {
+      this.formEl.setAttribute('action', `/entries/${this.entryId}/pictures`);
+      console.log(`ACTION SET TO ${`/entries/${this.entryId}/pictures`}`)
+      this.formEl.setAttribute('method', 'post');
+    }
+    if (picture.fileUrl) {
+      this.imgEl.setAttribute('src', picture.fileUrl);
+    }
     this.currentPicture = picture;
   }
 
   async getPictureById(id) {
     let localPicture = this.pictures.find(p => p.id === id);
-    if (!localPicture) {
+    if (!id) {
+      return new Picture(null, null, "", "");
+    } else if (!localPicture) {
       console.warn(`No picture with id=${id} found locally. Attempting to retrieve from remote server.`);
       let remotePicture = await this.getPictureFromRemote(id);
       if (!remotePicture) {
@@ -98,29 +120,30 @@ export default class extends Controller {
     let submitButton = e.currentTarget;
     submitButton.disabled = true;
     this.setSaveMessage('saving');
+    console.log(`Action before submitting is ${this.formEl.getAttribute('action')}`);
+    const formData = new FormData(this.formEl);
     fetch(this.formEl.getAttribute('action'), {
       'method': this.formEl.getAttribute('method').toUpperCase(),
       headers: {
-        'Content-Type': 'application/json',
         'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content'),
       },
-      body: JSON.stringify({
-        picture: {
-          title: this.titleField.value,
-          description: this.descriptionField.value,
-        }
-      })
-    }).then((response) => {
-      return response.status;
-    }).then((status) => {
-      if (status == 200) {
+      body: formData
+    }).then((res) => {
+      console.log(res);
+      if (res.status === 200 || res.status === 204) {
         this.setSaveMessage('saved');
-        this.currentPicture.title = this.titleField.value;
-        this.currentPicture.description = this.descriptionField.value;
       } else {
         this.setSaveMessage('error');
       }
       submitButton.disabled = false;
+      return res.json();
+    }).then((picture) => {
+      console.log(picture);
+      this.currentPicture.id = picture.id;
+      this.currentPicture.title = picture.title;
+      this.currentPicture.description = picture.description;
+      this.currentPicture.fileUrl = picture.file_url;
+      this.changeMode('edit');
     }).catch(e => {
       this.setSaveMessage('error');
       console.error(e);
@@ -136,6 +159,25 @@ export default class extends Controller {
         saveMessageEl.classList.add('hiding');
       }
     }
+  }
+
+  // Called when file input field changes
+  newPicture(e) {
+    // Get img from input field
+    // Hide upload label.
+    // Render it to img element.
+    // Render it to the pictures card.
+    // Iterate over files w/ e.currentTarget.files
+    this.renderPicture(this.uploadField.files[0]);
+  }
+  renderPicture(file) {
+    let reader = new FileReader();
+    reader.addEventListener('load', ()=>{
+      this.imgEl.src = reader.result;
+    });
+    reader.readAsDataURL(file);
+    this.uploadLabelEl.classList.add('hiding');
+    this.imgContainerEl.classList.remove('hiding');
   }
 }
 

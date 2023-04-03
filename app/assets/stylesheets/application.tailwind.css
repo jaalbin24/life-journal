@@ -56,6 +56,9 @@
   .btn-primary[disabled=''] {
     @apply rounded bg-slate-700 py-2 px-4 text-white font-medium cursor-default opacity-50
   }
+  .btn-sm {
+    @apply py-1 px-2 !important
+  }
 }
 
 @layer components {

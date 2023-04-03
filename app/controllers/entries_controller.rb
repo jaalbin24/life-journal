@@ -9,19 +9,26 @@ class EntriesController < ApplicationController
 
   # GET /entries/drafts
   def drafts
-    @entries = current_user.entries.drafts.order(created_at: :desc).page params[:page]
+    @entries = current_user.entries.drafts.not_empty.order(created_at: :desc).page params[:page]
     render :drafts
   end
 
   # GET /entries/1
   def show
+
   end
 
   # GET /entries/new
   def new
-    @entry = current_user.entries.build(
-      status: "draft"
-    )
+    empty_draft = current_user.entries.drafts.empty.first
+    if empty_draft
+      @entry = empty_draft
+      @entry.touch
+    else
+      @entry = current_user.entries.create(
+        status: "draft",
+      )
+    end
   end
 
   # GET /entries/1/edit
@@ -74,7 +81,7 @@ class EntriesController < ApplicationController
     params.require(:entry).permit(
       :text_content,
       :title,
-      :published,
+      :status,
       mentions_attributes: [
         :id,
         :person_id,

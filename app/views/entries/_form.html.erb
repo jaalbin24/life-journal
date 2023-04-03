@@ -1,5 +1,5 @@
-<div data-controller="picture-viewer">
-  <%= form_with(model: entry, class: "grow flex flex-col gap-3 mt-4", id: "entry_form") do |f| %>
+<div data-controller="picture-viewer" class="flex h-full">
+  <%= form_with(model: entry, class: "grow flex flex-col gap-3 mt-4", id: "entry_form", html: {"data-entry-id": "#{entry.id}"}) do |f| %>
     <%entry.mentions.each do |m|%>
       <%=f.fields_for :mentions, m do |mf|%>
         <%=mf.hidden_field :person_id%>
@@ -10,7 +10,6 @@
         <%pf.file_field :file, class: "hidden"%>
       <%end%>
     <%end%>
-
     <div class="card grow basis-1/2" data-controller="entry-form">
       <div class="card-header flex items-center justify-between">
         <div class="grow">
@@ -36,8 +35,8 @@
         <div class="w-full h-full flex flex-col">
           <%=f.rich_text_area :text_content, class: "grow"%>
         </div>
-        <div class="flex flex-col items-center justify-center basis-1/4 gap-3">
-          <div class="grow w-full flex flex-col gap-2" data-controller="people">
+        <div class="flex flex-col h-full justify-between basis-1/4 gap-3">
+          <div class="grow w-full h-full flex flex-col gap-2" data-controller="people">
             <div class="" data-action="focusin->people#search focusout->people#hideSearchResults" tabindex="-1">
               <%=f.label :mentions, class: "font-bold"%>
               <div id="people-search-box" class="border border-gray-500 rounded-t-lg rounded-b-lg hover:bg-zinc-700 hover:shadow-lg hover:border-transparent focus-within:bg-zinc-700 focus-within:shadow-lg focus-within:border-transparent relative">
@@ -71,42 +70,14 @@
               </div>
             </div>
           </div>
-          <div class="w-full">
-            <!--
-            <div class="flex flex-col gap-2">
-              <a href="#" class="font-bold rounded-lg p-2 bg-slate-700 hover:bg-slate-600 flex justify-between items-center">
-                <span>Pictures</span>
-                <%=chevron_icon%>
-              </a>
-              <a href="#" class="font-bold rounded-lg p-2 bg-slate-700 hover:bg-slate-600 flex justify-between items-center">
-                <span>Lessons</span>
-                <%=chevron_icon%>
-              </a>
-              <a href="#" class="font-bold rounded-lg p-2 bg-slate-700 hover:bg-slate-600 flex justify-between items-center">
-                <span>Milestones</span>
-                <%=chevron_icon%>
-              </a>
-            </div>
-
-            <div id="potd-field">
-              <label for="picture-of-the-day" class="flex flex-col <%='hidden' if entry.picture_of_the_day.attached?%> items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                  </div>
-                  <%=f.file_field :picture_of_the_day, class: "hidden", id: "picture-of-the-day"%>
-              </label>
-            </div>
-            -->
-          </div>
         </div> 
       </div>
     </div>
     <div class="grid grid-cols-3 gap-3">
       <div class="card">
-        <div class="card-header">
+        <div class="card-header flex justify-between items-center">
           <h5 class="font-bold">Pictures</h5>
+          <button type="button" data-action="click->picture-viewer#open" data-mode="new" class="btn-primary btn-sm flex items-center gap-1">New <%=plus_icon%></button>
         </div>
         <div class="card-body flex flex-col gap-2">
           <div class="grid grid-cols-3 gap-2" data-controller="fader" id="pictures-mount-point">
@@ -114,7 +85,7 @@
               <div id="<%=p.id%>-card" class="relative rounded-lg overflow-hidden" data-action="mousemove->fader#fadeIn mouseleave->fader#fadeOut" data-target="<%=p.id%>-fader">
                 <div id="<%=p.id%>-fader"class="h-full w-full border-dashed border-gray-600 border flex rounded-lg bg-slate-900/50 z-20 absolute hiding opacity-0 transition-opacity">
                   <div class="m-auto flex flex-col gap-2">
-                    <button data-action="click->picture-viewer#open" data-pic-id="<%=p.id%>" class="btn-primary" type="button"><%=edit_icon%></button>
+                    <button data-action="click->picture-viewer#open" data-pic-id="<%=p.id%>" data-mode="edit" class="btn-primary" type="button"><%=edit_icon%></button>
                     <button data-action="" class="btn-danger" type="button"><%=trashcan_icon%></button>
                   </div>
                 </div>
@@ -122,19 +93,12 @@
               </div>
             <%end%>
           </div>
-          <label for="entry_pictures" class="w-full mt-auto flex flex-col items-center justify-center border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-              <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-              <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-            </div>
-            <input class="hidden" name="" data-action="change->entry-form#addPicturesToForm" type="file" id="entry_pictures">
-          </label>
         </div>
       </div>
       <div class="card">
-        <div class="card-header">
+        <div class="card-header flex justify-between items-center">
           <h5 class="font-bold">Lessons</h5>
+          <button type="button" class="btn-primary btn-sm flex items-center gap-1">New <%=plus_icon%></button>
         </div>
         <div class="card-body">
           <div class="flex flex-wrap gap-2">
@@ -166,8 +130,9 @@
         </div>
       </div>
       <div class="card">
-        <div class="card-header">
+        <div class="card-header flex justify-between items-center">
           <h5 class="font-bold">Milestones</h5>
+          <button type="button" class="btn-primary btn-sm flex items-center gap-1">New <%=plus_icon%></button>
         </div>
         <div class="card-body">
           <div class="flex flex-wrap gap-2">
@@ -185,14 +150,22 @@
 
   <div id="picture-viewer" class="bg-slate-800 bg-opacity-90 fixed h-screen w-screen top-0 left-0 flex opacity-0 hiding z-30 transition-opacity duration-300">
     <button class="close-button absolute p-5 right-0 z-20" data-action="click->picture-viewer#close"></button>
-    <div class="flex gap-3 h-full w-full p-6 justify-center">
-      <div class="h-full flex w-fit">
-        <%=image_tag entry.pictures.last.file, class: "shadow shadow-black/70 h-fit max-h-full my-auto object-contain rounded-lg", id: "picture-viewer-img"%>
-      </div>
-      <div class="basis-1/3">
-        <div class="card h-full">
-          <div class="card-body flex">
-            <form id="edit_picture" class="flex flex-col gap-3 w-full" action="" method="patch">
+    <form id="edit_picture" action="" method="patch" class="w-full">
+      <div class="flex gap-3 h-full w-full p-6 justify-center">
+        <label id="new-picture-label" for="picture_file" class="hiding h-full w-1/2 my-auto flex flex-col items-center justify-center border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+          <div class="flex flex-col items-center justify-center pt-5 pb-6">
+            <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+          </div>
+          <input class="hidden" accept="image/*" multiple="false" name="picture[file]" data-action="change->picture-viewer#newPicture" type="file" id="picture_file">
+        </label>
+        <div id="picture-viewer-img-container" class="h-full flex w-fit hiding">
+          <%=image_tag '', class: "shadow shadow-black/70 h-fit max-h-full my-auto object-contain rounded-lg", id: "picture-viewer-img"%>
+        </div>
+        <div class="basis-1/3">
+          <div class="card h-full">
+            <div class="card-body flex flex-col gap-3">
               <div>
                 <label class="font-bold">Title</label>
                 <input type="text" id="picture_title" class="input-field" name="picture[title]" placeholder="Title">
@@ -219,10 +192,10 @@
                 </div>
                 <button class="btn-danger w-fit" type="button" data-action="click->picture-viewer#close">Delete</button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>

@@ -6,15 +6,13 @@ export default class extends Controller {
     this.formEl = document.querySelector("form#entry_form");
     this.pictureInputFieldEl = this.formEl.querySelector("input[type='file'][name='']");
     this.boundAddPicturesToForm = this.addPicturesToForm.bind(this)
-    this.pictureInputFieldEl.addEventListener('change', this.boundAddPicturesToForm);
-    this.picturesMountPoint = this.formEl.querySelector("#pictures-mount-point");
   }
   // Triggered when 'publish' button is pressed
   publish(e) {
     e.preventDefault();
     let inputEl = document.createElement('input');
-    inputEl.setAttribute('name', 'entry[published]');
-    inputEl.setAttribute('value', 'true');
+    inputEl.setAttribute('name', 'entry[status]');
+    inputEl.setAttribute('value', 'published');
     inputEl.setAttribute('type', 'hidden');
     this.formEl.appendChild(inputEl);
     this.formEl.submit();

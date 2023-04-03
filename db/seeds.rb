@@ -1,6 +1,3 @@
-require 'english_language'
-include EnglishLanguage
-
 traits = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
 quotes = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
 milestones = JSON.parse(File.read(Rails.root.join('db/seed_data/milestones.json')))
@@ -55,6 +52,12 @@ end
             content: lessons.sample
         )
     end
+    rand(2..10).times do
+        person.notes.create!(
+            content: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5),
+            author: me
+        )
+    end
 end
 
 25.times do
@@ -83,12 +86,14 @@ end
         )
     end
     rand(2..6).times do
-        picture = entry.pictures.create!(
+        picture = entry.pictures.build(
             description: Faker::Lorem.sentences(number: rand(3..5)).join(" "),
-            title: Faker::Fantasy::Tolkien.poem
+            title: Faker::Fantasy::Tolkien.poem,
+            user: me
         )
         file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'entry_pictures')}/*").sample
         picture.file.attach(io: File.open(file_path), filename: File.basename(file_path))
+        picture.save!
     end
 end
 
@@ -111,6 +116,7 @@ puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."  
 puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."            if Entry.count > 0
 puts "-- #{Entry.published.count} published"                                                if Entry.published.count > 0
 puts "-- #{ActionController::Base.helpers.pluralize Entry.drafts.count, 'draft'}"           if Entry.drafts.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Picture.count, 'picture'}."        if Picture.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Person.count, 'person'}."          if Person.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Mention.count, 'mention'}."        if Mention.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."            if Trait.count > 0

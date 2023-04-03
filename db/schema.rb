@@ -105,6 +105,17 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.index ["user_id"], name: "index_milestones_on_user_id"
   end
 
+  create_table "notes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "content"
+    t.uuid "author_id", null: false
+    t.string "notable_type", null: false
+    t.uuid "notable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_notes_on_author_id"
+    t.index ["notable_type", "notable_id"], name: "index_notes_on_notable"
+  end
+
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name"
     t.string "middle_name"
@@ -131,9 +142,11 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.string "description"
     t.string "title"
     t.uuid "entry_id", null: false
+    t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["entry_id"], name: "index_pictures_on_entry_id"
+    t.index ["user_id"], name: "index_pictures_on_user_id"
   end
 
   create_table "quotes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -172,8 +185,10 @@ ActiveRecord::Schema[7.0].define(version: 920) do
   add_foreign_key "mentions", "people"
   add_foreign_key "milestones", "entries"
   add_foreign_key "milestones", "users"
+  add_foreign_key "notes", "users", column: "author_id"
   add_foreign_key "people", "users", column: "created_by_id"
   add_foreign_key "personalities", "people"
   add_foreign_key "personalities", "traits"
   add_foreign_key "pictures", "entries"
+  add_foreign_key "pictures", "users"
 end

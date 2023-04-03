@@ -38,6 +38,7 @@ class Person < ApplicationRecord
 
     has_many :personality
     has_many :lessons
+    has_many :notes, as: :notable
     has_many :traits, through: :personality
 
     belongs_to(

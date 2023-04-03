@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       get 'draft', action: :drafts
       get 'page/:page', action: :index
     end
-    resources :pictures, only: [:index]
+    resources :pictures, only: [:index, :create]
   end
   # resources :users
   resources :people do

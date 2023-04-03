@@ -3,18 +3,18 @@ class PicturesController < ApplicationController
 
     # GET entries/:entry_id/pictures/new
     def new
-        @entry = Entry.find(params[:entry_id])
+        @entry = current_user.entries.find(params[:entry_id])
         @picture = @entry.pictures.build
     end
 
     # POST entries/:entry_id/pictures
     def create
-        @entry = Entry.find(params[:entry_id])
+        @entry = current_user.entries.find(params[:entry_id])
         @picture = @entry.pictures.build(picture_params)
         if @picture.save
-
+            render json: @picture
         else
-            
+            head 400
         end
     end
 
@@ -26,7 +26,7 @@ class PicturesController < ApplicationController
 
     # DELETE entries/:entry_id/pictures/:picture_id
     def delete
-        @entry = Entry.find(params[:entry_id])
+        @entry = current_user.entries.find(params[:entry_id])
         @picture = @entry.pictures.find(params[:picture_id])
     end
 
@@ -34,7 +34,7 @@ class PicturesController < ApplicationController
     def update
         picture = Picture.find(params[:id])
         if picture.update(picture_params)
-            head 200
+            render json: picture
         else
             head 400
         end

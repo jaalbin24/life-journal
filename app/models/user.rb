@@ -28,4 +28,5 @@ class User < ApplicationRecord
     )
     has_many :lessons
     has_many :milestones
+    has_many :pictures
 end
