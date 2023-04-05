@@ -36,6 +36,8 @@ end
     person = me.people.create!(
         first_name: Faker::Name.first_name,
         last_name:  Faker::Name.last_name,
+        middle_name: (rand(0..9) <= 2 ? Faker::Name.first_name : nil),
+        biography: 
     )
     rand(2..5).times do 
         person.personality.create!(

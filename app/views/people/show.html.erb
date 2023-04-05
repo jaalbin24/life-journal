@@ -1,75 +1,85 @@
 <div class="w-full h-full p-3 grid grid-cols-12 grid-rows-6 gap-3">
+  <div class="card col-span-6 row-span-2">
+    <div class="card-body flex flex-row gap-3 items-center pl-6">
+      <%=person_avatar(@person, class: "person-avatar hover:scale-100", size: 180)%>
+      <div class="my-auto flex flex-col gap-2 w-full">
+        <h2 class="truncate w-full font-bold"><%=@person.name%></h2>
+        <ul class="flex gap-2">
+          <%@person.traits.order(positivity: :desc).each do |t|%>
+            <li class="rounded-full px-2 py-1 <%=color_class(t)%>">
+              <%=t.word%>
+            </li>
+          <%end%>
+        </ul>
+        <p class="opacity-50 text-sm">Remember people are complex and cannot be meaningfully reduced to a list of traits. You should always look for the best in people.</p>
+      </div>
+    </div>
+  </div>
 
+  <div id="mentions-card" class="card col-span-6 row-span-3 relative" data-action="mousemove->fader#fadeOut mouseleave->fader#fadeIn" data-target="mentions-fader" data-controller="fader">
+    <div id="mentions-fader" class="rounded-lg w-full h-full bg-gradient-to-b from-transparent to-neutral-800 absolute z-20 transition-opacity"></div>
+    <div class="card-body flex flex-col">
+      <h3 class="mb-3">Mentions</h3>
+      <div class="overflow-auto grow">
+        <ul class="flex flex-wrap gap-2">
+          <%@person.entries.order(published_at: :desc).each do |e|%>
+            <li class="py-1 px-2 bg-slate-700 rounded-lg shrink min-w-fit w-2/5 h-fit shadow shadow-black/50">
+              <div class="flex">
+                <a href="<%=entry_path(e)%>" class="shrink flex font-bold hover:scale-101 max-w-full">
+                  <h3 class="shrink truncate max-w-full hover:underline"><%=e.title.blank? ? "Untitled" : e.title%></h3>
+                </a>
+              </div>
+              <div class="flex flex-row align-center gap-3">
+                <h6 class="my-auto"><%=e.published_at.blank? ? "Unknown date" : e.published_at.strftime("%b %d, %Y")%></h6>
+                <div class="flex flex-row">
+                  <%e.people.each_with_index do |p, i|%>
+                    <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
+                  <%end%>
+                </div>
+              </div>
+            </li>
+          <%end%>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-    <div class="card col-span-6 row-span-2">
-        <div class="card-body flex flex-row gap-3 items-center pl-6">
-            <%=person_avatar(@person, class: "person-avatar hover:scale-100", size: 180)%>
-            <div class="my-auto flex flex-col gap-2 w-full">
-                <h2 class="truncate w-full font-bold"><%=@person.name%></h2>
-                <ul class="flex gap-2">
-                    <%@person.traits.order(positivity: :desc).each do |t|%>
-                        <li class="rounded-full px-2 py-1 <%=color_class(t)%>">
-                            <%=t.word%>
-                        </li>
-                    <%end%>
-                </ul>
-                <p class="opacity-50 text-sm">Remember people are complex and cannot be meaningfully reduced to a list of traits. You should always look for the best in people.</p>
+  <div class="card col-span-6 row-span-4">
+    <div class="card-body">
+      <div class="">
+        <h3>Notes</h3>
+        <div class="flex flex-wrap gap-2">
+          <%@person.notes.each do |n|%>
+            <div class="bg-cyan-700 rounded-lg flex flex-col py-1 px-2">
+              <h6 class="font-bold"><%=n.content%></h6>
+              <span class="text-cyan-100"><%=n.created_at.strftime("%b %d, %Y")%></span>
             </div>
+          <%end%>
         </div>
+      </div>
+      <div class="hiding">
+        <h3>Biography</h3>
+        <p><%=@people.biography%></p>
+      </div>
     </div>
+  </div>
 
-    <div id="mentions-card" class="card col-span-6 row-span-3 relative" data-action="mousemove->fader#fadeOut mouseleave->fader#fadeIn" data-target="mentions-fader" data-controller="fader">
-        <div id="mentions-fader" class="rounded-lg w-full h-full bg-gradient-to-b from-transparent to-neutral-800 absolute z-20 transition-opacity"></div>
-        <div class="card-body flex flex-col">
-            <h3 class="mb-3">Mentions</h3>
-            <div class="overflow-auto grow">
-                <ul class="flex flex-wrap gap-2">
-                    <%@person.entries.order(published_at: :desc).each do |e|%>
-                        <li class="py-1 px-2 bg-slate-700 rounded-lg shrink min-w-fit w-2/5 h-fit shadow shadow-black/50">
-                            <div class="flex">
-                                <a href="<%=entry_path(e)%>" class="shrink flex font-bold hover:scale-101 max-w-full">
-                                    <h3 class="shrink truncate max-w-full hover:underline"><%=e.title.blank? ? "Untitled" : e.title%></h3>
-                                </a>
-                            </div>
-                            <div class="flex flex-row align-center gap-3">
-                                <h6 class="my-auto"><%=e.published_at.blank? ? "Unknown date" : e.published_at.strftime("%b %d, %Y")%></h6>
-                                <div class="flex flex-row">
-                                    <%e.people.each_with_index do |p, i|%>
-                                        <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
-                                    <%end%>
-                                </div>
-                            </div>
-                        </li>
-                    <%end%>
-                </ul>
-            </div>
-        </div>
+  <div id="lessons-card" class="card col-span-6 row-span-3 relative" data-action="mousemove->fader#fadeOut mouseleave->fader#fadeIn" data-target="lessons-fader" data-controller="fader">
+    <div id="lessons-fader" class="w-full rounded-lg h-full bg-gradient-to-b from-transparent to-neutral-800 absolute z-20 transition-opacity"></div>
+    <div class="card-body flex flex-col">
+      <h3 class="mb-3">Lessons taught</h3>
+      <div class="overflow-auto grow">
+        <ul class="flex flex-wrap gap-2">
+          <%@person.lessons.order(created_at: :desc).each do |l|%>
+            <li class="py-1 px-2 bg-slate-700 rounded-lg max-w-fit basis-1/2 grow shadow shadow-black/50">
+              <div class="flex flex-col justify-between h-full">
+                <h5 class=""><%=l.content%></h5>
+                <p class="opacity-50">Learned <%=l.created_at.strftime("%b %d, %Y")%></p>
+              </div>
+            </li>
+          <%end%>
+        </ul>
+      </div>
     </div>
-
-    <div class="card col-span-6 row-span-4">
-        <div class="card-body">
-            <h3>Notes</h3>
-
-        </div>
-    </div>
-
-    <div id="lessons-card" class="card col-span-6 row-span-3 relative" data-action="mousemove->fader#fadeOut mouseleave->fader#fadeIn" data-target="lessons-fader" data-controller="fader">
-        <div id="lessons-fader" class="w-full rounded-lg h-full bg-gradient-to-b from-transparent to-neutral-800 absolute z-20 transition-opacity"></div>
-        <div class="card-body flex flex-col">
-            <h3 class="mb-3">Lessons taught</h3>
-            <div class="overflow-auto grow">
-                <ul class="flex flex-wrap gap-2">
-                    <%@person.lessons.order(created_at: :desc).each do |l|%>
-                        <li class="py-1 px-2 bg-slate-700 rounded-lg max-w-fit basis-1/2 grow shadow shadow-black/50">
-                            <div class="flex flex-col justify-between h-full">
-                                <h5 class=""><%=l.content%></h5>
-                                <p class="opacity-50">Learned <%=l.created_at.strftime("%b %d, %Y")%></p>
-                            </div>
-                        </li>
-                    <%end%>
-                </ul>
-            </div>
-        </div>
-    </div>
-
+  </div>
 </div>
