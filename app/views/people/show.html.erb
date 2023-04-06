@@ -17,9 +17,11 @@
   </div>
 
   <div id="mentions-card" class="card col-span-6 row-span-3 relative" data-action="mousemove->fader#fadeOut mouseleave->fader#fadeIn" data-target="mentions-fader" data-controller="fader">
+    <div class="card-header">
+      <h5 class="font-bold">Mentions</h5>
+    </div>
     <div id="mentions-fader" class="rounded-lg w-full h-full bg-gradient-to-b from-transparent to-neutral-800 absolute z-20 transition-opacity"></div>
     <div class="card-body flex flex-col">
-      <h3 class="mb-3">Mentions</h3>
       <div class="overflow-auto grow">
         <ul class="flex flex-wrap gap-2">
           <%@person.entries.order(published_at: :desc).each do |e|%>
@@ -45,14 +47,17 @@
   </div>
 
   <div class="card col-span-6 row-span-4">
-    <div class="card-body">
-      <div class="">
-        <h3>Notes</h3>
+    <div class="card-header flex gap-1">
+      <button class="font-bold btn-primary btn-sm"><h5>Biography</h5></button>
+      <button class="font-bold btn-primary btn-sm"><h5>Notes</h5></button>
+    </div>
+    <div class="card-body flex flex-col">
+      <div class="overflow-auto grow">
         <div class="flex flex-wrap gap-2">
           <%@person.notes.each do |n|%>
-            <div class="bg-cyan-700 rounded-lg flex flex-col py-1 px-2">
+            <div class="bg-neutral-600 rounded-lg flex flex-col py-1 px-2">
               <h6 class="font-bold"><%=n.content%></h6>
-              <span class="text-cyan-100"><%=n.created_at.strftime("%b %d, %Y")%></span>
+              <span class="opacity-50"><%=n.created_at.strftime("%b %d, %Y")%></span>
             </div>
           <%end%>
         </div>
@@ -65,13 +70,15 @@
   </div>
 
   <div id="lessons-card" class="card col-span-6 row-span-3 relative" data-action="mousemove->fader#fadeOut mouseleave->fader#fadeIn" data-target="lessons-fader" data-controller="fader">
+    <div class="card-header">
+      <h5 class="font-bold">Lessons taught</h5>
+    </div>
     <div id="lessons-fader" class="w-full rounded-lg h-full bg-gradient-to-b from-transparent to-neutral-800 absolute z-20 transition-opacity"></div>
     <div class="card-body flex flex-col">
-      <h3 class="mb-3">Lessons taught</h3>
       <div class="overflow-auto grow">
         <ul class="flex flex-wrap gap-2">
           <%@person.lessons.order(created_at: :desc).each do |l|%>
-            <li class="py-1 px-2 bg-slate-700 rounded-lg max-w-fit basis-1/2 grow shadow shadow-black/50">
+            <li class="py-1 px-2 bg-yellow-600 rounded-lg max-w-fit basis-1/2 grow shadow shadow-black/50">
               <div class="flex flex-col justify-between h-full">
                 <h5 class=""><%=l.content%></h5>
                 <p class="opacity-50">Learned <%=l.created_at.strftime("%b %d, %Y")%></p>

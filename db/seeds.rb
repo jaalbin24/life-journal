@@ -1,7 +1,8 @@
-traits = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
-quotes = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
-milestones = JSON.parse(File.read(Rails.root.join('db/seed_data/milestones.json')))
-lessons = JSON.parse(File.read(Rails.root.join('db/seed_data/lessons.json')))
+traits      = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
+quotes      = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
+milestones  = JSON.parse(File.read(Rails.root.join('db/seed_data/milestones.json')))
+lessons     = JSON.parse(File.read(Rails.root.join('db/seed_data/lessons.json')))
+notes       = JSON.parse(File.read(Rails.root.join('db/seed_data/notes.json')))
 
 # Sort traits.json by positivity rating
 File.open(Rails.root.join('db/seed_data/traits.json'), "w") do |file|
@@ -37,11 +38,17 @@ end
         first_name: Faker::Name.first_name,
         last_name:  Faker::Name.last_name,
         middle_name: (rand(0..9) <= 2 ? Faker::Name.first_name : nil),
-        biography: 
+        biography: nil
     )
     rand(2..5).times do 
         person.personality.create!(
             trait: Trait.where.not(id: person.traits.pluck(:id)).sample
+        )
+    end
+    rand(10..20).times do
+        person.notes.create!(
+            content: notes.sample,
+            author: me
         )
     end
     if rand(1..10) > 2
@@ -52,12 +59,6 @@ end
         person.lessons.create!(
             user: me,
             content: lessons.sample
-        )
-    end
-    rand(2..10).times do
-        person.notes.create!(
-            content: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5),
-            author: me
         )
     end
 end
@@ -125,3 +126,4 @@ puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."
 puts "Created #{ActionController::Base.helpers.pluralize Quote.count, 'quote'}."            if Quote.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Lesson.count, 'lesson'}."          if Lesson.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Milestone.count, 'milestone'}."    if Milestone.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Note.count, 'note'}."              if Note.count > 0

@@ -5,10 +5,12 @@
 #  id            :uuid             not null, primary key
 #  biography     :string
 #  first_name    :string
+#  gender        :string
 #  last_name     :string
 #  middle_name   :string
 #  notes         :string
 #  status        :string
+#  title         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  created_by_id :uuid

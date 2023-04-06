@@ -117,9 +117,11 @@ ActiveRecord::Schema[7.0].define(version: 920) do
   end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
     t.string "first_name"
     t.string "middle_name"
     t.string "last_name"
+    t.string "gender"
     t.string "notes"
     t.string "status"
     t.string "biography"
