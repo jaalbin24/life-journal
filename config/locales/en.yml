@@ -33,6 +33,6 @@ en:
   hello: "Hello world"
   helpers:
     submit:
-      entry:
-        create: "Save"
-        update: "Save"
+      create: "Save"
+      update: "Save"
+        

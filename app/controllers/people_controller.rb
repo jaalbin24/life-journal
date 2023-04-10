@@ -21,6 +21,11 @@ class PeopleController < ApplicationController
     @person = Person.new
   end
 
+  # GET /people/:id/edit
+  def edit
+    @person = current_user.people.find(params[:id])
+  end
+
   # POST /people
   def create
     @person = current_user.people.build(person_params)

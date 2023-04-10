@@ -1,5 +1,85 @@
-<%=form_with(model: person) do |f|%>
-  <%=f.text_field :first_name, class: "input-field"%>
-  <%=f.text_field :last_name, class: "input-field"%>
-  <%=f.submit class: "btn-primary"%>
-<%end%>
+<div class="h-full grid grid-cols-12 grid-rows-6 gap-3">
+  <div class="card col-span-6 row-span-2">
+    <div class="card-header">
+      <h5 class="font-bold">Details</h5>
+    </div>
+    <%=form_with(model: person, class: "grow flex") do |f|%>
+      <div class="card-body flex flex-col">
+        <div class="flex gap-2">
+          <div class="grow">
+            <%=f.label :first%>
+            <%=f.text_field :first_name, class: "input-field", placeholder: "First name"%>
+          </div>
+          <div class="grow">
+            <%=f.label :middle%>
+            <%=f.text_field :middle_name, class: "input-field", placeholder: "Middle name"%>
+          </div>
+          <div class="grow">
+            <%=f.label :last%>
+            <%=f.text_field :last_name, class: "input-field", placeholder: "Last name"%>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <div class="grow">
+            <%=f.label :title%>
+            <%=f.text_field :title, class: "input-field", placeholder: "Captain, CEO, etc."%>
+          </div>
+          <div class="grow">
+            <%=f.label :gender%>
+            <%=f.text_field :gender, class: "input-field", placeholder: "Male, female, etc."%>
+          </div>
+        </div>
+        <%=f.submit class: "btn-primary ml-auto mt-auto"%>
+      </div>
+    <%end%>
+  </div>
+  <div class="card col-span-6 row-span-3">
+    <div class="card-header">
+      <h5 class="font-bold">Empty space</h5>
+    </div>
+    <div class="card-body">
+    </div>
+  </div>
+  <div class="card col-span-6 row-span-4">
+    <div class="card-header flex gap-1">
+      <button class="font-bold btn-primary btn-sm" type="button"><h5>Biography</h5></button>
+      <button class="font-bold btn-primary btn-sm" type="button"><h5>Notes</h5></button>
+    </div>
+    <div class="card-body flex flex-col gap-3">
+      <div class="overflow-auto text-ellipsis">
+        <table class="">
+          <thead class="table-fixed">
+            <tr>
+              <th class="text-left">Note</th>
+              <th class="text-left whitespace-nowrap">Date added</th>
+            </tr>
+          </thead>
+          <tbody class="">
+            <%person.notes.each do |n|%>
+              <tr class="border border-l-0 border-r-0 border-neutral-600">
+                <td class="p-0 px-1"><%=n.content%></td>
+                <td class="p-0 pr-2 whitespace-nowrap"><%=n.created_at.strftime("%b %d, %Y")%></td>
+              </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </div>
+      <div class="">
+        <%=form_with(model: Note.new, url: person_notes_path(person)) do |f|%>
+          <div class="border border-gray-500 rounded-t-lg rounded-b-lg hover:bg-zinc-700 hover:shadow-lg hover:border-transparent focus-within:bg-zinc-700 focus-within:shadow-lg focus-within:border-transparent flex">
+            <%=f.text_field :content, class: "input-field p-4 border-none focus:ring-0", placeholder: "New note"%>
+            <button type="submit" class="btn-primary btn-sm my-auto shrink-0 mr-3">Add note</button>
+          </div>
+        <%end%>
+      </div>
+    </div>
+    
+  </div>
+  <div class="card col-span-6 row-span-3">
+    <div class="card-header">
+      <h5 class="font-bold">Empty space</h5>
+    </div>
+    <div class="card-body">
+    </div>
+  </div>
+</div>
