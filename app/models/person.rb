@@ -49,9 +49,11 @@ class Person < ApplicationRecord
         foreign_key: :created_by_id,
         inverse_of: :people
     )
+    validates :name, presence: true
+
 
     def name
-        [first_name, last_name].reject(&:blank?).join(" ")
+        [first_name, middle_name, last_name].reject(&:blank?).join(" ")
     end
 
     def self.search(params)

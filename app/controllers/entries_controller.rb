@@ -38,9 +38,9 @@ class EntriesController < ApplicationController
   # POST /entries
   def create
     @entry = current_user.entries.build(entry_params)
-
     if @entry.save!
-      redirect_to @entry, notice: "Entry was successfully created."
+      flash[:success] = "Entry was successfully created#{": #{@entry.title}"}."
+      redirect_to @entry
     else
       render :new, status: :unprocessable_entity
     end
@@ -53,7 +53,7 @@ class EntriesController < ApplicationController
         @entry.picture_of_the_day.purge if @entry.picture_of_the_day.attached?
         @entry.picture_of_the_day.attach(entry_params[:picture_of_the_day])
       end
-      redirect_to @entry, notice: "Entry was successfully updated."
+      redirect_to @entry, notice: "Your entry was saved."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -63,9 +63,9 @@ class EntriesController < ApplicationController
   def destroy
     @entry.mark_as_deleted
     if @entry.save
-      redirect_to entries_url, notice: "Entry was deleted."
+      redirect_to entries_url, notice: "Your entry was deleted."
     else
-      redirect_to @continue_path, notice: "Entry could not be destroyed."
+      redirect_to @continue_path, alert: "Your entry could not be deleted."
     end
   end
 

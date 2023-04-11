@@ -23,7 +23,7 @@
               <%= image_tag 'edit_icon.svg', size: 24%>
             </a>
             <%=button_to entry_path(e), method: :delete, class: "nav-link", data: {controller: "confirmation-modal", action: "open", message: "Are you sure you want to delete the entry titled “#{e.title}”?"} do%>
-              <%= image_tag 'trash_icon.svg', size: 24%>
+              <%=trashcan_icon%>
             <%end%>
           </div>
         </div>

@@ -11,8 +11,9 @@ Rails.application.routes.draw do
     get 'page/:page', action: :index, on: :collection
     resources :notes, only: [:create]
   end
+  resources :notes, only: [:destroy]
   resources :pictures, only: [:show, :update]
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # Define your application asroutes per the DSL in https://guides.rubyonrails.org/routing.html
 
   root 'pages#home'
 

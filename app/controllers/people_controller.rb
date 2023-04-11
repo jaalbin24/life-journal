@@ -26,13 +26,25 @@ class PeopleController < ApplicationController
     @person = current_user.people.find(params[:id])
   end
 
+  # PATCH/PUT /people/:id
+  def update
+    @person = current_user.people.find(params[:id])
+    if @person.update(person_params)
+      flash[:notice] = "#{@person.name} was saved."
+    else
+      flash[:alert] = "There was an error saving #{@person.name}."
+    end
+    redirect_to edit_person_path(@person)
+  end
+
   # POST /people
   def create
     @person = current_user.people.build(person_params)
     if @person.save
-      redirect_to person_path(@person)
+      flash[:success] = "#{@person.name} was created."
+      redirect_to edit_person_path(@person)
     else
-      flash.now[:alert] = "There was an error saving that person."
+      flash.now[:alert] = "There was an error creating that person."
       render :new
     end
   end
@@ -49,7 +61,10 @@ class PeopleController < ApplicationController
   def person_params
     params.require(:person).permit(
       :first_name,
-      :last_name
+      :middle_name,
+      :last_name,
+      :title,
+      :gender
     )
   end
 

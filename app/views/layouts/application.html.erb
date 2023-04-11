@@ -16,7 +16,8 @@
   <body data-barba="wrapper">
     <%=render "layouts/navbar"%>
     <main class="relative">
-      <div class="w-full h-full flex flex-row overflow-auto" data-barba="container">
+      <div class="w-full h-full flex flex-col overflow-auto" data-barba="container">
+        <%= render "layouts/flash"%>
         <%= yield %>
       </div>
     </main>

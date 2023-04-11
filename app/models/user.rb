@@ -29,4 +29,5 @@ class User < ApplicationRecord
     has_many :lessons
     has_many :milestones
     has_many :pictures
+    has_many :notes, foreign_key: :author_id
 end
