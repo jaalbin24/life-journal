@@ -14,6 +14,7 @@ class PicturesController < ApplicationController
         if @picture.save
             render json: @picture
         else
+            puts "ERROR ========================= #{@picture.errors.full_messages.inspect}"
             head 400
         end
     end
@@ -53,6 +54,8 @@ class PicturesController < ApplicationController
             :description,
             :title,
             :file
-        )
+        ).reverse_merge({
+            user: current_user
+        })
     end
 end
