@@ -3,6 +3,7 @@
 # Table name: entries
 #
 #  id           :uuid             not null, primary key
+#  deleted      :boolean
 #  deleted_at   :datetime
 #  published_at :datetime
 #  status       :string
