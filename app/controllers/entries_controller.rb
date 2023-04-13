@@ -4,18 +4,17 @@ class EntriesController < ApplicationController
 
   # GET /entries
   def index
-    @entries = current_user.entries.published.order(published_at: :desc).page params[:page]
+    @entries = current_user.entries.not_deleted.published.order(published_at: :desc).page params[:page]
   end
 
   # GET /entries/drafts
   def drafts
-    @entries = current_user.entries.drafts.not_empty.order(created_at: :desc).page params[:page]
+    @entries = current_user.entries.not_deleted.drafts.not_empty.order(created_at: :desc).page params[:page]
     render :drafts
   end
 
-  # GET /entries/1
+  # GET /entries/:id
   def show
-
   end
 
   # GET /entries/new
@@ -31,7 +30,7 @@ class EntriesController < ApplicationController
     end
   end
 
-  # GET /entries/1/edit
+  # GET /entries/:id/edit
   def edit
   end
 
@@ -46,7 +45,7 @@ class EntriesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /entries/1
+  # PATCH/PUT /entries/:id
   def update
     if @entry.update(entry_params.reject {|e| e['picture_of_the_day']})
       if entry_params[:picture_of_the_day].present?
@@ -59,10 +58,9 @@ class EntriesController < ApplicationController
     end
   end
 
-  # DELETE /entries/1
+  # DELETE /entries/:id
   def destroy
-    @entry.mark_as_deleted
-    if @entry.save
+    if @entry.mark_as_deleted
       redirect_to entries_url, notice: "Your entry was deleted."
     else
       redirect_to @continue_path, alert: "Your entry could not be deleted."
@@ -73,7 +71,7 @@ class EntriesController < ApplicationController
   
   # Use callbacks to share common setup or constraints between actions.
   def set_entry
-    @entry = Entry.find(params[:id])
+    @entry = current_user.entries.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.

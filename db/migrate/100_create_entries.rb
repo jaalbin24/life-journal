@@ -3,6 +3,7 @@ class CreateEntries < ActiveRecord::Migration[7.0]
     create_table :entries, id: :uuid do |t|
 
       t.datetime    :published_at
+      t.boolean     :deleted
       t.datetime    :deleted_at
       t.string      :title
       t.string      :text_content

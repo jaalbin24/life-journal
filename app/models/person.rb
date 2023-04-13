@@ -24,7 +24,7 @@
 #  fk_rails_...  (created_by_id => users.id)
 #
 class Person < ApplicationRecord
-
+    include Recoverable
     has_one_attached :avatar
     has_many(
         :mentions,

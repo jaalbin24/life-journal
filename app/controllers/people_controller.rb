@@ -23,12 +23,11 @@ class PeopleController < ApplicationController
 
   # GET /people/:id/edit
   def edit
-    @person = current_user.people.find(params[:id])
+
   end
 
   # PATCH/PUT /people/:id
   def update
-    @person = current_user.people.find(params[:id])
     if @person.update(person_params)
       flash[:notice] = "#{@person.name} was saved."
     else
@@ -49,6 +48,14 @@ class PeopleController < ApplicationController
     end
   end
 
+  # DELETE /people/:id
+  def destroy
+    if @person.mark_as_deleted
+      redirect_to people_path, notice: "#{@person.name} was marked for deletion and will be deleted after 30 days."
+    else
+      redirect_to @continue_path, alert: "There was an error deleting #{@person.name}."
+    end
+  end
 
   private
 
@@ -69,6 +76,6 @@ class PeopleController < ApplicationController
   end
 
   def set_person
-    @person = Person.find(params[:id])
+    @person = current_user.people.find(params[:id])
   end
 end

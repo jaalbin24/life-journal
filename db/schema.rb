@@ -55,6 +55,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
 
   create_table "entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "published_at"
+    t.boolean "deleted"
     t.datetime "deleted_at"
     t.string "title"
     t.string "text_content"
@@ -79,6 +80,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.uuid "user_id", null: false
     t.string "status"
     t.string "content"
+    t.boolean "deleted"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_lessons_on_person_id"
@@ -99,6 +102,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.datetime "reached_at"
     t.uuid "entry_id", null: false
     t.uuid "user_id", null: false
+    t.boolean "deleted"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["entry_id"], name: "index_milestones_on_entry_id"
@@ -110,6 +115,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.uuid "author_id", null: false
     t.string "notable_type", null: false
     t.uuid "notable_id", null: false
+    t.boolean "deleted"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_notes_on_author_id"
@@ -122,9 +129,10 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.string "middle_name"
     t.string "last_name"
     t.string "gender"
-    t.string "notes"
-    t.string "status"
     t.string "biography"
+    t.string "notes"
+    t.boolean "deleted"
+    t.datetime "deleted_at"
     t.uuid "created_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -145,6 +153,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.string "title"
     t.uuid "entry_id", null: false
     t.uuid "user_id", null: false
+    t.boolean "deleted"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["entry_id"], name: "index_pictures_on_entry_id"
@@ -154,6 +164,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
   create_table "quotes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "content"
     t.string "author"
+    t.boolean "deleted"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

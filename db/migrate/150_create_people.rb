@@ -7,10 +7,11 @@ class CreatePeople < ActiveRecord::Migration[7.0]
       t.string      :middle_name
       t.string      :last_name
       t.string      :gender
+      t.string      :biography
 
       t.string      :notes
-      t.string      :status
-      t.string      :biography
+      t.boolean     :deleted
+      t.datetime    :deleted_at
       t.references  :created_by,      foreign_key: {to_table: :users}, type: :uuid
 
       t.timestamps

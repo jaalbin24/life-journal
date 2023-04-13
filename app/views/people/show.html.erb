@@ -1,17 +1,31 @@
 <div class="w-full h-full p-3 grid grid-cols-12 grid-rows-6 gap-3">
   <div class="card col-span-6 row-span-2">
-    <div class="card-body flex flex-row gap-3 items-center pl-6">
-      <%=person_avatar(@person, class: "person-avatar hover:scale-100", size: 180)%>
-      <div class="my-auto flex flex-col gap-2 w-full">
-        <h2 class="truncate w-full font-bold"><%=@person.name%></h2>
-        <ul class="flex gap-2">
-          <%@person.traits.order(positivity: :desc).each do |t|%>
-            <li class="rounded-full px-2 py-1 <%=color_class(t)%>">
-              <%=t.word%>
-            </li>
+    <div class="card-body flex flex-col">
+      <div class="w-full flex justify-end">            
+        <div class="flex items-center gap-1 opacity-0 hover:opacity-100 transition-opacity">
+          <a class="btn-primary btn-sm" href="<%=edit_person_path(@person)%>">
+            <%= image_tag 'edit_icon.svg', size: 24%>
+          </a>
+          <%=form_with model: @person, url: person_path(@person), method: :delete, html: { onsubmit: "return confirm(\"Are you sure you want to delete the following person?\\n\\n#{@person.name}\");" } do%>
+            <button class="btn-sm btn-danger">
+              <%=trashcan_icon%>
+            </button>
           <%end%>
-        </ul>
-        <p class="opacity-50 text-sm">Remember people are complex and cannot be meaningfully reduced to a list of traits. You should always look for the best in people.</p>
+        </div>
+      </div>
+      <div class="flex gap-3 items-center pl-6">
+        <%=person_avatar(@person, class: "person-avatar hover:scale-100", size: 180)%>
+        <div class="my-auto flex flex-col gap-2 w-full">
+          <h2 class="truncate w-full font-bold"><%=@person.name%></h2>
+          <ul class="flex gap-2">
+            <%@person.traits.order(positivity: :desc).each do |t|%>
+              <li class="rounded-full px-2 py-1 <%=color_class(t)%>">
+                <%=t.word%>
+              </li>
+            <%end%>
+          </ul>
+          <p class="opacity-50 text-sm">Remember people are complex and cannot be meaningfully reduced to a list of traits. You should always look for the best in people.</p>
+        </div>
       </div>
     </div>
   </div>

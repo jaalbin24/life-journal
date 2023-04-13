@@ -61,8 +61,8 @@
                 <td class="p-0 px-1"><%=n.content%></td>
                 <td class="p-0 pr-2 whitespace-nowrap"><%=n.created_at.strftime("%b %d, %Y")%></td>
                 <td class="p-0 pr-2">
-                  <%=form_with model: n, method: :delete do |f|%>
-                    <button>
+                  <%=form_with model: n, method: :delete, html: { onsubmit: "return confirm(\"Are you sure you want to delete the following note?\\n\\n#{n.content}\");" } do |f|%>
+                    <button class="flex justify-center items-center">
                       <%=trashcan_icon(color: 'red-600', size: 24)%>
                     </button>
                   <%end%>

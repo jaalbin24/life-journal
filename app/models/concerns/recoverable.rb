@@ -1,19 +1,40 @@
+# This concern is meant to handle models that are temporarily preserved after
+# a user "deletes" them. 
+#
+# To implement this concern, the model needs the following attributes
+#   - boolean:  deleted
+#   - datetime: deleted_at
+
 module Recoverable
     extend ActiveSupport::Concern
+    
 
-    # included do
-    #     validates :public_id, presence: true
-    #     before_validation :generate_public_id, on: :create 
-    #     def to_param
-    #         public_id
-    #     end
-    # end
-    # private
+    included do
+        scope :deleted,     ->  {where(deleted: true)}
+        scope :not_deleted, ->  {where(deleted: false)}
+        before_create do
+            self.deleted = false if deleted.nil?
+        end
+    end
 
-    # def generate_public_id
-    #     loop do
-    #         self.public_id = "#{self.class.name.demodulize.downcase}_#{SecureRandom.alphanumeric(16)}"
-    #         return public_id if self.class.where(public_id: public_id).count == 0
-    #     end
-    # end
+    def mark_as_deleted
+        self.deleted = true
+        self.deleted_at = DateTime.now
+        if self.save
+            # Enque the deletion job.
+            true
+        else
+            false
+        end
+    end
+
+    def recover
+        self.deleted = false
+        if self.save
+            # Cancel the deletion job.
+            true
+        else
+            false
+        end
+    end
 end

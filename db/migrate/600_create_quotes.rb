@@ -3,7 +3,8 @@ class CreateQuotes < ActiveRecord::Migration[7.0]
     create_table :quotes, id: :uuid do |t|
       t.string :content
       t.string :author
-
+      t.boolean     :deleted
+      t.datetime    :deleted_at
       t.timestamps
     end
   end

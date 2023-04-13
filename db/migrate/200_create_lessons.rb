@@ -5,7 +5,8 @@ class CreateLessons < ActiveRecord::Migration[7.0]
       t.references  :user,    null: false,  foreign_key: true, type: :uuid
       t.string      :status
       t.string      :content
-
+      t.boolean     :deleted
+      t.datetime    :deleted_at
       t.timestamps
     end
   end

@@ -23,6 +23,7 @@
 class Entry < ApplicationRecord
   has_rich_text :text_content
   has_one_attached :picture_of_the_day
+  include Recoverable
 
   scope :published,   ->  {where(status: "published")}
   scope :drafts,      ->  {where(status: "draft")}
@@ -84,11 +85,6 @@ class Entry < ApplicationRecord
     if status_changed? && published?
       self.published_at = DateTime.now if published_at.blank?
     end
-  end
-
-  def mark_as_deleted
-    self.status = "deleted"
-    self.deleted_at = DateTime.now
   end
 
   def published?
