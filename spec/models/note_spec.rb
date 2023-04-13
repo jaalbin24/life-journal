@@ -4,6 +4,8 @@
 #
 #  id           :uuid             not null, primary key
 #  content      :string
+#  deleted      :boolean
+#  deleted_at   :datetime
 #  notable_type :string           not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null

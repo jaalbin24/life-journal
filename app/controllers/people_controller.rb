@@ -44,6 +44,7 @@ class PeopleController < ApplicationController
       redirect_to edit_person_path(@person)
     else
       flash.now[:alert] = "There was an error creating that person."
+      @person.avatar.detach
       render :new
     end
   end
@@ -71,7 +72,8 @@ class PeopleController < ApplicationController
       :middle_name,
       :last_name,
       :title,
-      :gender
+      :gender,
+      :avatar
     )
   end
 

@@ -23,8 +23,10 @@
 class Picture < ApplicationRecord
   belongs_to :entry
   belongs_to :user
+  include ImageValidation
   has_one_attached :file
-  validates :file, presence: true
+  validate  ->  (p)  {file_is_img(:file)}
+
 
   def as_json(args={})
     super(args.merge(
