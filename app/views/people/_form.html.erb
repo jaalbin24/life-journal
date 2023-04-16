@@ -18,8 +18,8 @@
           <%=f.text_field :last_name, class: "input-field", placeholder: "Last name"%>
         </div>
         <div class="col-span-3">
-          <%=f.label :title, class: "font-bold"%>
-          <%=f.text_field :title, class: "input-field", placeholder: "Captain, CEO, etc."%>
+          <%=f.label :nickname, class: "font-bold"%>
+          <%=f.text_field :nickname, class: "input-field", placeholder: "Nickname"%>
         </div>
         <div class="flex h-full ml-auto gap-4 items-center mt-auto col-span-3 row-span-2">
           <div>
@@ -42,9 +42,15 @@
             <%=f.submit class: "btn-primary"%>
           </div>
         </div>
-        <div class="col-span-3">
-          <%=f.label :gender, class: "font-bold"%>
-          <%=f.text_field :gender, class: "input-field", placeholder: "Male, female, etc."%>
+        <div class="col-span-3 flex gap-2">
+          <div>
+            <%=f.label :title, class: "font-bold"%>
+            <%=f.text_field :title, class: "input-field", placeholder: "Captain, CEO, etc."%>
+          </div>
+          <div>
+            <%=f.label :gender, class: "font-bold"%>
+            <%=f.text_field :gender, class: "input-field", placeholder: "Male, female, etc."%>
+          </div>
         </div>
       </div>
     <%end%>
@@ -73,7 +79,7 @@
           </thead>
           <tbody class="">
             <%person.notes.each do |n|%>
-              <tr class="border border-l-0 border-r-0 border-neutral-600">
+              <tr class="even:bg-neutral-700 border border-l-0 border-r-0 border-neutral-600">
                 <td class="p-0 px-1"><%=n.content%></td>
                 <td class="p-0 pr-2 whitespace-nowrap"><%=n.created_at.strftime("%b %d, %Y")%></td>
                 <td class="p-0 pr-2">
