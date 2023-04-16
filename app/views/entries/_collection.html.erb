@@ -22,20 +22,20 @@
             <a class="nav-link" href="<%=edit_entry_path(e)%>">
               <%= image_tag 'edit_icon.svg', size: 24%>
             </a>
-            <%=form_with model: e, url: entry_path(e), method: :delete, html: { onsubmit: "return confirm(\"Are you sure you want to delete the following entry?\\n\\n#{e.title}\\n#{e.published? ? 'Published' : 'Saved'} #{e.published_at.strftime("%b %d, %Y")}\");" } do%>
+            <%=form_with model: e, url: entry_path(e), method: :delete, html: { onsubmit: "return confirm(\"Are you sure you want to delete the following entry?\\n\\n#{e.title}\\n#{e.published? ? "Published #{e.published_at.strftime("%b %d, %Y")}" : "Saved #{e.updated_at.strftime("%b %d, %Y")}"} #{}\");" } do%>
               <button class="nav-link">
                 <%=trashcan_icon%>
               </button>
             <%end%>
           </div>
         </div>
-        <div class="card-body max-h-48 flex flex-row gap-5 justify-between">
-          <div class="overflow-hidden relative">
+        <div class="card-body max-h-48 flex gap-5 justify-between">
+          <div class="overflow-hidden relative grow">
             <div class="w-full h-full bg-gradient-to-b from-transparent to-neutral-800 absolute"></div>
             <%=e.text_content%>
           </div>
           <%if e.pictures.count >= 1%>
-            <%=image_tag e.pictures.sample.file, class: "picture-of-the-day"%>
+            <%=image_tag e.pictures.sample.file, class: "h-full rounded-lg object-contain"%>
           <%end%>
         </div>
       </div>

@@ -52,7 +52,8 @@ class EntriesController < ApplicationController
         @entry.picture_of_the_day.purge if @entry.picture_of_the_day.attached?
         @entry.picture_of_the_day.attach(entry_params[:picture_of_the_day])
       end
-      redirect_to @entry, notice: "Your entry was saved."
+      flash[:notice] = "Your entry was #{@entry.published? ? 'published' : 'saved'}."
+      redirect_to @entry
     else
       render :edit, status: :unprocessable_entity
     end
