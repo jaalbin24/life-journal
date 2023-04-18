@@ -1,11 +1,10 @@
-RSpec.describe "Creating a person" do
-    before do
-        # Create a user and sign it in
-    end
+RSpec.describe "Creating a person", type: :system do
     context "without any details" do
         it "will show a flash alert message" do
-            pending "Test can be written"
-            fail
+            sign_in
+            visit new_person_path
+            test_id('save_person_button').click
+            expect(page).to have_text "There was an error creating that person."
         end
         it "will not create a person" do
             pending "Test can be written"

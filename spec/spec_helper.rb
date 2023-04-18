@@ -13,7 +13,18 @@
 # it.
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+require 'support/authentication_helper'
+require 'support/test_id_helper'
+
 RSpec.configure do |config|
+
+  # Includes the sign_in and sign_out helper methods for users
+  config.include AuthenticationHelper
+
+  # Includes the test_id method for selecting elements with the data-test-id attribute
+  config.include TestIdHelper
+  
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.

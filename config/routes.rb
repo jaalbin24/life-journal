@@ -17,9 +17,9 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
-  get 'sign_in',                    to: 'session#new',                as: 'user_sign_in'
-  post 'sign_in',                   to: 'session#create',             as: 'user_session_create'
-  delete 'sign_out',                to: 'session#delete',             as: 'user_sign_out'
+  get 'sign_in',                    to: 'session#new'
+  post 'sign_in',                   to: 'session#create'
+  delete 'sign_out',                to: 'session#delete'
 
 
   post 'people/search',              to: 'people#search',              as: 'search_people'

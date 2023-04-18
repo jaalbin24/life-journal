@@ -53,7 +53,7 @@ group :development, :test do
   gem 'faker'
 
   # FactoryBot and RSpec for testing
-  gem 'factory_bot'
+  gem 'factory_bot_rails'
   gem 'rspec-rails'
 end
 

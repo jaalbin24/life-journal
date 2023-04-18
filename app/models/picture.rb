@@ -3,6 +3,8 @@
 # Table name: pictures
 #
 #  id          :uuid             not null, primary key
+#  deleted     :boolean
+#  deleted_at  :datetime
 #  description :string
 #  title       :string
 #  created_at  :datetime         not null

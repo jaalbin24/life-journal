@@ -10,6 +10,7 @@
 #  gender        :string
 #  last_name     :string
 #  middle_name   :string
+#  nickname      :string
 #  notes         :string
 #  title         :string
 #  created_at    :datetime         not null

@@ -29,11 +29,12 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/:id
   def update
     if @person.update(person_params)
-      flash[:notice] = "#{@person.name} was saved."
+      flash.now[:notice] = "#{@person.name} was saved."
     else
-      flash[:alert] = "There was an error saving #{@person.name}."
+      @person.reload
+      flash.now[:alert] = "There was an error saving #{@person.name}."
     end
-    redirect_to edit_person_path(@person)
+    render :edit
   end
 
   # POST /people
@@ -73,6 +74,7 @@ class PeopleController < ApplicationController
       :last_name,
       :title,
       :gender,
+      :nickname,
       :avatar
     )
   end

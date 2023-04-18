@@ -35,8 +35,7 @@ module Authentication
     def redirect_unauthenticated
         unless user_signed_in?
             cookies[:after_sign_in_path] = request.path
-            puts "====================== session[:after_sign_in_path] = #{request.path} ======================="
-            redirect_to user_sign_in_path
+            redirect_to sign_in_path
         end
     end
 end

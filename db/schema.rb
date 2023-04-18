@@ -128,6 +128,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.string "first_name"
     t.string "middle_name"
     t.string "last_name"
+    t.string "nickname"
     t.string "gender"
     t.string "biography"
     t.string "notes"

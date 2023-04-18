@@ -10,6 +10,7 @@
 #  gender        :string
 #  last_name     :string
 #  middle_name   :string
+#  nickname      :string
 #  notes         :string
 #  title         :string
 #  created_at    :datetime         not null
@@ -55,7 +56,9 @@ class Person < ApplicationRecord
 
 
   def name
-    [first_name, middle_name, last_name].reject(&:blank?).join(" ")
+    name = [first_name, last_name].reject(&:blank?).join(" ")
+    return name unless name.blank?
+    nickname
   end
 
   def self.search(params)
