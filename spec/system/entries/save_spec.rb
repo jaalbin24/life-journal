@@ -8,9 +8,17 @@ RSpec.describe "Saving an entry" do
             fail
         end
     end
-    it "will show a flash success message" do
-        pending "Test can be written"
-        fail
+    context "that is published" do
+        it "will show a flash success message" do
+            pending "Test can be written"
+            fail
+        end
+    end
+    context "that is not published" do
+        it "will show a flash success message" do
+            pending "Test can be written"
+            fail
+        end
     end
     it "will update the entry" do
         pending "Test can be written"
