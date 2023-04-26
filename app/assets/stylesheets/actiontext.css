@@ -44,3 +44,10 @@
   background-size: 50% !important;
   background-image: url('assets/italic_icon.svg') !important;
 }
+
+trix-editor h1 {
+  font-size: 1.5rem !important;
+}
+.trix-content h1 {
+  font-size: 1.5rem !important;
+}

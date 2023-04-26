@@ -101,7 +101,7 @@
         <%if person.persisted?%>
           <%=form_with(model: Note.new, url: person_notes_path(person)) do |f|%>
             <div class="border border-gray-500 rounded-t-lg rounded-b-lg hover:bg-zinc-700 hover:shadow-lg hover:border-transparent focus-within:bg-zinc-700 focus-within:shadow-lg focus-within:border-transparent flex">
-              <%=f.text_field :content, class: "input-field p-4 border-none focus:ring-0", placeholder: "New note"%>
+              <%=f.text_field :content, autofocus: true, class: "input-field p-4 border-none focus:ring-0", placeholder: "New note"%>
               <button type="submit" class="btn-primary btn-sm my-auto shrink-0 mr-3">Add note</button>
             </div>
           <%end%>

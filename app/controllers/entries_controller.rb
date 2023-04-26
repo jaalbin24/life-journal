@@ -53,7 +53,7 @@ class EntriesController < ApplicationController
         @entry.picture_of_the_day.attach(entry_params[:picture_of_the_day])
       end
       flash[:notice] = "Your entry was #{@entry.published? ? 'published' : 'saved'}."
-      redirect_to @entry
+      redirect_to edit_entry_path(@entry)
     else
       render :edit, status: :unprocessable_entity
     end
