@@ -10,7 +10,11 @@
               </a>
             </div>
             <div class="flex flex-row align-center gap-3">
-              <h6 class="my-auto"><%=e.published_at.blank? ? "Unknown date" : e.published_at.strftime("%b %d, %Y")%></h6>
+              <%if e.published?%>
+                <h6 class="my-auto">Published <%=e.published_at.blank? ? "at an unknown date" : e.published_at.strftime("%b %d, %Y")%></h6>
+              <%else%>
+                <h6 class="my-auto">Saved <%=e.updated_at.blank? ? "at an unknown date" : e.updated_at.strftime("%b %d, %Y")%></h6>
+              <%end%>
               <div class="flex flex-row">
                 <%e.people.each_with_index do |p, i|%>
                   <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
