@@ -26,6 +26,7 @@
 #  fk_rails_...  (created_by_id => users.id)
 #
 class Person < ApplicationRecord
+  paginates_per 50
   include Recoverable
   include ImageValidation
   has_one_attached :avatar

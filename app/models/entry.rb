@@ -22,6 +22,7 @@
 #  fk_rails_...  (author_id => users.id)
 #
 class Entry < ApplicationRecord
+  paginates_per 12
   has_rich_text :text_content
   has_one_attached :picture_of_the_day
   include Recoverable

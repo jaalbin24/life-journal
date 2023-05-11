@@ -13,7 +13,7 @@ class PeopleController < ApplicationController
 
   # GET /people
   def index
-    @people = current_user.people.order(created_at: :desc).page params[:page]
+    @people = current_user.people.order(updated_at: :desc).page params[:page]
   end
 
   # GET /people/new
