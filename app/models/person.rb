@@ -26,7 +26,7 @@
 #  fk_rails_...  (created_by_id => users.id)
 #
 class Person < ApplicationRecord
-  paginates_per 50
+  paginates_per 24
   include Recoverable
   include ImageValidation
   has_one_attached :avatar
@@ -57,9 +57,7 @@ class Person < ApplicationRecord
 
 
   def name
-    name = [first_name, last_name].reject(&:blank?).join(" ")
-    return name unless name.blank?
-    nickname
+    [(nickname.blank? ? first_name : nickname), last_name].reject(&:blank?).join(" ")
   end
 
   def self.search(params)
