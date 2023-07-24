@@ -23,8 +23,8 @@
 #
 class Entry < ApplicationRecord
   paginates_per 12
-  has_rich_text :text_content
-  has_one_attached :picture_of_the_day
+  has_rich_text :text_content, encrypted: true
+  encrypts :title
   include Recoverable
 
   scope :published,   ->  {where(status: "published")}
@@ -91,5 +91,17 @@ class Entry < ApplicationRecord
 
   def published?
     status == 'published'
+  end
+
+  def last_updated_caption
+    if published?
+      if published_at.nil?
+        "Published at an unknown date"
+      else
+        "Published #{published_at.strftime("%b %d, %Y")}"
+      end
+    else
+      "Saved #{updated_at.strftime("%b %d, %Y")}"
+    end
   end
 end

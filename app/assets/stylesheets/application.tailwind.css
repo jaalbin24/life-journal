@@ -119,4 +119,33 @@
   .picture-of-the-day {
     @apply rounded-lg object-contain w-fit
   }
+
+  .entry-picture-container {
+    @apply flex flex-col py-4 mt-4 justify-center items-center border border-x-0 border-neutral-500
+  }
+  .entry-picture {
+    @apply rounded-lg object-contain h-fit max-h-screen;
+    max-width: 80%;
+  }
+  .entry-picture-title {
+    @apply italic mt-1
+  }
+  .entry-picture-description {
+    @apply opacity-50
+  }
+  .entry-title {
+    @apply font-bold text-5xl
+  }
+
+  .button {
+    @apply p-2 hover:scale-105 rounded transition-all hover:shadow hover:shadow-black/50
+  }
+
+  .button-primary {
+    @apply bg-slate-700 hover:bg-slate-600
+  }
+
+  .button-danger {
+    @apply bg-red-700 hover:bg-red-600
+  }
 }

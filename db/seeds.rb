@@ -64,11 +64,14 @@ end
 end
 
 25.times do
+    content = Array.new(rand(4..20)) do
+        Faker::Lorem.paragraph_by_chars(number: rand(50..500), supplemental: true)
+    end
     entry = me.entries.create!(
         status: (rand(0..9) == 0 ? 'draft' : 'published'),
         published_at: rand(5..1000).days.ago,
         title: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5),
-        text_content: Faker::Lorem.paragraphs(number: 16, supplemental: true).join("\n\n")
+        text_content: content.join("<br><br>")
     )
     10.times do
         entry.milestones.create!(

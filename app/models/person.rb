@@ -29,6 +29,8 @@ class Person < ApplicationRecord
   paginates_per 24
   include Recoverable
   include ImageValidation
+  encrypts :first_name, :last_name, :middle_name, :nickname, :gender, :title, deterministic: true
+  encrypts :biography
   has_one_attached :avatar
   has_many(
     :mentions,

@@ -11,6 +11,7 @@
 #
 class User < ApplicationRecord
     has_secure_password
+    encrypts :email, deterministic: true, downcase: true
     has_many(
         :entries,
         class_name: "Entry",
@@ -30,4 +31,5 @@ class User < ApplicationRecord
     has_many :milestones
     has_many :pictures
     has_many :notes, foreign_key: :author_id
+
 end
