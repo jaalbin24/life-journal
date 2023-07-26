@@ -7,6 +7,7 @@
 #  content    :string
 #  deleted    :boolean
 #  deleted_at :datetime
+#  source     :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

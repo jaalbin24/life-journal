@@ -21,7 +21,8 @@ me = User.create(
 quotes.each do |q|
     Quote.create(
         content: q['body'],
-        author: (q['author'] unless q['author'].blank?)
+        author: (q['author'] unless q['author'].blank?),
+        source: (q['source'] unless q['source'].blank?)
     )
 end
 

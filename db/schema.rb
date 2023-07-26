@@ -165,6 +165,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
   create_table "quotes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "content"
     t.string "author"
+    t.string "source"
     t.boolean "deleted"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
