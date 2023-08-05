@@ -15,15 +15,15 @@
 #  title         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  created_by_id :uuid
+#  user_id :uuid
 #
 # Indexes
 #
-#  index_people_on_created_by_id  (created_by_id)
+#  index_people_on_user_id  (user_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 require "test_helper"
 

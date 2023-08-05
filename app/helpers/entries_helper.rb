@@ -5,9 +5,9 @@ module EntriesHelper
   def formatted_entry_w_pictures(entry)
     total_pictures = entry.pictures.count
     # No need for fancy formatting if there are no pictures. Just return.
-    return entry.text_content.to_trix_html if total_pictures == 0
+    return entry.content.to_trix_html if total_pictures == 0
     # Divide the entry html into workable segments
-    segments = segmentize(entry.text_content.to_trix_html)
+    segments = segmentize(entry.content.to_trix_html)
 
     total_chars_in_entry = segments.join.length
     optimal_chars_in_segment = total_chars_in_entry / total_pictures

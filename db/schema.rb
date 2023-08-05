@@ -58,7 +58,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.boolean "deleted"
     t.datetime "deleted_at"
     t.string "title"
-    t.string "text_content"
+    t.string "content"
+    t.string "content_plain"
     t.string "status"
     t.uuid "author_id"
     t.datetime "created_at", null: false
@@ -134,10 +135,10 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.string "notes"
     t.boolean "deleted"
     t.datetime "deleted_at"
-    t.uuid "created_by_id"
+    t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["created_by_id"], name: "index_people_on_created_by_id"
+    t.index ["user_id"], name: "index_people_on_user_id"
   end
 
   create_table "personalities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -202,7 +203,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
   add_foreign_key "milestones", "entries"
   add_foreign_key "milestones", "users"
   add_foreign_key "notes", "users", column: "author_id"
-  add_foreign_key "people", "users", column: "created_by_id"
+  add_foreign_key "people", "users", column: "user_id"
   add_foreign_key "personalities", "people"
   add_foreign_key "personalities", "traits"
   add_foreign_key "pictures", "entries"

@@ -23,8 +23,8 @@ class User < ApplicationRecord
     has_many(
         :people,
         class_name: "Person",
-        foreign_key: :created_by_id,
-        inverse_of: :created_by,
+        foreign_key: :user_id,
+        inverse_of: :user,
         dependent: :destroy
     )
     has_many :lessons

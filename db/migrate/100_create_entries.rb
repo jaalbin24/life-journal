@@ -6,7 +6,8 @@ class CreateEntries < ActiveRecord::Migration[7.0]
       t.boolean     :deleted
       t.datetime    :deleted_at
       t.string      :title
-      t.string      :text_content
+      t.string      :content
+      t.string      :content_plain  # A plaintext, non-html version of the content column used in the empty & not_empty scopes
       t.string      :status
       t.references  :author,    foreign_key: {to_table: :users}, type: :uuid
 

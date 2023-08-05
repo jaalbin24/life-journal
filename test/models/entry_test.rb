@@ -2,16 +2,17 @@
 #
 # Table name: entries
 #
-#  id           :uuid             not null, primary key
-#  deleted      :boolean
-#  deleted_at   :datetime
-#  published_at :datetime
-#  status       :string
-#  text_content :string
-#  title        :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  author_id    :uuid
+#  id            :uuid             not null, primary key
+#  content       :string
+#  content_plain :string
+#  deleted       :boolean
+#  deleted_at    :datetime
+#  published_at  :datetime
+#  status        :string
+#  title         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  author_id     :uuid
 #
 # Indexes
 #

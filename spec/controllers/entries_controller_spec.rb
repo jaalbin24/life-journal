@@ -65,7 +65,7 @@ RSpec.describe EntriesController, type: :controller do
     describe 'POST #create' do
       it 'creates a new entry' do
         expect {
-          post :create, params: { entry: { title: 'Test Entry', text_content: 'This is a test entry.' } }
+          post :create, params: { entry: { title: 'Test Entry', content: 'This is a test entry.' } }
         }.to change(Entry, :count).by(1)
       end
     end

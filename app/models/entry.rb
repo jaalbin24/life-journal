@@ -2,16 +2,17 @@
 #
 # Table name: entries
 #
-#  id           :uuid             not null, primary key
-#  deleted      :boolean
-#  deleted_at   :datetime
-#  published_at :datetime
-#  status       :string
-#  text_content :string
-#  title        :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  author_id    :uuid
+#  id            :uuid             not null, primary key
+#  content       :string
+#  content_plain :string
+#  deleted       :boolean
+#  deleted_at    :datetime
+#  published_at  :datetime
+#  status        :string
+#  title         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  author_id     :uuid
 #
 # Indexes
 #
@@ -23,7 +24,7 @@
 #
 class Entry < ApplicationRecord
   paginates_per 12
-  has_rich_text :text_content, encrypted: true
+  has_rich_text :content, encrypted: true
   encrypts :title
   include Recoverable
 
@@ -31,29 +32,18 @@ class Entry < ApplicationRecord
   scope :drafts,      ->  {where(status: "draft")}
   scope :deleted,     ->  {where(status: "deleted")}
   scope :empty, -> {
-    where(
-      title: ['', nil],
-      text_content: ['', nil],
-    )
-    .left_outer_joins(:mentions, :lesson_applications, :milestones, :pictures, :rich_text_text_content)
-    .group(:id)
-    .having('COUNT(mentions.id) + COUNT(lesson_applications.id) + COUNT(milestones.id) + COUNT(pictures.id) + COUNT(action_text_rich_texts.id) = 0')
-    .where("action_text_rich_texts.body IS NULL OR action_text_rich_texts.body = ''")
+    joins(:mentions, :pictures)
+    .where(title: [nil, ''])
+    .where(content_plain: [nil, ''])
+    .where(mentions: { id: nil })
+    .where(pictures: { id: nil })
   }
   scope :not_empty, -> {
-    joins("LEFT JOIN action_text_rich_texts ON action_text_rich_texts.record_id = entries.id AND action_text_rich_texts.record_type = 'Entry' AND action_text_rich_texts.name = 'text_content'")
-    .where("action_text_rich_texts.body IS NOT NULL AND action_text_rich_texts.body != ''")
-    .or(
-      where("title != '' OR title IS NOT NULL OR text_content != '' OR text_content IS NOT NULL OR entries.id IN (
-        SELECT entry_id FROM mentions
-        UNION
-        SELECT entry_id FROM lesson_applications
-        UNION
-        SELECT entry_id FROM pictures
-        UNION
-        SELECT entry_id FROM milestones
-      )")
-    )
+    joins(:mentions, :pictures)
+    .where.not(title: [nil, ''])
+    .or(where.not(content_plain: [nil, '']))
+    .or(where.not(mentions: { id: nil }))
+    .or(where.not(pictures: { id: nil }))
   }
 
   has_many(
@@ -79,15 +69,8 @@ class Entry < ApplicationRecord
     inverse_of: :entries
   )
 
-  before_create do
-    self.status = 'draft' if status.blank?
-  end
-
-  before_save do
-    if status_changed? && published?
-      self.published_at = DateTime.now if published_at.blank?
-    end
-  end
+  before_create :init_status
+  before_save :cache_plain_content, :update_published_at
 
   def published?
     status == 'published'
@@ -104,4 +87,21 @@ class Entry < ApplicationRecord
       "Saved #{updated_at.strftime("%b %d, %Y")}"
     end
   end
+
+  private
+
+  def cache_plain_content
+    self.content_plain = content.body.to_plain_text.strip unless content.blank?
+  end
+
+  def update_published_at
+    if status_changed? && published?
+      self.published_at = DateTime.now if published_at.blank?
+    end
+  end
+
+  def init_status
+    self.status = 'draft' if status.blank?
+  end
+
 end

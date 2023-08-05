@@ -15,7 +15,7 @@ class EntriesTest < ApplicationSystemTestCase
     click_on "New entry"
 
     fill_in "Published at", with: @entry.published_at
-    fill_in "Text content", with: @entry.text_content
+    fill_in "Text content", with: @entry.content
     click_on "Create Entry"
 
     assert_text "Entry was successfully created"
@@ -27,7 +27,7 @@ class EntriesTest < ApplicationSystemTestCase
     click_on "Edit this entry", match: :first
 
     fill_in "Published at", with: @entry.published_at
-    fill_in "Text content", with: @entry.text_content
+    fill_in "Text content", with: @entry.content
     click_on "Update Entry"
 
     assert_text "Entry was successfully updated"

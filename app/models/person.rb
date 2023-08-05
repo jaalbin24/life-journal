@@ -15,15 +15,15 @@
 #  title         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  created_by_id :uuid
+#  user_id :uuid
 #
 # Indexes
 #
-#  index_people_on_created_by_id  (created_by_id)
+#  index_people_on_user_id  (user_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 class Person < ApplicationRecord
   paginates_per 24
@@ -49,9 +49,9 @@ class Person < ApplicationRecord
   has_many :traits, through: :personality
 
   belongs_to(
-    :created_by,
+    :user,
     class_name: "User",
-    foreign_key: :created_by_id,
+    foreign_key: :user_id,
     inverse_of: :people
   )
   validates :name, presence: true

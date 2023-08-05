@@ -13,7 +13,7 @@ class CreatePeople < ActiveRecord::Migration[7.0]
       t.string      :notes
       t.boolean     :deleted
       t.datetime    :deleted_at
-      t.references  :created_by,      foreign_key: {to_table: :users}, type: :uuid
+      t.references  :user,      foreign_key: {to_table: :users}, type: :uuid
 
       t.timestamps
     end

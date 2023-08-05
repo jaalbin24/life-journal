@@ -4,7 +4,7 @@ module ImageValidation
   private
 
   def file_is_img(file)
-    if send(file).attached? && !send(file).content_type.in?(%w(image/jpeg image/png image/jpg))
+    if send(file).attached? && !send(file).content_type.in?(%w(image/jpeg image/png image/jpeg))
       errors.add(file, "That file type is not allowed. Files must be JPEG, JPG, or PNG.")
     end
   end
