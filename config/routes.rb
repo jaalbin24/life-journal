@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   resources :entries, shallow: true do
     collection do
-      get 'draft', action: :drafts
+      get :published, action: :index, as: :published
+      get :drafts, action: :drafts, as: :draft
+      get :deleted, action: :deleted, as: :deleted
       get 'page/:page', action: :index
     end
     resources :pictures, only: [:index, :create]

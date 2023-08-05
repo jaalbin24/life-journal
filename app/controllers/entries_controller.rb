@@ -3,14 +3,24 @@ class EntriesController < ApplicationController
   before_action :set_entry, only: %i[ show edit update destroy ]
 
   # GET /entries
+  # GET /entries/published
   def index
     @entries = current_user.entries.not_deleted.published.order(published_at: :desc).page params[:page]
+    @index_title = "Published"
   end
 
   # GET /entries/drafts
   def drafts
     @entries = current_user.entries.not_deleted.drafts.not_empty.order(created_at: :desc).page params[:page]
-    render :drafts
+    @index_title = "Drafts"
+    render :index
+  end
+
+  # GET /entries/deleted
+  def deleted
+    @entries = current_user.entries.deleted.page params[:page]
+    @index_title = "Deleted"
+    render :index
   end
 
   # GET /entries/:id

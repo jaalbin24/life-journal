@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.1"
+ruby "3.2.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4", ">= 7.0.4.2"
@@ -55,6 +55,9 @@ group :development, :test do
   # FactoryBot and RSpec for testing
   gem 'factory_bot_rails'
   gem 'rspec-rails'
+
+  # Provides the assigns() and renders_template() methods used in controller testing
+  gem 'rails-controller-testing'
 end
 
 group :development do

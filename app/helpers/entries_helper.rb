@@ -35,8 +35,9 @@ module EntriesHelper
         segments.insert i+1, picture_html(picture_iterator.next)
         running_total = 0
       end
-    end.join.html_safe
+    end.join
   end
+
   # Takes a string of html and breaks it up for use by the formatted_entry_w_pictures method
   def segmentize(html_string)
     doc = Nokogiri::HTML(html_string)
