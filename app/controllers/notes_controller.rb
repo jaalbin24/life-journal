@@ -3,7 +3,7 @@ class NotesController < ApplicationController
     # POST /[notable]/:notable_id/notes
     def create
         note = @notable.notes.build notable_params
-        note.author = current_user
+        note.user = current_user
         if note.save
             flash[:success] = "Your note was created: \"#{note.content}\""
         else

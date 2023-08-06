@@ -32,5 +32,4 @@ class Mention < ApplicationRecord
         foreign_key: :entry_id,
         inverse_of: :mentions
     )
-
 end

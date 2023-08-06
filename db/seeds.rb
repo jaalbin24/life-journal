@@ -49,7 +49,7 @@ end
     rand(10..20).times do
         person.notes.create!(
             content: notes.sample,
-            author: me
+            user: me
         )
     end
     if rand(1..10) > 2
@@ -78,7 +78,7 @@ end
         entry.milestones.create!(
             content: milestones.sample,
             reached_at: entry.created_at,
-            user: entry.author
+            user: entry.user
         )
     end
     10.times do

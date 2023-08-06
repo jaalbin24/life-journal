@@ -12,15 +12,15 @@
 #  title         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  author_id     :uuid
+#  user_id     :uuid
 #
 # Indexes
 #
-#  index_entries_on_author_id  (author_id)
+#  index_entries_on_user_id  (user_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 class Entry < ApplicationRecord
   paginates_per 12
@@ -32,14 +32,14 @@ class Entry < ApplicationRecord
   scope :drafts,      ->  {where(status: "draft")}
   scope :deleted,     ->  {where(status: "deleted")}
   scope :empty, -> {
-    joins(:mentions, :pictures)
+    left_outer_joins(:mentions, :pictures)
     .where(title: [nil, ''])
     .where(content_plain: [nil, ''])
     .where(mentions: { id: nil })
     .where(pictures: { id: nil })
   }
   scope :not_empty, -> {
-    joins(:mentions, :pictures)
+    left_outer_joins(:mentions, :pictures)
     .where.not(title: [nil, ''])
     .or(where.not(content_plain: [nil, '']))
     .or(where.not(mentions: { id: nil }))
@@ -54,7 +54,7 @@ class Entry < ApplicationRecord
     dependent: :destroy
   )
   accepts_nested_attributes_for :mentions, allow_destroy: true
-  has_many :pictures
+  has_many :pictures, dependent: :destroy
   accepts_nested_attributes_for :pictures, allow_destroy: true
 
   has_many :people, through: :mentions
@@ -63,9 +63,9 @@ class Entry < ApplicationRecord
   has_many :milestones
 
   belongs_to(
-    :author,
+    :user,
     class_name: "User",
-    foreign_key: :author_id,
+    foreign_key: :user_id,
     inverse_of: :entries
   )
 
@@ -74,6 +74,17 @@ class Entry < ApplicationRecord
 
   def published?
     status == 'published'
+  end
+
+  def draft?
+    status == 'draft'
+  end
+
+  def empty?
+    title.blank? &&
+    content_plain.blank? &&
+    mentions.count == 0 &&
+    pictures.count == 0
   end
 
   def last_updated_caption

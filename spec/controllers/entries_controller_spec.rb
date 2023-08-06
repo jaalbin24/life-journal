@@ -4,9 +4,9 @@ RSpec.describe EntriesController, type: :controller do
   context "when the user is signed in" do
     before do
       user = create :user
-      create_list :entry, 3, :published, author: user
-      create_list :entry, 3, :draft, author: user
-      create_list :entry, 3, :deleted, author: user
+      create_list :entry, 3, :published, user: user
+      create_list :entry, 3, :draft, user: user
+      create_list :entry, 3, :deleted, user: user
       sign_in user
     end
     
@@ -59,6 +59,24 @@ RSpec.describe EntriesController, type: :controller do
       it 'only shows deleted entries' do
         expect(assigns(:entries).deleted.count).to eq assigns(:entries).count
         expect(assigns(:entries).not_deleted.count).to eq 0
+      end
+    end
+
+    describe 'GET #show' do
+      it 'renders the show view' do
+        expect(response).to have_http_status(:success)
+        expect(response).to render_template(:show)
+      end
+    end
+
+    describe 'GET #new' do
+      it 'renders the new view' do
+        expect(response).to have_http_status(:success)
+        expect(response).to render_template(:new)
+      end
+      it 'builds the view using an empty draft entry' do
+        expect(assigns(:entry).draft?).to be true
+        expect(assigns(:entry).empty?).to be true
       end
     end
 

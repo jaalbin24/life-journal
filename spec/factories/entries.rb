@@ -12,19 +12,19 @@
 #  title         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  author_id     :uuid
+#  user_id     :uuid
 #
 # Indexes
 #
-#  index_entries_on_author_id  (author_id)
+#  index_entries_on_user_id  (user_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 FactoryBot.define do
   factory :entry do
-    association :author, factory: :user
+    association :user, factory: :user
     title { "Test Title" }
     content { ActionText::Content.new(Faker::Lorem.paragraphs.join("\n\n")) }
 
@@ -39,7 +39,7 @@ FactoryBot.define do
     end
     trait :empty do
       title { nil }
-      content { }
+      content { nil }
     end
 
     transient do
@@ -49,7 +49,7 @@ FactoryBot.define do
 
     # Create associated records
     after(:create) do |entry, evaluator|
-      create_list(:picture, evaluator.num_pictures, entry: entry, user: entry.author)
+      create_list(:picture, evaluator.num_pictures, entry: entry, user: entry.user)
       create_list(:mention, evaluator.num_mentions, entry: entry)
     end
   end

@@ -18,5 +18,9 @@ module LifeJournal
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+
+    # This prevents a cascade of warning messages every time the dev db is seeded or tests are run
+    config.active_storage.variant_processor = :image_processing
   end
 end

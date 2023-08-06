@@ -15,8 +15,8 @@ class User < ApplicationRecord
     has_many(
         :entries,
         class_name: "Entry",
-        foreign_key: :author_id,
-        inverse_of: :author,
+        foreign_key: :user_id,
+        inverse_of: :user,
         dependent: :destroy
     )
 
@@ -30,6 +30,6 @@ class User < ApplicationRecord
     has_many :lessons
     has_many :milestones
     has_many :pictures
-    has_many :notes, foreign_key: :author_id
+    has_many :notes, foreign_key: :user_id
 
 end

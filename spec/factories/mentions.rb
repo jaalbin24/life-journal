@@ -24,9 +24,11 @@ FactoryBot.define do
       association :entry
 
       # Create associated records if they aren't already created
-      after(:build) do |mention, evaluator|
-        mention.person = build(:person, user: entry.author) if person.nil?
-        mention.entry = build(:entry) if entry.nil?
+      after :build do |mention, evaluator|
+        user = mention.entry&.user
+        user ||= mention.person&.user
+        mention.person = build(:person, user: user) if mention.person.nil?
+        mention.entry = build(:entry, user: user) if mention.entry.nil?
       end
     end
   end

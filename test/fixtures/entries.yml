@@ -12,15 +12,15 @@
 #  title         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  author_id     :uuid
+#  user_id     :uuid
 #
 # Indexes
 #
-#  index_entries_on_author_id  (author_id)
+#  index_entries_on_user_id  (user_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 
 one:
