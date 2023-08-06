@@ -2,20 +2,20 @@
 #
 # Table name: people
 #
-#  id            :uuid             not null, primary key
-#  biography     :string
-#  deleted       :boolean
-#  deleted_at    :datetime
-#  first_name    :string
-#  gender        :string
-#  last_name     :string
-#  middle_name   :string
-#  nickname      :string
-#  notes         :string
-#  title         :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  user_id :uuid
+#  id          :uuid             not null, primary key
+#  biography   :string
+#  deleted     :boolean
+#  deleted_at  :datetime
+#  first_name  :string
+#  gender      :string
+#  last_name   :string
+#  middle_name :string
+#  nickname    :string
+#  notes       :string
+#  title       :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  user_id     :uuid
 #
 # Indexes
 #
@@ -57,11 +57,19 @@ class Person < ApplicationRecord
   validates :name, presence: true
   validate  ->  (p)  {file_is_img(:avatar)}
 
-
   def name
-    [(nickname.blank? ? first_name : nickname), last_name].reject(&:blank?).join(" ")
+    [(nickname.blank? ? first_name : nickname), last_name].reject(&:blank?).join(" ").titleize
   end
 
+  def full_name
+    # This strange formatting of title in the first element keeps the starting character in the
+    # Person's title capitalized while leaving the rest of the characters well alone. This is done
+    # to prevent words like "CEO" becoming "Ceo"
+    [("#{title[0].capitalize}#{title[1..-1]}" if title), first_name&.titleize, middle_name&.titleize, last_name&.titleize].reject(&:blank?).join(" ")
+  end
+
+
+  # This method needs to be deprecated soon in favor of ELASTICSEARCH.
   def self.search(params)
     result = self.all
     if params[:name].include?(' ')

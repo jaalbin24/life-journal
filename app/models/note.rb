@@ -9,13 +9,13 @@
 #  notable_type :string           not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  user_id    :uuid             not null
 #  notable_id   :uuid             not null
+#  user_id      :uuid             not null
 #
 # Indexes
 #
+#  index_notes_on_notable  (notable_type,notable_id)
 #  index_notes_on_user_id  (user_id)
-#  index_notes_on_notable    (notable_type,notable_id)
 #
 # Foreign Keys
 #

@@ -2,17 +2,17 @@
 #
 # Table name: entries
 #
-#  id      :uuid       not null, primary key
-#  content     :string
+#  id            :uuid             not null, primary key
+#  content       :string
 #  content_plain :string
-#  deleted     :boolean
-#  deleted_at  :datetime
+#  deleted       :boolean
+#  deleted_at    :datetime
 #  published_at  :datetime
-#  status    :string
-#  title     :string
-#  created_at  :datetime     not null
-#  updated_at  :datetime     not null
-#  user_id   :uuid
+#  status        :string
+#  title         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  user_id       :uuid
 #
 # Indexes
 #
@@ -25,6 +25,11 @@
 require 'rails_helper'
 
 RSpec.describe Entry, type: :model do
+
+  it "implements the recoverable concern" do
+    expect(Entry.ancestors).to include Recoverable
+  end
+
   describe "scopes" do
     describe "#empty" do
       it "selects entries without a title, content, mention, or picture" do
@@ -106,8 +111,11 @@ RSpec.describe Entry, type: :model do
   describe "attributes" do
     describe "#title" do
       it "is encrypted" do
-        e = create :entry
-        expect(e.encrypted_attribute? :title).to be true
+        expect(Entry.encrypted_attributes).to include :title
+      end
+      it "returns a string" do
+        e = create :entry, title: "Once Upon a Time..."
+        expect(e.title).to be_a String
       end
     end
 
@@ -115,6 +123,10 @@ RSpec.describe Entry, type: :model do
       it "is encrypted" do
         e = create :entry
         expect(e.content.encrypted_attribute? :body).to be true
+      end
+      it "returns an encrypted ActionText object" do
+        e = create :entry, content: "Once Upon a Time..."
+        expect(e.content).to be_a ActionText::EncryptedRichText
       end
     end
   end

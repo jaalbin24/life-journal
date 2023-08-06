@@ -12,7 +12,7 @@
 #  title         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  user_id     :uuid
+#  user_id       :uuid
 #
 # Indexes
 #
@@ -36,6 +36,7 @@ FactoryBot.define do
     end
     trait :deleted do
       deleted { true }
+      deleted_at { 1.day.ago }
     end
     trait :empty do
       title { nil }

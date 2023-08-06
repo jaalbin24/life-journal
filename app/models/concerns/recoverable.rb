@@ -12,9 +12,7 @@ module Recoverable
     included do
         scope :deleted,     ->  {where(deleted: true)}
         scope :not_deleted, ->  {where(deleted: false)}
-        before_create do
-            self.deleted = false if deleted.nil?
-        end
+        before_create :init_deleted
     end
 
     def mark_as_deleted
@@ -36,5 +34,11 @@ module Recoverable
         else
             false
         end
+    end
+
+    private
+
+    def init_deleted
+        self.deleted = false if deleted.nil?
     end
 end
