@@ -22,10 +22,7 @@ require 'rails_helper'
 
 RSpec.describe Personality, type: :model do
   describe "scopes" do
-    it do
-      pending
-      fail
-    end
+    # This model does not have any scopes.
   end
 
   describe "attributes" do

@@ -83,4 +83,9 @@ end
 # Foreman for executing complicated start up process. Allows execution of multiple startup processes from a single command.
 gem 'foreman'
 
+# For breaking up indexes into pages
 gem 'kaminari'
+
+# For searching
+gem 'elasticsearch-rails'
+gem 'elasticsearch-model'

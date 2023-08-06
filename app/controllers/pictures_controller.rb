@@ -14,7 +14,6 @@ class PicturesController < ApplicationController
         if @picture.save
             render json: @picture
         else
-            puts "ERROR ========================= #{@picture.errors.full_messages.inspect}"
             head 400
         end
     end
