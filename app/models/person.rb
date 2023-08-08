@@ -25,10 +25,14 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
+
+
 class Person < ApplicationRecord
-  paginates_per 24
   include Recoverable
   include ImageValidation
+  include Searchable
+  search_on :first_name, :last_name, :middle_name, :nickname
+  paginates_per 24
   encrypts :first_name, :last_name, :middle_name, :nickname, :gender, :title, deterministic: true
   encrypts :biography
   has_one_attached :avatar
@@ -70,23 +74,23 @@ class Person < ApplicationRecord
 
 
   # This method needs to be deprecated soon in favor of ELASTICSEARCH.
-  def self.search(params)
-    result = self.all
-    if params[:name].include?(' ')
-      first_name, last_name = params[:name].downcase.split(' ')
-      result = result.where("LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?", "%#{ActiveRecord::Base.sanitize_sql_like(first_name)}%", "%#{ActiveRecord::Base.sanitize_sql_like(last_name)}%")
-    else
-      result = result.where("LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?", "%#{ActiveRecord::Base.sanitize_sql_like(params[:name].downcase)}%", "%#{ActiveRecord::Base.sanitize_sql_like(params[:name].downcase)}%")
-    end
-    result
-  end
+  # def self.search(params)
+  #   result = self.all
+  #   if params[:name].include?(' ')
+  #     first_name, last_name = params[:name].downcase.split(' ')
+  #     result = result.where("LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?", "%#{ActiveRecord::Base.sanitize_sql_like(first_name)}%", "%#{ActiveRecord::Base.sanitize_sql_like(last_name)}%")
+  #   else
+  #     result = result.where("LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?", "%#{ActiveRecord::Base.sanitize_sql_like(params[:name].downcase)}%", "%#{ActiveRecord::Base.sanitize_sql_like(params[:name].downcase)}%")
+  #   end
+  #   result
+  # end
 
-  def as_json(args={})
-    super(args.merge(
-      only: [:id],
-      methods: [:name, :show_path, :avatar_url],
-    ))
-  end
+  # def as_json(args={})
+  #   super(args.merge(
+  #     only: [:id],
+  #     methods: [:name, :show_path, :avatar_url],
+  #   ))
+  # end
 
   def show_path
     Rails.application.routes.url_helpers.person_path(self)

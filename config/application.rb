@@ -2,6 +2,9 @@ require_relative "boot"
 
 require "rails/all"
 
+# Shows elasticsearch info in log files
+require 'elasticsearch/rails/instrumentation'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -22,5 +25,8 @@ module LifeJournal
 
     # This prevents a cascade of warning messages every time the dev db is seeded or tests are run
     config.active_storage.variant_processor = :image_processing
+
+
+    
   end
 end

@@ -36,6 +36,25 @@ RSpec.describe Person, type: :model do
     expect(Person.ancestors).to include Recoverable
   end
 
+  describe "ElasticSearch" do
+    it "is included" do
+      expect(Person.ancestors).to include Elasticsearch::Model
+      expect(Person.ancestors).to include Elasticsearch::Model::Callbacks
+    end
+    it "indexes on the person's first name" do
+
+    end
+    it "indexes on the person's middle name" do
+
+    end
+    it "indexes on the person's last name" do
+
+    end
+    it "indexes on the person's nickname" do
+
+    end
+  end
+
   describe "attributes" do
     describe "#first_name" do
       it "is encrypted" do
