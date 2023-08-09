@@ -89,3 +89,7 @@ gem 'kaminari'
 # For searching
 gem 'elasticsearch-rails'
 gem 'elasticsearch-model'
+
+
+# For storing ActiveJob jobs
+gem 'sidekiq'

@@ -1,2 +1,3 @@
 web: RAILS_ENV=production rails server -p 3000
-tailwinds: rails tailwindcss:watch
+css: rails tailwindcss:watch
+jobs: sidekiq -C config/sidekiq.yml

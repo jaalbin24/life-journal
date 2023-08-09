@@ -64,7 +64,7 @@ end
     end
 end
 
-0.times do
+24.times do
     content = Array.new(rand(4..20)) do
         Faker::Lorem.paragraph_by_chars(number: rand(50..500), supplemental: true)
     end

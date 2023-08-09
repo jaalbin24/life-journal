@@ -15,48 +15,78 @@ module Searchable
     include Elasticsearch::Model 
     include Elasticsearch::Model::Callbacks
 
-    settings index: { number_of_shards: 1, number_of_replicas: 0 } do
-      mappings dynamic: 'false' do
-        indexes :first_name, type: 'text'
-        indexes :last_name, type: 'text'
-      end
+    after_commit :index_es_document,    on: [:create]
+    after_commit :update_es_document,   on: [:update]
+    after_commit :delete_es_documenton, on: [:destroy]
+
+    def index_es_document
+      __elasticsearch__.index_document
+      # You should not have asyncronous HTTP calls in an after_commit callback.
+      # Move the Elasticsearch API requests to an ActiveJob.
+    end
+
+    def update_es_document
+      __elasticsearch__.update_document
+    end
+
+    def delete_es_document
+      __elasticsearch__.delete_document
     end
   end
   
 
   class_methods do
-    def search(query)
+    # Accepts these options:
+    #   limit: integer
+    def search(query, opts={limit: 10})
       __elasticsearch__.search(
         {
           query: {
             multi_match: {
               query: query,
-              fields: get_search_fields
+              fields: get_searchable_attrs,
+              fuzziness: 'AUTO'
             }
-          }
+          },
+          size: opts[:limit]
         }
       )
     end
 
     # Defines the attributes that can be used to search in the model.
-    def search_on(*search_fields)
-      raise StandardError.new "search_on must take an argument" unless search_fields
-      @@search_fields ||= search_fields.map(&:to_s)
+    # Also inits elasticsearch settings.
+    # Set searchable_attrs in the model file.
+    def search_on(*searchable_attrs)
+      raise StandardError.new "search_on must take an argument" unless searchable_attrs
+      settings index: { number_of_shards: 1, number_of_replicas: 0 }
+      
+      mappings dynamic: 'false' do
+        searchable_attrs.each do |atty|
+          indexes atty.to_sym, type: 'text'
+        end
+      end
+
+      @@searchable_attrs ||= searchable_attrs.map(&:to_s)
     end
 
-    def start
-      Person.__elasticsearch__.delete_index!
+    # WARNING CAUTION DANGER CAREFUL WATCH OUT
+    # For development/testing purposes ONLY
+    def rebuild_elasticsearch_index
+      raise StandardError.new "DO NOT RUN THIS METHOD IN PRODUCTION" if Rails.env.production?
+      self.__elasticsearch__.delete_index!
       sleep 1
-      Person.__elasticsearch__.create_index!
+      self.__elasticsearch__.create_index!
       sleep 1
-      Person.import
+      self.import
     end
+    # End of danger
+
 
     private
 
-    def get_search_fields
-      raise StandardError.new "search_fields are not defined for the #{self.name} class." unless @@search_fields
-      @@search_fields 
+    def get_searchable_attrs
+      raise StandardError.new "searchable_attrs are not defined for the #{self.name} class." unless @@searchable_attrs
+      @@searchable_attrs 
     end
   end
 end
