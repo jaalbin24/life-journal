@@ -17,7 +17,7 @@ module Searchable
 
     after_commit :index_es_document,    on: [:create]
     after_commit :update_es_document,   on: [:update]
-    after_commit :delete_es_documenton, on: [:destroy]
+    after_commit :delete_es_document,   on: [:destroy]
 
     def index_es_document
       IndexElasticsearchDocumentJob.perform_later self
@@ -54,8 +54,8 @@ module Searchable
     # Defines the attributes that can be used to search in the model.
     # Also inits elasticsearch settings.
     # Set searchable_attrs in the model file.
-    def search_on(*searchable_attrs)
-      raise StandardError.new "search_on must take an argument" unless searchable_attrs
+    def searches(*searchable_attrs)
+      raise StandardError.new "searches must take an argument" unless searchable_attrs
       settings index: { number_of_shards: 1, number_of_replicas: 0 }
       
       mappings dynamic: 'false' do
@@ -71,9 +71,9 @@ module Searchable
     # For development/testing purposes ONLY
     def rebuild_elasticsearch_index
       raise StandardError.new "DO NOT RUN THIS METHOD IN PRODUCTION" if Rails.env.production?
-      self.__elasticsearch__.delete_index!
+      self.__elasticsearch__.delete_index! # VERY LAGGY
       sleep 1
-      self.__elasticsearch__.create_index!
+      self.__elasticsearch__.create_index! # VERY LAGGY
       sleep 1
       self.import
     end

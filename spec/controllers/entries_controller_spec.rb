@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe EntriesController, type: :controller do
   context "when the user is signed in" do
     before do
-      user = create :user
-      create_list :entry, 3, :published, user: user
-      create_list :entry, 3, :draft, user: user
-      create_list :entry, 3, :deleted, user: user
-      sign_in user
+      @user = create :user
+      create_list :entry, 3, :published, user: @user
+      create_list :entry, 3, :draft, user: @user
+      create_list :entry, 3, :deleted, user: @user
+      sign_in @user
     end
     
     describe 'GET #index' do

@@ -57,4 +57,9 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+
+  # Added so that ActiveJob jobs could be tested with RSpec
+  config.active_job.queue_adapter = :test
+
 end

@@ -31,7 +31,7 @@ class Person < ApplicationRecord
   include Recoverable
   include ImageValidation
   include Searchable
-  search_on :first_name, :last_name#, :middle_name, :nickname
+  searches :first_name, :last_name#, :middle_name, :nickname
   paginates_per 24
   encrypts :first_name, :last_name, :middle_name, :nickname, :gender, :title, deterministic: true
   encrypts :biography
