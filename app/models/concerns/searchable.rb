@@ -20,17 +20,15 @@ module Searchable
     after_commit :delete_es_documenton, on: [:destroy]
 
     def index_es_document
-      __elasticsearch__.index_document
-      # You should not have asyncronous HTTP calls in an after_commit callback.
-      # Move the Elasticsearch API requests to an ActiveJob.
+      IndexElasticsearchDocumentJob.perform_later self
     end
 
     def update_es_document
-      __elasticsearch__.update_document
+      UpdateElasticsearchDocumentJob.perform_later self
     end
 
     def delete_es_document
-      __elasticsearch__.delete_document
+      DeleteElasticsearchDocumentJob.perform_later self
     end
   end
   
