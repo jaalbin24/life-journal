@@ -1,8 +1,11 @@
 class DeleteElasticsearchDocumentJob < ApplicationJob
   queue_as :default
-  retry_on StandardError do |job, error, attempt|
-    # Retry if the Elasticsearch API request fails (API is down or there are network issues)
+  include Monitorable
+  retry_on Faraday::ConnectionFailed, Net::OpenTimeout, Net::ReadTimeout, wait: :exponentially_longer do |job, error, attempt|
+    # Log the error with prometheus
   end
+
+  
   
   
   def perform(model)
