@@ -328,8 +328,6 @@ RSpec.describe Entry, type: :model do
     end
   end
   describe "validations" do
-    it "" do
-      
-    end
+    # The entry model has no validations
   end
 end

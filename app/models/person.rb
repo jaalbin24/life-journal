@@ -68,7 +68,7 @@ class Person < ApplicationRecord
   def full_name
     # This strange formatting of title in the first element keeps the starting character in the
     # Person's title capitalized while leaving the rest of the characters well alone. This is done
-    # to prevent words like "CEO" becoming "Ceo"
+    # to prevent words like "CEO" becoming "Ceo when using a simple title.titleize"
     [("#{title[0].capitalize}#{title[1..-1]}" if title), first_name&.titleize, middle_name&.titleize, last_name&.titleize].reject(&:blank?).join(" ")
   end
 
