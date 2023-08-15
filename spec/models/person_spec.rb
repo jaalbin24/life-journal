@@ -32,8 +32,14 @@ RSpec.describe Person, type: :model do
     # There are currently no scopes in the Person model
   end
 
-  it "implements the recoverable concern" do
+  it "implements the Recoverable concern" do
     expect(Person.ancestors).to include Recoverable
+  end
+  it "implements the Searchable concern" do
+    expect(Person.ancestors).to include Searchable
+  end
+  it "implements the ImageValidation concern" do
+    expect(Person.ancestors).to include ImageValidation
   end
 
   describe "ElasticSearch" do
@@ -42,16 +48,20 @@ RSpec.describe Person, type: :model do
       expect(Person.ancestors).to include Elasticsearch::Model::Callbacks
     end
     it "indexes on the person's first name" do
-
+      pending "How do I test this?"
+      fail
     end
     it "indexes on the person's middle name" do
-
+      pending "How do I test this?"
+      fail
     end
     it "indexes on the person's last name" do
-
+      pending "How do I test this?"
+      fail
     end
     it "indexes on the person's nickname" do
-
+      pending "How do I test this?"
+      fail
     end
   end
 
@@ -120,6 +130,26 @@ RSpec.describe Person, type: :model do
         p = create :person, biography: "All about me"
         expect(p.biography).to be_a String
       end
+    end
+    it "contains no unexpected attributes" do
+      expected_attributes = [
+        :id,
+        :title,
+        :first_name,
+        :middle_name,
+        :last_name,
+        :nickname,
+        :gender,
+        :biography,
+        :notes,
+        :deleted,
+        :deleted_at,
+        :user_id,
+        :created_at,
+        :updated_at
+      ]
+      unexpected_attributes = Person.new.attributes.keys.map(&:to_sym) - expected_attributes
+      expect(unexpected_attributes).to be_empty, "Unexpected attributes found: #{unexpected_attributes.join(' ')}"
     end
   end
 
@@ -316,9 +346,6 @@ RSpec.describe Person, type: :model do
         end
       end
     end
-    describe "" do
-
-    end
   end
 
   describe "callbacks" do
@@ -355,9 +382,49 @@ RSpec.describe Person, type: :model do
   end
 
   describe "validations" do
-    it do
-      pending
-      fail
+    describe "name" do
+      it "must be present" do
+        p = create :person
+        expect(p.name).to_not be_blank
+        expect(p.valid?).to be true        
+        p.first_name = nil
+        expect(p.name).to be_blank
+        expect(p.valid?).to be false       
+      end
+    end
+    describe "avatar" do
+      it "is run against the ImageValidation#file_is_img method" do
+        pending "Implement the ImageValidation tests"
+        fail
+      end
+      # All these tests should be moved to a dedicated ImageValidation test file
+      # ======================== BEGIN ========================
+      it "can be a png" do
+        p = create :person
+        image_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*.png").sample        
+        expect(image_path).to be_truthy # The file should exist
+        p.avatar.attach(Rack::Test::UploadedFile.new(image_path))
+        expect(p.valid?).to be true
+      end
+      it "can be a jpg" do
+        p = create :person
+        image_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*.jpg").sample        
+        expect(image_path).to be_truthy # The file should exist
+        p.avatar.attach(Rack::Test::UploadedFile.new(image_path))
+        expect(p.valid?).to be true
+      end
+      it "can be a jpeg" do
+        p = create :person
+        image_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*.jpeg").sample        
+        expect(image_path).to be_truthy # The file should exist
+        p.avatar.attach(Rack::Test::UploadedFile.new(image_path))
+        expect(p.valid?).to be true
+      end
+      it "cannot be any other file type" do
+        pending "Download a file of every magic number and test that it cannot be attached."
+        fail
+      end
+      # ========================= END =========================
     end
   end
 end

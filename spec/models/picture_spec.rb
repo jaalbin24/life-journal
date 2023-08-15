@@ -37,6 +37,21 @@ RSpec.describe Picture, type: :model do
       pending
       fail
     end
+    it "contains no unexpected attributes" do
+      expected_attributes = [
+        :id,
+        :description,
+        :title,
+        :entry_id,
+        :user_id,
+        :deleted,
+        :deleted_at,
+        :created_at,
+        :updated_at
+      ]
+      unexpected_attributes = Picture.new.attributes.keys.map(&:to_sym) - expected_attributes
+      expect(unexpected_attributes).to be_empty, "Unexpected attributes found: #{unexpected_attributes.join(' ')}"
+    end
   end
 
   describe "methods" do

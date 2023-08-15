@@ -40,7 +40,21 @@ RSpec.describe Note, type: :model do
   end
 
   describe "associations" do
-
+    it "contains no unexpected attributes" do
+      expected_attributes = [
+        :id,
+        :content,
+        :user_id,
+        :notable_type,
+        :notable_id,
+        :deleted,
+        :deleted_at,
+        :created_at,
+        :updated_at
+      ]
+      unexpected_attributes = Note.new.attributes.keys.map(&:to_sym) - expected_attributes
+      expect(unexpected_attributes).to be_empty, "Unexpected attributes found: #{unexpected_attributes.join(' ')}"
+    end
   end
 
   describe "validations" do

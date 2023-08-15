@@ -118,7 +118,6 @@ RSpec.describe Entry, type: :model do
         expect(e.title).to be_a String
       end
     end
-
     describe "#content" do
       it "is encrypted" do
         e = create :entry
@@ -128,6 +127,23 @@ RSpec.describe Entry, type: :model do
         e = create :entry, content: "Once Upon a Time..."
         expect(e.content).to be_a ActionText::EncryptedRichText
       end
+    end
+    it "contains no unexpected attributes" do
+      expected_attributes = [
+        :id,
+        :published_at,
+        :deleted,
+        :deleted_at,
+        :title,
+        :content,
+        :content_plain,
+        :status,
+        :user_id,
+        :created_at,
+        :updated_at
+      ]
+      unexpected_attributes = Entry.new.attributes.keys.map(&:to_sym) - expected_attributes
+      expect(unexpected_attributes).to be_empty, "Unexpected attributes found: #{unexpected_attributes.join(' ')}"
     end
   end
   describe "methods" do
@@ -328,8 +344,6 @@ RSpec.describe Entry, type: :model do
     end
   end
   describe "validations" do
-    it "" do
-      
-    end
+    # The entry model has no validations
   end
 end

@@ -15,12 +15,16 @@ module Recoverable
         before_create :init_deleted
     end
 
+    def deleted?
+        deleted
+    end
+
     def mark_as_deleted
         self.deleted = true
         self.deleted_at = DateTime.now
         if self.save
             # Enque the deletion job.
-            true
+            self
         else
             false
         end
@@ -30,7 +34,7 @@ module Recoverable
         self.deleted = false
         if self.save
             # Cancel the deletion job.
-            true
+            self
         else
             false
         end
