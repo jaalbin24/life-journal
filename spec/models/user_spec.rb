@@ -12,17 +12,40 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+
+  it "has secure password" do
+    pending
+    fail
+  end
+
   describe "scopes" do
-    it do
-      pending
-      fail
-    end
+    # The user model has no scopes
   end
 
   describe "attributes" do
-    it do
-      pending
-      fail
+    describe "#email" do
+      it "is encrypted deterministically" do
+        pending
+        fail
+      end
+    end
+    describe "#password_digest" do
+      
+    end
+    describe "#status" do
+      # Why is this attribute here?
+    end
+    it "contains no unexpected attributes" do
+      expected_attributes = [
+        :id,
+        :email,
+        :password_digest,
+        :status,
+        :created_at,
+        :updated_at
+      ]
+      unexpected_attributes = User.new.attributes.keys.map(&:to_sym) - expected_attributes
+      expect(unexpected_attributes).to be_empty, "Unexpected attributes found: #{unexpected_attributes.join(' ')}"
     end
   end
 
@@ -41,10 +64,19 @@ RSpec.describe User, type: :model do
   end
 
   describe "associations" do
-    it do
-      pending
-      fail
+    describe "#people" do
+      
     end
+    describe "#entries" do
+      
+    end
+    describe "#pictures" do
+      
+    end
+    describe "#notes" do
+      
+    end
+    
   end
 
   describe "validations" do

@@ -131,6 +131,26 @@ RSpec.describe Person, type: :model do
         expect(p.biography).to be_a String
       end
     end
+    it "contains no unexpected attributes" do
+      expected_attributes = [
+        :id,
+        :title,
+        :first_name,
+        :middle_name,
+        :last_name,
+        :nickname,
+        :gender,
+        :biography,
+        :notes,
+        :deleted,
+        :deleted_at,
+        :user_id,
+        :created_at,
+        :updated_at
+      ]
+      unexpected_attributes = Person.new.attributes.keys.map(&:to_sym) - expected_attributes
+      expect(unexpected_attributes).to be_empty, "Unexpected attributes found: #{unexpected_attributes.join(' ')}"
+    end
   end
 
   describe "methods" do

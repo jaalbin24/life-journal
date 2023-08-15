@@ -33,6 +33,14 @@ RSpec.describe Recoverable, type: :model do
         end
     end
     describe "methods" do
+        describe "#deleted?" do
+            it "returns the the value of the deleted attr" do
+                e1 = create :entry
+                e2 = create :entry, :deleted
+                expect(e1.deleted?).to be false
+                expect(e2.deleted?).to be true
+            end
+        end
         describe "#mark_as_deleted" do
             it "sets the deleted attr to true" do
                 e = create :entry
@@ -51,6 +59,15 @@ RSpec.describe Recoverable, type: :model do
                 expect(e.persisted?).to be false
                 e.mark_as_deleted
                 expect(e.persisted?).to be true
+            end
+            it "returns the model if the marking was successful" do
+                e = create :entry
+                expect(e.mark_as_deleted).to be e
+            end
+            it "returns false if the marking was unsuccessful" do
+                e = create :entry
+                allow(e).to receive(:save).and_return(false)
+                expect(e.mark_as_deleted).to be false
             end
             it "enques a deletion job" do
                 pending "Need to implement a background job system first"
@@ -74,12 +91,21 @@ RSpec.describe Recoverable, type: :model do
                 e.recover
                 expect(e.persisted?).to be true
             end
+            it "returns the model if the recovery was successful" do
+                e = create :entry, :deleted
+                expect(e.recover).to be e
+            end
+            it "returns false if the recovery was unsuccessful" do
+                e = create :entry, :deleted
+                allow(e).to receive(:save).and_return(false)
+                expect(e.recover).to be false
+            end
             it "cancels any enqued deletion job" do
                 pending "Need to implement a background job system first"
                 fail
             end
         end
-        describe "init_deleted" do
+        describe "#init_deleted" do
             it "is a private method" do
                 e = create :entry
                 expect(e.respond_to?(:init_deleted, true)).to be_truthy # The method exists
