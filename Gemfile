@@ -93,5 +93,6 @@ gem 'elasticsearch-model'
 # For storing ActiveJob jobs
 gem 'sidekiq'
 
-# For application health monitoring using Prometheus
-gem 'prometheus-client'
+# For error monitoring with sentry
+gem "sentry-ruby"
+gem "sentry-rails"
