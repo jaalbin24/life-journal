@@ -54,7 +54,7 @@ RSpec.describe Personality, type: :model do
     it "contains no unexpected attributes" do
       expected_attributes = [
         :id,
-        :person_id
+        :person_id,
         :trait_id,
         :created_at,
         :updated_at
