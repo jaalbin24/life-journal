@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :redirect_unauthenticated, except: [:new, :create]
 
-  # GET /users or /users.json
+  # GET /users
   def index
     @users = User.all
   end
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /users/1 or /users/1.json
+  # PATCH/PUT /users/1
   def update
     respond_to do |format|
       if @user.update(user_params)
