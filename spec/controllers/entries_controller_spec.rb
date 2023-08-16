@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe EntriesController, type: :controller do
+
+  it "has no unexpected actions" do
+    pending
+    fail
+  end
+
   context "when the user is signed in" do
     before do
       @user = create :user
