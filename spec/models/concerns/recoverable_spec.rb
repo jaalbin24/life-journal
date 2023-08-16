@@ -3,6 +3,9 @@ require 'rails_helper'
 # This concern is tested using the Entry model
 
 RSpec.describe Recoverable, type: :model do
+    class TestModel < ApplicationRecord
+        include Recoverable
+    end
     it "is a concern" do
         expect(Recoverable.ancestors).to include ActiveSupport::Concern
     end
@@ -70,8 +73,8 @@ RSpec.describe Recoverable, type: :model do
                 expect(e.mark_as_deleted).to be false
             end
             it "enques a deletion job" do
-                pending "Need to implement a background job system first"
-                fail
+                e = create :entry
+                expect { e.mark_as_deleted }.to have_enqueued_job PermanentlyDeleteRecoverableJob
             end
         end
         describe "#recover" do
@@ -110,6 +113,20 @@ RSpec.describe Recoverable, type: :model do
                 e = create :entry
                 expect(e.respond_to?(:init_deleted, true)).to be_truthy # The method exists
                 expect { e.init_deleted }.to raise_error NoMethodError # But it's private
+            end
+        end
+    end
+    describe "class methods" do
+        describe "#TIME_TO_WAIT_BEFORE_DELETION" do
+            it "defaults to 30.days if delete_after is never called" do
+                expect(TestModel.TIME_TO_WAIT_BEFORE_DELETION).to eq(30.days)
+            end
+        end
+        describe "#delete_after" do
+            it "sets @@TIME_TO_WAIT_BEFORE_DELETION" do
+                TestModel.delete_after(100.years)
+                expect(TestModel.TIME_TO_WAIT_BEFORE_DELETION).to eq(100.years)
+                TestModel.delete_after(30.days) # Set it back to its default setting for future tests
             end
         end
     end

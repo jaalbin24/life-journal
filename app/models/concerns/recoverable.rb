@@ -15,6 +15,17 @@ module Recoverable
         before_create :init_deleted
     end
 
+    class_methods do
+        def delete_after(time) # EXAMPLE: delete_after 30.days
+            @@TIME_TO_WAIT_BEFORE_DELETION = time
+        end
+
+
+        def TIME_TO_WAIT_BEFORE_DELETION
+            @@TIME_TO_WAIT_BEFORE_DELETION ||= 30.days # default to 30.days
+        end
+    end
+
     def deleted?
         deleted
     end
@@ -23,7 +34,7 @@ module Recoverable
         self.deleted = true
         self.deleted_at = DateTime.now
         if self.save
-            # Enque the deletion job.
+            PermanentlyDeleteRecoverableJob.set(wait: self.class.TIME_TO_WAIT_BEFORE_DELETION).perform_later self
             self
         else
             false
