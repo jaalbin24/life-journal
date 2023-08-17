@@ -113,5 +113,4 @@ class Entry < ApplicationRecord
   def init_status
     self.status = 'draft' if status.blank?
   end
-
 end

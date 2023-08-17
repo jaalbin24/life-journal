@@ -6,20 +6,19 @@ RSpec.describe UsersController, type: :controller do
     pending
     fail
   end
-
-  describe 'GET #index' do
-    it 'does not do anything' do
-      pending
-      fail
-    end
-  end
-
-  context "when the user is signed in" do
+  describe "actions" do
     before do
       @user = create :user
       sign_in @user
     end
-    
+
+    describe 'GET #index' do
+      it 'does not do anything' do
+        pending
+        fail
+      end
+    end
+
     describe 'GET #show' do
       before {get :show, params: {id: @user.id}}
       it 'renders the show view' do
@@ -27,6 +26,12 @@ RSpec.describe UsersController, type: :controller do
         expect(response).to render_template(:show)
       end
       it "assigns the current user to @user" do
+        pending; fail
+      end
+      it "requires authentication" do
+        pending; fail
+      end
+      it 'returns a 200 code' do
         pending; fail
       end
     end
@@ -40,6 +45,12 @@ RSpec.describe UsersController, type: :controller do
       it 'builds the view using a non-saved user' do
         expect(assigns(:user).persisted?).to be false
       end
+      it "does not require authentication" do
+        pending; fail
+      end
+      it 'returns a 200 code' do
+        pending; fail
+      end
     end
 
     describe 'GET #edit' do
@@ -49,8 +60,13 @@ RSpec.describe UsersController, type: :controller do
         expect(response).to render_template(:edit)
       end
       it 'builds the view using the current user' do
-        pending
-        fail
+        pending; fail
+      end
+      it "requires authentication" do
+        pending; fail
+      end
+      it 'returns a 200 code' do
+        pending; fail
       end
     end
 
@@ -63,27 +79,76 @@ RSpec.describe UsersController, type: :controller do
         it "will redirect to the user show page" do
           pending; fail
         end
+        it 'returns a 303 code' do
+          pending; fail
+        end
       end
       context "with invalid parameters" do
         it "will not update the user record" do
           pending; fail
         end
-        it "will render the new template" do
+        it "will render the edit view" do
           pending; fail
         end
-        it "assigns the requested user as @user" do
+        it 'returns a 422 code' do
           pending; fail
         end
+      end
+      it "assigns the requested user as @user" do
+        pending; fail
+      end
+      it "requires authentication" do
+        pending; fail
       end
     end
 
     describe 'POST #create' do
       # before {post :create}
-      it 'creates a new user' do
+      context "with valid parameters" do
+        it 'creates a new user' do
+          pending; fail
+        end
+        it 'redirects to the after sign up path' do
+          pending; fail
+        end
+        it 'returns a 303 code' do
+          pending; fail
+        end
+      end
+      context "with invalid parameters" do
+        it 'does not create a new user' do
+          pending; fail
+        end
+        it 'renders the new view' do
+          pending; fail
+        end
+        it 'returns a 422 code' do
+          pending; fail
+        end
+      end
+      it "does not require authentication" do
         pending; fail
       end
     end
   end
-  # Add more test cases for other controller actions as needed
+  
+  describe "methods" do
+    describe "#after_sign_up_path" do
+      it "is private" do
+        pending; fail
+      end
+      it "returns the root path" do # For now
+        pending; fail
+      end
+    end
+    describe "#user_params" do
+      it "is private" do
+        pending; fail
+      end
+      it "whitelists the expected params" do
+        pending; fail
+      end
+    end
+  end
 end
   
