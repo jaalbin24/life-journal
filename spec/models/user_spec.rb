@@ -80,9 +80,18 @@ RSpec.describe User, type: :model do
   end
 
   describe "validations" do
-    it do
-      pending
-      fail
+    describe "#email" do
+      it "must be present" do
+        pending
+        fail
+      end
+      it "must match the email regex" do
+        pending
+        fail
+      end
+      it "must be unique" do
+
+      end
     end
   end
 end

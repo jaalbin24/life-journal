@@ -1,7 +1,40 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New user</h1>
-
-  <%= render "form", user: @user %>
-
-  <%= link_to 'Back to users', users_path, class: "btn-secondary" %>
+<div class="flex w-full h-full">
+  <div class="card m-auto">
+    <div class="card-body">
+      <h4 class="">Sign up</h4>
+      <%= form_for @user, url: users_path do |f|%>
+        <div class="my-5">
+          <%= f.label :email, class: "form-label" %>
+          <% if @user.errors[:email].any? %>
+            <%= f.text_field :email, class: "input-field error" %>
+            <span class="form-error-message"><%=@user.errors[:email].first%></span>
+          <% else %>
+            <%= f.text_field :email, class: "input-field" %>
+          <% end %>
+        </div>
+        <div class="my-5">
+          <%= f.label :password, class: "form-label" %>
+          <% if @user.errors[:password].any? %>
+            <%= f.password_field :password, class: "input-field error"%>
+            <span class="form-error-message"><%=@user.errors[:password].first%></span>
+          <% else %>
+            <%= f.password_field :password, class: "input-field" %>
+          <% end %>
+        </div>
+        <div class="my-5">
+          <%= f.label :password_again, class: "form-label" %>
+          <% if @user.errors[:password_confirmation].any? %>
+            <%= f.password_field :password_confirmation, class: "input-field error" %>
+            <span class="form-error-message"><%=@user.errors[:password_confirmation].first%></span>
+          <% else %>
+            <%= f.password_field :password_confirmation, class: "input-field" %>
+          <% end %>
+        </div>
+        <div class="flex w-full justify-between items-center">
+         <%= f.submit "Sign up", class: "btn-primary" %>
+         <%= link_to "Sign in", sign_in_path, class: "text-blue-500 hover:underline"%>
+        </div>
+      <%end%>
+    </div>
+  </div>
 </div>

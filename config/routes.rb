@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     end
     resources :pictures, only: [:index, :create]
   end
-  # resources :users
+  resources :users
   resources :people do
     get 'page/:page', action: :index, on: :collection
     resources :notes, only: [:create]

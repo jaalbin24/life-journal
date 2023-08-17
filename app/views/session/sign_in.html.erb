@@ -1,23 +1,26 @@
 <div class="flex w-full h-full">
-    <div class="card m-auto">
-        <div class="card-body">
-            <h4 class="">Sign in</h4>
-            <div class="my-4">
-                <%flash.each do |k, v|%>
-                    <p class="p-3 bg-red-300 text-red-600 rounded"><%=v%></p>
-                <%end%>
-            </div>
-            <%=form_for @user, url: sign_in_path do |f|%>
-                <div class="my-5">
-                    <%=f.label :email, class: "form-label"%>
-                    <%=f.text_field :email, class: "input-field"%>
-                </div>
-                <div class="my-5">
-                    <%=f.label :password, class: "form-label"%>
-                    <%=f.password_field :password, class: "input-field"%>
-                </div>
-                <%=f.submit "Sign in", class: "btn-primary"%>
-            <%end%>
+  <div class="card m-auto">
+    <div class="card-body">
+      <h4 class="">Sign in</h4>
+      <div class="my-4">
+        <%@user.errors.each do |k, v|%>
+          <p class="p-3 bg-red-300 text-red-600 rounded"><%=v%></p>
+        <%end%>
+      </div>
+      <%=form_for @user, url: sign_in_path do |f|%>
+        <div class="my-5">
+          <%=f.label :email, class: "form-label"%>
+          <%=f.text_field :email, class: "input-field"%>
         </div>
+        <div class="my-5">
+          <%=f.label :password, class: "form-label"%>
+          <%=f.password_field :password, class: "input-field"%>
+        </div>
+        <div class="flex w-full justify-between items-center">
+         <%=f.submit "Sign in", class: "btn-primary"%>
+         <%= link_to "Sign up", new_user_path, class: "text-blue-500 hover:underline"%>
+        </div>
+      <%end%>
     </div>
+  </div>
 </div>

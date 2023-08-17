@@ -22,13 +22,11 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to user_url(@user), notice: "User was successfully created." }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-      end
+    if @user.save
+      sign_in(email: @user.email, password: @user.password)
+      redirect_to after_sign_up_path
+    else
+      render :new
     end
   end
 
@@ -59,6 +57,6 @@ class UsersController < ApplicationController
 
 
     def user_params
-      params.require(:user).permit(:email, :password_digest)
+      params.require(:user).permit(:email, :password, :password_confirmation)
     end
 end
