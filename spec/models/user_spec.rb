@@ -18,6 +18,11 @@ RSpec.describe User, type: :model do
     fail
   end
 
+  it "includes the ImageValidation concern" do
+    pending
+    fail
+  end
+
   describe "scopes" do
     # The user model has no scopes
   end
@@ -30,7 +35,10 @@ RSpec.describe User, type: :model do
       end
     end
     describe "#password_digest" do
-      
+      it do
+        pending
+        fail
+      end
     end
     describe "#status" do
       # Why is this attribute here?
@@ -56,6 +64,19 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "class methods" do
+    describe "#images" do
+      it "includes avatar" do
+        pending
+        fail
+      end
+      it "does not include anything unexpected" do
+        pending
+        fail
+      end
+    end
+  end
+
   describe "callbacks" do
     it do
       pending
@@ -65,18 +86,35 @@ RSpec.describe User, type: :model do
 
   describe "associations" do
     describe "#people" do
-      
+      it do
+        pending
+        fail
+      end
     end
     describe "#entries" do
-      
+      it do
+        pending
+        fail
+      end
     end
     describe "#pictures" do
-      
+      it do
+        pending
+        fail
+      end
     end
     describe "#notes" do
-      
+      it do
+        pending
+        fail
+      end
     end
-    
+    describe "#avatar" do
+      it do
+        pending
+        fail
+      end
+    end
   end
 
   describe "validations" do
@@ -90,7 +128,8 @@ RSpec.describe User, type: :model do
         fail
       end
       it "must be unique" do
-
+        pending
+        fail
       end
     end
   end

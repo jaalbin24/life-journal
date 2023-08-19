@@ -11,4 +11,9 @@ module AuthenticationHelper
     end
     user
   end
+  
+  def sign_out
+    session.clear
+    Current.user = nil
+  end  
 end

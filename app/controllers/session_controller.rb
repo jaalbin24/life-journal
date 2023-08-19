@@ -16,7 +16,9 @@ class SessionController < ApplicationController
       cookies.delete(:after_sign_in_path)
     else
       @user = User.new(user_params)
-      redirect_to sign_in_path(continue_path: @continue_path)
+      @user.errors.add(:base, "Username or password incorrect")
+      render :sign_in
+      # redirect_to sign_in_path(continue_path: @continue_path)
     end
   end
 

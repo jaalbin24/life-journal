@@ -3,9 +3,9 @@
     <div class="card-body">
       <h4 class="">Sign in</h4>
       <div class="my-4">
-        <%@user.errors.each do |k, v|%>
-          <p class="p-3 bg-red-300 text-red-600 rounded"><%=v%></p>
-        <%end%>
+        <%if @user.errors[:base].any? %>
+          <p class="p-2 bg-red-700 text-red-200 rounded-lg"><%= @user.errors[:base].first %></p>
+        <% end %>
       </div>
       <%=form_for @user, url: sign_in_path do |f|%>
         <div class="my-5">
