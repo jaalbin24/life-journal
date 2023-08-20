@@ -23,8 +23,6 @@ class User < ApplicationRecord
   validates :password, confirmation: { message: "The passwords don't match" }
   has_many :entries
   has_many :people
-  has_many :lessons
-  has_many :milestones
   has_many :pictures
   has_many :notes, foreign_key: :user_id
   has_one_attached :avatar

@@ -27,7 +27,7 @@ class Entry < ApplicationRecord
   has_rich_text :content, encrypted: true
   encrypts :title, deterministic: true
   include Recoverable
-
+  belongs_to :user
   scope :published,   ->  {where(status: "published")}
   scope :drafts,      ->  {where(status: "draft")}
   scope :empty, -> {
@@ -45,23 +45,14 @@ class Entry < ApplicationRecord
     .or(where.not(pictures: { id: nil }))
   }
 
-  has_many(
-    :mentions,
-    class_name: "Mention",
-    foreign_key: :entry_id,
-    inverse_of: :entry,
-    dependent: :destroy
-  )
+  has_many :mentions, dependent: :destroy
   accepts_nested_attributes_for :mentions, allow_destroy: true
   has_many :pictures, dependent: :destroy
   accepts_nested_attributes_for :pictures, allow_destroy: true
 
   has_many :people, through: :mentions
-  has_many :lesson_applications
-  has_many :lessons, through: :lesson_applications
-  has_many :milestones
 
-  belongs_to :user
+  
 
   before_create :init_status
   before_save :cache_plain_content, :update_published_at

@@ -48,7 +48,6 @@ class Person < ApplicationRecord
     through: :mentions
   )
   has_many :personality
-  has_many :lessons
   has_many :notes, as: :notable
   has_many :traits, through: :personality
 
@@ -66,26 +65,6 @@ class Person < ApplicationRecord
     # to prevent words like "CEO" becoming "Ceo when using a simple title.titleize"
     [("#{title[0].capitalize}#{title[1..-1]}" if title), first_name&.titleize, middle_name&.titleize, last_name&.titleize].reject(&:blank?).join(" ")
   end
-
-
-  # This method needs to be deprecated soon in favor of ELASTICSEARCH.
-  # def self.search(params)
-  #   result = self.all
-  #   if params[:name].include?(' ')
-  #     first_name, last_name = params[:name].downcase.split(' ')
-  #     result = result.where("LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?", "%#{ActiveRecord::Base.sanitize_sql_like(first_name)}%", "%#{ActiveRecord::Base.sanitize_sql_like(last_name)}%")
-  #   else
-  #     result = result.where("LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?", "%#{ActiveRecord::Base.sanitize_sql_like(params[:name].downcase)}%", "%#{ActiveRecord::Base.sanitize_sql_like(params[:name].downcase)}%")
-  #   end
-  #   result
-  # end
-
-  # def as_json(args={})
-  #   super(args.merge(
-  #     only: [:id],
-  #     methods: [:name, :show_path, :avatar_url],
-  #   ))
-  # end
 
   def show_path
     Rails.application.routes.url_helpers.person_path(self)

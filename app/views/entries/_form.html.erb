@@ -120,30 +120,11 @@
                 </div>
               </div>
             </div>
-            <%entry.lessons.each do |l|%>
-              <div class="rounded-lg bg-yellow-600 p-2 max-w-fit basis-1/2 grow flex items-center mb-auto">
-                <span class=""><%=l.content%></span>
-                <button class="close-button mb-auto" type="button" data-action=""></button>
-              </div>
-            <%end%>
           </div>
         </div>
       </div>
       <div class="card">
-        <div class="card-header flex justify-between items-center">
-          <h5 class="font-bold">Milestones</h5>
-          <button type="button" class="btn-primary btn-sm flex items-center gap-1">New <%=plus_icon%></button>
-        </div>
-        <div class="card-body">
-          <div class="flex flex-wrap gap-2">
-            <%entry.milestones.each do |m|%>
-              <div class="rounded-lg bg-purple-800 p-2 max-w-fit basis-1/2 grow flex items-center mb-auto">
-                <span><%=m.content%></span>
-                <button class="close-button mb-auto" type="button" data-action=""></button>
-              </div>
-            <%end%>
-          </div>
-        </div>
+        
       </div>
     </div>
   <%end%>

@@ -1,7 +1,5 @@
 traits      = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
 quotes      = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
-milestones  = JSON.parse(File.read(Rails.root.join('db/seed_data/milestones.json')))
-lessons     = JSON.parse(File.read(Rails.root.join('db/seed_data/lessons.json')))
 notes       = JSON.parse(File.read(Rails.root.join('db/seed_data/notes.json')))
 
 # Sort traits.json by positivity rating
@@ -56,12 +54,6 @@ end
         file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*").sample
         person.avatar.attach(io: File.open(file_path), filename: File.basename(file_path))
     end
-    rand(2..10).times do
-        person.lessons.create!(
-            user: me,
-            content: lessons.sample
-        )
-    end
 end
 
 24.times do
@@ -74,19 +66,6 @@ end
         title: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5),
         content: ActionText::Content.new(content.join("<br><br>"))
     )
-    10.times do
-        entry.milestones.create!(
-            content: milestones.sample,
-            reached_at: entry.created_at,
-            user: entry.user
-        )
-    end
-    10.times do
-        entry.lessons.create!(
-            user: me,
-            content: lessons.sample
-        )
-    end
     rand(1..5).times do
         entry.mentions.create!(
             person: Person.where.not(id: entry.people.pluck(:id)).sample
@@ -104,21 +83,6 @@ end
     end
 end
 
-# milestones.each do |m|
-#     entry = Entry.all.sample if rand(0..9) < 4
-#     if entry
-#         entry.milestones.create(
-#             content: m,
-#             reached_at: entry.created_at,
-#         )
-#     else
-#         Milestone.create(
-#             content: m,
-#             reached_at: rand(0..18250).days.ago,
-#         )
-#     end
-# end
-
 puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."              if User.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."            if Entry.count > 0
 puts "-- #{Entry.published.count} published"                                                if Entry.published.count > 0
@@ -128,6 +92,4 @@ puts "Created #{ActionController::Base.helpers.pluralize Person.count, 'person'}
 puts "Created #{ActionController::Base.helpers.pluralize Mention.count, 'mention'}."        if Mention.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."            if Trait.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Quote.count, 'quote'}."            if Quote.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Lesson.count, 'lesson'}."          if Lesson.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Milestone.count, 'milestone'}."    if Milestone.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Note.count, 'note'}."              if Note.count > 0

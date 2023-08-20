@@ -19,17 +19,6 @@
 #  fk_rails_...  (person_id => people.id)
 #
 class Mention < ApplicationRecord
-    belongs_to(
-        :person,
-        class_name: "Person",
-        foreign_key: :person_id,
-        inverse_of: :mentions
-    )
-
-    belongs_to(
-        :entry,
-        class_name: "Entry",
-        foreign_key: :entry_id,
-        inverse_of: :mentions
-    )
+    belongs_to :person
+    belongs_to :entry
 end
