@@ -1,15 +1,15 @@
 
-# This concern makes models searchable by specified attributes.
-# a user "deletes" them. 
+# This concern makes models searchable via Elasticsearch.
 #
-# To implement this concern, the model needs the following attributes
-#   - boolean:  deleted
-#   - datetime: deleted_at
+# To implement this concern, do the following in your model:
+#   1) Include the concern (duh)
+#   2) Define the attributes that your model should be searched on using the #searches method
+#   3) Define the number of records on each returned search page using paginates_per
+#       - Side note: To implement this concern, you need to also use the Kaminari gem.
+#   4) Start searching using Class.search("keyword")
 
 module Searchable
   extend ActiveSupport::Concern
-
-
 
   included do
     include Elasticsearch::Model 
@@ -32,11 +32,8 @@ module Searchable
     end
   end
   
-
   class_methods do
-    # Accepts these options:
-    #   limit: integer
-    def search(query, opts={limit: 10})
+    def search(query, opts={page: 1})
       __elasticsearch__.search(
         {
           query: {
@@ -46,9 +43,10 @@ module Searchable
               fuzziness: 'AUTO'
             }
           },
-          size: opts[:limit]
+          size: self.default_per_page,
+          from: (opts[:page].to_i - 1) * self.default_per_page
         }
-      )
+      ).records
     end
 
     # Defines the attributes that can be used to search in the model.
@@ -58,13 +56,17 @@ module Searchable
       raise StandardError.new "searches must take an argument" unless searchable_attrs
       settings index: { number_of_shards: 1, number_of_replicas: 0 }
       
-      mappings dynamic: 'false' do
+      mappings dynamic: false do
         searchable_attrs.each do |atty|
-          indexes atty.to_sym, type: 'text'
+          indexes atty.to_sym, type: 'text', analyzer: "autocomplete"
         end
       end
 
       @searchable_attrs ||= searchable_attrs.map(&:to_s)
+    end
+
+    def records_per_page(n_per_page)
+      @n_per_page ||= n_per_page
     end
 
     # WARNING CAUTION DANGER CAREFUL WATCH OUT

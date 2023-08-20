@@ -27,6 +27,7 @@
 #
 require 'rails_helper'
 require 'models/concerns/image_validation'
+require 'models/concerns/recoverable'
 
 RSpec.describe Person, type: :model do
   describe "scopes" do

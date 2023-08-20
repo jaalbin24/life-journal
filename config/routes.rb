@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   end
   resources :users, except: :index
   resources :people do
+    collection do
+      post "search"
+      get "search", action: :index
+    end
     get 'page/:page', action: :index, on: :collection
     resources :notes, only: [:create]
   end
@@ -22,11 +26,4 @@ Rails.application.routes.draw do
   get 'sign_in',                    to: 'session#new'
   post 'sign_in',                   to: 'session#create'
   delete 'sign_out',                to: 'session#delete'
-
-
-  post 'people/search',              to: 'people#search',              as: 'search_people'
-
-
-
-
 end

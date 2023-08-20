@@ -3,8 +3,12 @@ class PeopleController < ApplicationController
   before_action :set_person, only: %i[ show edit update destroy ]
 
   def search
-    people = current_user.people.search(search_params).first(10)
-    render json: people
+    (redirect_to people_path; return) if query.blank?
+    @people = Person.search(query).where(user: current_user).page(params[:page])
+    respond_to do |format|
+      format.html { render :index}
+      format.json { render json: @people }
+    end
   end
 
   def show
@@ -81,5 +85,9 @@ class PeopleController < ApplicationController
 
   def set_person
     @person = current_user.people.find(params[:id])
+  end
+
+  def query
+    params[:query]
   end
 end
