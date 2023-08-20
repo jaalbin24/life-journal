@@ -29,16 +29,17 @@ class Picture < ApplicationRecord
   include Recoverable
   has_one_attached :file
   validate_images :file
+  encrypts :title, :description, deterministic: true
 
   
-  def as_json(args={})
-    super(args.merge(
-      only: [:id, :title, :description],
-      methods: [:file_url],
-    ))
-  end
+  # def as_json(args={})
+  #   super(args.merge(
+  #     only: [:id, :title, :description],
+  #     methods: [:file_url],
+  #   ))
+  # end
 
-  def file_url
-    Rails.application.routes.url_helpers.url_for(file)
-  end
+  # def file_url
+  #   Rails.application.routes.url_helpers.url_for(file)
+  # end
 end

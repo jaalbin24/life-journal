@@ -390,35 +390,5 @@ RSpec.describe Person, type: :model do
         expect(p.valid?).to be false       
       end
     end
-    describe "avatar" do
-      # All these tests should be moved to a dedicated ImageValidation test file
-      # ======================== BEGIN ========================
-      it "can be a png" do
-        p = create :person
-        image_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*.png").sample        
-        expect(image_path).to be_truthy # The file should exist
-        p.avatar.attach(Rack::Test::UploadedFile.new(image_path))
-        expect(p.valid?).to be true
-      end
-      it "can be a jpg" do
-        p = create :person
-        image_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*.jpg").sample        
-        expect(image_path).to be_truthy # The file should exist
-        p.avatar.attach(Rack::Test::UploadedFile.new(image_path))
-        expect(p.valid?).to be true
-      end
-      it "can be a jpeg" do
-        p = create :person
-        image_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*.jpeg").sample        
-        expect(image_path).to be_truthy # The file should exist
-        p.avatar.attach(Rack::Test::UploadedFile.new(image_path))
-        expect(p.valid?).to be true
-      end
-      it "cannot be any other file type" do
-        pending "Download a file of every magic number and test that it cannot be attached."
-        fail
-      end
-      # ========================= END =========================
-    end
   end
 end
