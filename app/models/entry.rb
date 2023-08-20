@@ -25,7 +25,7 @@
 class Entry < ApplicationRecord
   paginates_per 12
   has_rich_text :content, encrypted: true
-  encrypts :title
+  encrypts :title, deterministic: true
   include Recoverable
 
   scope :published,   ->  {where(status: "published")}
@@ -61,12 +61,7 @@ class Entry < ApplicationRecord
   has_many :lessons, through: :lesson_applications
   has_many :milestones
 
-  belongs_to(
-    :user,
-    class_name: "User",
-    foreign_key: :user_id,
-    inverse_of: :entries
-  )
+  belongs_to :user
 
   before_create :init_status
   before_save :cache_plain_content, :update_published_at

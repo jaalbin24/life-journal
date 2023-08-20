@@ -355,7 +355,7 @@ RSpec.describe Person, type: :model do
       it "returns the user object related to this person" do
         u = create :user
         p = u.people.create(attributes_for(:person))
-        expect(p.user).to be u
+        expect(p.user).to eq u
       end
       it "does not accept nested attributes" do
         expect { Person.new(user_attributes: []) }.to raise_error ActiveModel::UnknownAttributeError

@@ -24,7 +24,7 @@
 #
 FactoryBot.define do
   factory :entry do
-    association :user, factory: :user
+    association :user
     title { "Test Title" }
     content { ActionText::Content.new(Faker::Lorem.paragraphs.join("\n\n")) }
 

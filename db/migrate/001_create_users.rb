@@ -7,6 +7,9 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string        :password_digest
       t.string        :status
 
+      t.boolean       :deleted
+      t.datetime      :deleted_at
+
       t.timestamps
     end
   end

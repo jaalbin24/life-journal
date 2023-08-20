@@ -3,6 +3,8 @@
 # Table name: users
 #
 #  id              :uuid             not null, primary key
+#  deleted         :boolean
+#  deleted_at      :datetime
 #  email           :string
 #  password_digest :string
 #  status          :string

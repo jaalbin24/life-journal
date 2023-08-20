@@ -27,7 +27,8 @@ require 'models/concerns/image_validation'
 
 RSpec.describe Picture, type: :model do
 
-  it_behaves_like ImageValidation, Picture
+  it_behaves_like ImageValidation,  Picture
+  it_behaves_like Recoverable,      Picture
 
   describe "scopes" do
     it do

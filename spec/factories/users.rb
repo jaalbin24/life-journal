@@ -3,6 +3,8 @@
 # Table name: users
 #
 #  id              :uuid             not null, primary key
+#  deleted         :boolean
+#  deleted_at      :datetime
 #  email           :string
 #  password_digest :string
 #  status          :string
@@ -16,5 +18,10 @@ FactoryBot.define do
     end
     password { "password123" }
     password_confirmation { "password123" }
+
+    trait :deleted do
+      deleted { true }
+      deleted_at { 23.hours.ago }
+    end
   end
 end

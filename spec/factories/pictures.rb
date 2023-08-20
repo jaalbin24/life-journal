@@ -29,5 +29,9 @@ FactoryBot.define do
     association :entry
     file { Rack::Test::UploadedFile.new(Dir.glob("#{Rails.root.join('db', 'seed_data', 'entry_pictures')}/*").sample, 'image/jpeg') }
     
+    trait :deleted do
+      deleted { true }
+      deleted_at { 23.hours.ago }
+    end
   end
 end

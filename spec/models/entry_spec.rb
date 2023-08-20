@@ -109,8 +109,17 @@ RSpec.describe Entry, type: :model do
   end
   describe "attributes" do
     describe "#title" do
-      it "is encrypted" do
+      it "is encrypted deterministically" do
+        title = "The Test Title"
+        e = create :entry, title: title
         expect(Entry.encrypted_attributes).to include :title
+        # Models are only searchable on encrypted attributes when encrypted deterministically
+        expect(Entry.find_by(title: title)).to eq e
+      end
+      it "preserves capitalization" do
+        title = "The Test Title"
+        e = create :entry, title: title
+        expect(e.title).to eq title
       end
       it "returns a string" do
         e = create :entry, title: "Once Upon a Time..."

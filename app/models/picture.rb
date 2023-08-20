@@ -26,6 +26,7 @@ class Picture < ApplicationRecord
   belongs_to :entry
   belongs_to :user
   include ImageValidation
+  include Recoverable
   has_one_attached :file
   validate_images :file
 

@@ -187,6 +187,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.string "email"
     t.string "password_digest"
     t.string "status"
+    t.boolean "deleted"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

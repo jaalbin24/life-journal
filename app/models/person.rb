@@ -52,12 +52,7 @@ class Person < ApplicationRecord
   has_many :notes, as: :notable
   has_many :traits, through: :personality
 
-  belongs_to(
-    :user,
-    class_name: "User",
-    foreign_key: :user_id,
-    inverse_of: :people
-  )
+  belongs_to :user
   validates :name, presence: true
   validate_images :avatar
 
