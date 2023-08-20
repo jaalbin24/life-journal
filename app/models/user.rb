@@ -2,15 +2,15 @@
 #
 # Table name: users
 #
-#  id        :uuid       not null, primary key
-#  email       :string
+#  id              :uuid             not null, primary key
+#  email           :string
 #  password_digest :string
-#  status      :string
-#  created_at    :datetime     not null
-#  updated_at    :datetime     not null
+#  status          :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 class User < ApplicationRecord
-  enum status: { regular: 0, admin: 1000 } 
+  include ImageValidation
   encrypts :email, deterministic: true, downcase: true
   validates :email, presence: { message: "You'll need an email" }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "That's not an email" }
@@ -36,5 +36,6 @@ class User < ApplicationRecord
   has_many :milestones
   has_many :pictures
   has_many :notes, foreign_key: :user_id
-
+  has_one_attached :avatar
+  validate_images :avatar
 end

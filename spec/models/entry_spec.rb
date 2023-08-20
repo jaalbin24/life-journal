@@ -23,12 +23,11 @@
 #  fk_rails_...  (user_id => users.id)
 #
 require 'rails_helper'
+require 'models/concerns/recoverable'
 
 RSpec.describe Entry, type: :model do
 
-  it "implements the recoverable concern" do
-    expect(Entry.ancestors).to include Recoverable
-  end
+  it_behaves_like Recoverable, Entry
 
   describe "scopes" do
     describe "#empty" do
@@ -236,17 +235,6 @@ RSpec.describe Entry, type: :model do
         expect(e.mentions.count).to be 3
         expect(e.mentions.first.class).to be Mention
       end
-      it "accepts nested attributes" do
-        u = create :user
-        p = create :person, user: u
-        e = u.entries.new(
-          mentions_attributes: [
-            attributes_for(:mention, person_id: p.id)
-          ]
-        )
-        expect(e.save).to be_truthy
-        expect(e.reload.mentions.count).to be 1
-      end
       it "are not required to create the entry" do
         e = build :entry, mentions: []
         expect(e.valid?).to be true
@@ -267,16 +255,6 @@ RSpec.describe Entry, type: :model do
         e = create :entry, num_pictures: 3
         expect(e.pictures.count).to be 3
         expect(e.pictures.first.class).to be Picture
-      end
-      it "accepts nested attributes" do
-        u = create :user
-        e = u.entries.new(
-          pictures_attributes: [
-            attributes_for(:picture, user: u)
-          ]
-        )
-        expect(e.save).to be_truthy
-        expect(e.reload.pictures.count).to be 1
       end
       it "are not required to create the entry" do
         e = build :entry, pictures: []

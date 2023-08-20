@@ -59,7 +59,7 @@ class Person < ApplicationRecord
     inverse_of: :people
   )
   validates :name, presence: true
-  validate  ->  (p)  {file_is_img(:avatar)}
+  validate_images :avatar
 
   def name
     [(nickname.blank? ? first_name : nickname), last_name].reject(&:blank?).join(" ").titleize

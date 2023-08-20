@@ -96,3 +96,6 @@ gem 'sidekiq'
 # For error monitoring with sentry
 gem "sentry-ruby"
 gem "sentry-rails"
+
+# For cronjobs
+gem 'whenever'

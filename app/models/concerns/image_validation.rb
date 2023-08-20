@@ -1,11 +1,24 @@
 module ImageValidation
   extend ActiveSupport::Concern
+  class_methods do
+    def validate_images(*args)
+      @images ||= []
+      args.each {|arg| @images.append arg.to_sym}
+      @images
+    end
+  end
+
+  included do
+    validate :files_are_images
+  end
 
   private
 
-  def file_is_img(file)
-    if send(file).attached? && !send(file).content_type.in?(%w(image/jpeg image/png image/jpeg))
-      errors.add(file, "That file type is not allowed. Files must be JPEG, JPG, or PNG.")
+  def files_are_images
+    self.class.validate_images.each do |attribute|
+      if send(attribute).attached? && !send(attribute).content_type.in?(%w(image/png image/jpg image/jpeg))
+        errors.add(attribute, "Must be a JPG, JPEG, or PNG file")
+      end
     end
   end
 end

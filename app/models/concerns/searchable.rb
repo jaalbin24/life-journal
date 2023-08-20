@@ -64,7 +64,7 @@ module Searchable
         end
       end
 
-      @@searchable_attrs ||= searchable_attrs.map(&:to_s)
+      @searchable_attrs ||= searchable_attrs.map(&:to_s)
     end
 
     # WARNING CAUTION DANGER CAREFUL WATCH OUT
@@ -83,8 +83,8 @@ module Searchable
     private
 
     def get_searchable_attrs
-      raise StandardError.new "searchable_attrs are not defined for the #{self.name} class." unless @@searchable_attrs
-      @@searchable_attrs 
+      raise StandardError.new "searchable_attrs are not defined for the #{self.name} class." unless @searchable_attrs
+      @searchable_attrs 
     end
   end
 end

@@ -23,8 +23,12 @@
 #  fk_rails_...  (user_id => users.id)
 #
 require 'rails_helper'
+require 'models/concerns/image_validation'
 
 RSpec.describe Picture, type: :model do
+
+  it_behaves_like ImageValidation, Picture
+
   describe "scopes" do
     it do
       pending

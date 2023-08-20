@@ -25,6 +25,9 @@
 
 FactoryBot.define do
   factory :picture do
+    association :user
+    association :entry
     file { Rack::Test::UploadedFile.new(Dir.glob("#{Rails.root.join('db', 'seed_data', 'entry_pictures')}/*").sample, 'image/jpeg') }
+    
   end
 end

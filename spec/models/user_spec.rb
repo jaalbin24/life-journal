@@ -10,15 +10,13 @@
 #  updated_at      :datetime         not null
 #
 require 'rails_helper'
+require 'models/concerns/image_validation'
 
 RSpec.describe User, type: :model do
 
-  it "has secure password" do
-    pending
-    fail
-  end
+  it_behaves_like ImageValidation, User
 
-  it "includes the ImageValidation concern" do
+  it "has secure password" do
     pending
     fail
   end

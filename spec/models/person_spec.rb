@@ -26,21 +26,19 @@
 #  fk_rails_...  (user_id => users.id)
 #
 require 'rails_helper'
+require 'models/concerns/image_validation'
 
 RSpec.describe Person, type: :model do
   describe "scopes" do
     # There are currently no scopes in the Person model
   end
 
-  it "implements the Recoverable concern" do
-    expect(Person.ancestors).to include Recoverable
-  end
   it "implements the Searchable concern" do
     expect(Person.ancestors).to include Searchable
   end
-  it "implements the ImageValidation concern" do
-    expect(Person.ancestors).to include ImageValidation
-  end
+  it_behaves_like Recoverable,      Person
+  it_behaves_like ImageValidation,  Person
+
 
   describe "ElasticSearch" do
     it "is included" do
@@ -393,10 +391,6 @@ RSpec.describe Person, type: :model do
       end
     end
     describe "avatar" do
-      it "is run against the ImageValidation#file_is_img method" do
-        pending "Implement the ImageValidation tests"
-        fail
-      end
       # All these tests should be moved to a dedicated ImageValidation test file
       # ======================== BEGIN ========================
       it "can be a png" do
