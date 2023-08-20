@@ -23,11 +23,12 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Entry < ApplicationRecord
+  belongs_to :user
   paginates_per 12
   has_rich_text :content, encrypted: true
   encrypts :title, deterministic: true
   include Recoverable
-  belongs_to :user
+  
   scope :published,   ->  {where(status: "published")}
   scope :drafts,      ->  {where(status: "draft")}
   scope :empty, -> {
@@ -49,10 +50,7 @@ class Entry < ApplicationRecord
   accepts_nested_attributes_for :mentions, allow_destroy: true
   has_many :pictures, dependent: :destroy
   accepts_nested_attributes_for :pictures, allow_destroy: true
-
   has_many :people, through: :mentions
-
-  
 
   before_create :init_status
   before_save :cache_plain_content, :update_published_at

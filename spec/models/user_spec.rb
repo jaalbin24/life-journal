@@ -19,8 +19,6 @@ RSpec.describe User, type: :model do
 
   it_behaves_like ImageValidation,  User
   it_behaves_like Recoverable,      User
-  it { is_expected.to have_many(:entries) }
-
 
   it "has a secure password" do
     u = build(:user)
@@ -45,7 +43,7 @@ RSpec.describe User, type: :model do
         expect(User.find_by(email: email)).to eq u
       end
       it "is saved in lowercase" do
-        email = "CAPITAL.letters.@eXaMpLe.Com"
+        email = "CAPITAL.letters@eXaMpLe.Com"
         u = build :user, email: email
         u.save
         expect(u.reload.email).to eq email.downcase
@@ -86,33 +84,62 @@ RSpec.describe User, type: :model do
 
   describe "associations" do
     describe "#people" do
+      it "is a has_many relationship" do
+        expect(User.reflect_on_association(:people).macro).to eq(:has_many)
+      end
       it "are destroyed when the user is destroyed" do
-        pending
-        fail
+        u = create :user
+        u.people = create_list(:person, 2, user: u)
+        expect(Person.count).to be 2
+        u.destroy
+        expect(Person.count).to be 0
       end
     end
     describe "#entries" do
+      it "is a has_many relationship" do
+        expect(User.reflect_on_association(:entries).macro).to eq(:has_many)
+      end
       it "are destroyed when the user is destroyed" do
-        pending
-        fail
+        u = create :user
+        u.entries = create_list(:entry, 2, user: u)
+        expect(Entry.count).to be 2
+        u.destroy
+        expect(Entry.count).to be 0
       end
     end
     describe "#pictures" do
+      it "is a has_many relationship" do
+        expect(User.reflect_on_association(:pictures).macro).to eq(:has_many)
+      end
       it "are destroyed when the user is destroyed" do
-        pending
-        fail
+        u = create :user
+        u.pictures = create_list(:picture, 2, user: u)
+        expect(Picture.count).to be 2
+        u.destroy
+        expect(Picture.count).to be 0
       end
     end
     describe "#notes" do
+      it "is a has_many relationship" do
+        expect(User.reflect_on_association(:notes).macro).to eq(:has_many)
+      end
       it "are destroyed when the user is destroyed" do
-        pending
-        fail
+        u = create :user
+        u.notes = create_list(:note, 2, user: u)
+        expect(Note.count).to be 2
+        u.destroy
+        expect(Note.count).to be 0
       end
     end
     describe "#avatar" do
+      it "is a has_one_attached relationship" do
+        expect(User.new.avatar).to be_an_instance_of(ActiveStorage::Attached::One)
+      end
       it "is destroyed when the user is destroyed" do
-        pending
-        fail
+        u = create :user, :with_avatar
+        expect(u.avatar).to be_attached
+        u.destroy
+        expect(u.avatar.persisted?).to be false
       end
     end
   end
@@ -120,16 +147,61 @@ RSpec.describe User, type: :model do
   describe "validations" do
     describe "#email" do
       it "must be present" do
-        pending
-        fail
+        u = build :user, email: ""
+        expect(u.valid?).to be false
+        expect(u.errors[:email]).to include "You'll need an email"
+        u.email = "email@example.com"
+        expect(u.valid?).to be true
       end
-      it "must match the email regex" do
-        pending
-        fail
+      it "must be an email" do
+        invalid_emails = [
+          "plainaddress",             # Missing "@" symbol
+          "@domain.com",              # Missing local part
+          "user@",                    # Missing domain
+          "user@domain",              # Incomplete domain
+          "user@.com",                # Missing domain name
+          "user@domain.",             # Domain ends with a dot
+          "user@dom ain.com",         # Spaces not allowed
+          "user@domain.com@",         # "@" at the end
+          "user@domain..com",         # Double dot in domain
+          "user@-domain.com",         # Domain starts with a hyphen
+          "user@domain.c",            # TLD less than 2 characters
+          "user@.domain.com",         # Empty local part
+          "user@domain.com.",         # Trailing dot in domain
+          "user@domain..com",         # Consecutive dots in domain
+          "user@.domain.com",         # Leading dot in domain
+          "user@domain.c.o.m",        # Multiple dots in TLD
+          "user@-domain.com",         # Leading hyphen in domain
+          "user@123.456.789.000",     # IP address format
+          "user@dom_ain.com",         # Underscore in domain
+          "user@domain.c_om",         # Underscore in TLD
+          "user@domain.com_",         # Underscore at the end
+          "user@[domain.com]",        # Square brackets
+          "user@domain..com",         # Consecutive dots in local part
+          "user@domain.123",          # Numeric TLD
+          "user@.123.com",            # Leading dot in TLD
+          "user@domain.c",            # TLD with only one character
+          "user@",                    # Empty local part and domain
+          "user@.com",                # Empty local part
+          "@domain.com",              # Empty local part with "@" prefix
+          "user@-example.com",        # Hyphen as the first character in domain
+          "user@ex_ample.com",        # Underscore in domain
+        ]
+        u = create :user
+        expect(u.valid?).to be true
+        invalid_emails.each do |email|
+          u.email = email
+          expect(u.valid?).to be(false), "#{email} was validated when it should not have been"
+          expect(u.errors[:email]).to include "That's not an email"
+        end
       end
       it "must be unique" do
-        pending
-        fail
+        email = "test@example.com"
+        u1 = create :user, email: email
+        u2 = build :user
+        expect(u2.valid?).to be true
+        u2.email = email
+        expect(u2.valid?).to be false
       end
     end
   end

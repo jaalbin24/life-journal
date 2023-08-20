@@ -30,7 +30,7 @@ FactoryBot.define do
     first_name { "John" }
 
     trait :with_avatar do
-      avatar { Rack::Test::UploadedFile.new(Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*").sample, 'image/jpeg') }
+      avatar { Rack::Test::UploadedFile.new(Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*.jpeg").sample, 'image/jpeg') }
     end
 
     trait :deleted do

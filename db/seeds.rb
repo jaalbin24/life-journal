@@ -12,7 +12,7 @@ File.open(Rails.root.join('db/seed_data/traits.json'), "w") do |file|
 end
 
 me = User.create(
-    email: "j@j.j",
+    email: "j@example.com",
     password: "123"
 )
 

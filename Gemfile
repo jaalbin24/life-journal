@@ -99,3 +99,6 @@ gem "sentry-rails"
 
 # For cronjobs
 gem 'whenever'
+
+# For email validation
+gem 'validates_email_format_of'

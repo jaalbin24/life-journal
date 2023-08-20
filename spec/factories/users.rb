@@ -23,5 +23,9 @@ FactoryBot.define do
       deleted { true }
       deleted_at { 23.hours.ago }
     end
+
+    trait :with_avatar do
+      avatar { Rack::Test::UploadedFile.new(Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*.jpeg").sample, 'image/jpeg') }
+    end
   end
 end
