@@ -4,7 +4,8 @@ class PeopleController < ApplicationController
 
   def search
     (redirect_to people_path; return) if query.blank?
-    @people = Person.search(query).where(user: current_user).page(params[:page])
+    @query = query
+    @people = Person.search(query).not_deleted.where(user: current_user).page(params[:page]).per(Person.default_per_page)
     respond_to do |format|
       format.html { render :index}
       format.json { render json: @people }

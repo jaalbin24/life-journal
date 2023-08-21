@@ -11,10 +11,10 @@ Rails.application.routes.draw do
   resources :users, except: :index
   resources :people do
     collection do
-      post "search"
-      get "search", action: :index
+      get "search"
+      get "search/page/:page", action: :search
+      get 'page/:page', action: :index
     end
-    get 'page/:page', action: :index, on: :collection
     resources :notes, only: [:create]
   end
   resources :notes, only: [:destroy]

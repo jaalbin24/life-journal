@@ -28,15 +28,14 @@
 require 'rails_helper'
 require 'models/concerns/image_validation'
 require 'models/concerns/recoverable'
+require 'models/concerns/searchable'
 
 RSpec.describe Person, type: :model do
   describe "scopes" do
     # There are currently no scopes in the Person model
   end
 
-  it "implements the Searchable concern" do
-    expect(Person.ancestors).to include Searchable
-  end
+  it_behaves_like Searchable,      Person
   it_behaves_like Recoverable,      Person
   it_behaves_like ImageValidation,  Person
 

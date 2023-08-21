@@ -12,7 +12,7 @@ module Searchable
   extend ActiveSupport::Concern
 
   included do
-    include Elasticsearch::Model 
+    include Elasticsearch::Model
     include Elasticsearch::Model::Callbacks
 
     after_commit :index_es_document,    on: [:create]
@@ -43,8 +43,7 @@ module Searchable
               fuzziness: 'AUTO'
             }
           },
-          size: self.default_per_page,
-          from: (opts[:page].to_i - 1) * self.default_per_page
+          size: 200
         }
       ).records
     end
@@ -58,15 +57,10 @@ module Searchable
       
       mappings dynamic: false do
         searchable_attrs.each do |atty|
-          indexes atty.to_sym, type: 'text', analyzer: "autocomplete"
+          indexes atty.to_sym, type: 'text'
         end
       end
-
       @searchable_attrs ||= searchable_attrs.map(&:to_s)
-    end
-
-    def records_per_page(n_per_page)
-      @n_per_page ||= n_per_page
     end
 
     # WARNING CAUTION DANGER CAREFUL WATCH OUT
