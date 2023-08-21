@@ -1,6 +1,9 @@
 RSpec.shared_examples Searchable, elasticsearch: true do |model_class|
   let(:model) { model_class.to_s.underscore.to_sym }
 
+  before { @searchable_attrs = model_class.get_searchable_attrs } # Store the original serchable attributes so they can be reset later
+  after { model_class.searches *@searchable_attrs }               # Reset the searchable attributes for the next test
+
   it "implements the Searchable concern" do
     expect(model_class.ancestors).to include Searchable
   end
@@ -32,14 +35,13 @@ RSpec.shared_examples Searchable, elasticsearch: true do |model_class|
 
   describe "class methods" do
     describe "#search" do
-      it "takes"
       it "returns exact matches" do
-        pending
-        fail
-      end
-      it "searches on all defined searchable attributes" do
-        pending
-        fail
+        m = create model
+        sleep 1 # Give time for the IndexElasticsearchDocumentJob job to fire
+        atty = model_class.get_searchable_attrs.first
+        atty_value = m.send(atty)
+        result = model_class.search(atty_value).first
+        expect(result).to eq(m), "If this fails, it might be due to the timing of the background API calls."
       end
     end
     describe "#searches" do
@@ -48,8 +50,8 @@ RSpec.shared_examples Searchable, elasticsearch: true do |model_class|
         model_class.searches :id
         expect(model_class.get_searchable_attrs).to include :id
       end
-
       it "defines the elasticsearch indexes" do
+
         # Here we define some arbitrary attributes
         model_class.searches :attribute1, :attribute2
 
@@ -58,7 +60,7 @@ RSpec.shared_examples Searchable, elasticsearch: true do |model_class|
 
         # Then we verify that the attributes have corresponding indexes
         mappings = Elasticsearch::Model.client.indices.get_mapping(index: Person.index_name)
-        model_class.get_searchable_attrs.each do |attribute|
+        [:attribute1, :attribute2].each do |attribute|
           attribute_mapping = mappings.dig(model_class.index_name, 'mappings', 'properties', attribute.to_s)
           expect(attribute_mapping).not_to be_nil, "mapping for #{attribute} is nil"
           expect(attribute_mapping['type']).to eq('text')

@@ -1,4 +1,3 @@
-
 # This concern makes models searchable via Elasticsearch.
 #
 # To implement this concern, do the following in your model:
@@ -33,7 +32,9 @@ module Searchable
   end
   
   class_methods do
-    def search(query, opts={page: 1})
+    def search(query)
+      # Eventually, you'll have these arguments:
+      # opt={extact_match: false, autocomplete: false, full_text: false}
       __elasticsearch__.search(
         {
           query: {
@@ -67,7 +68,11 @@ module Searchable
     # For development/testing purposes ONLY
     def rebuild_elasticsearch_index
       raise StandardError.new "DO NOT RUN THIS METHOD IN PRODUCTION" if Rails.env.production?
-      self.__elasticsearch__.delete_index! # VERY LAGGY
+      begin
+        self.__elasticsearch__.delete_index! # VERY LAGGY
+      rescue
+        # Do nothing. There was no index to delete.
+      end
       sleep 1
       self.__elasticsearch__.create_index! # VERY LAGGY
       sleep 1

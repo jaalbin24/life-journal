@@ -31,7 +31,7 @@ class Person < ApplicationRecord
   include Recoverable
   include ImageValidation
   include Searchable
-  searches :first_name, :last_name#, :middle_name, :nickname
+  searches :first_name, :last_name, :middle_name, :nickname
   paginates_per 24
   encrypts :first_name, :last_name, :middle_name, :nickname, :gender, :title, deterministic: true
   encrypts :biography
@@ -43,10 +43,7 @@ class Person < ApplicationRecord
     inverse_of: :person,
     dependent: :destroy
   )
-  has_many(
-    :entries,
-    through: :mentions
-  )
+  has_many :entries, through: :mentions
   has_many :personality
   has_many :notes, as: :notable
   has_many :traits, through: :personality

@@ -7,7 +7,7 @@ class PeopleController < ApplicationController
     @query = query
     @people = Person.search(query).not_deleted.where(user: current_user).page(params[:page]).per(Person.default_per_page)
     respond_to do |format|
-      format.html { render :index}
+      format.html { render :index }
       format.json { render json: @people }
     end
   end

@@ -31,35 +31,31 @@ require 'models/concerns/recoverable'
 require 'models/concerns/searchable'
 
 RSpec.describe Person, type: :model do
-  describe "scopes" do
-    # There are currently no scopes in the Person model
-  end
 
   it_behaves_like Searchable,      Person
   it_behaves_like Recoverable,      Person
   it_behaves_like ImageValidation,  Person
 
-
+  describe "scopes" do
+    # There are currently no scopes in the Person model
+  end
+  
   describe "ElasticSearch" do
     it "is included" do
       expect(Person.ancestors).to include Elasticsearch::Model
       expect(Person.ancestors).to include Elasticsearch::Model::Callbacks
     end
     it "indexes on the person's first name" do
-      pending "How do I test this?"
-      fail
+      expect(Person.get_searchable_attrs).to include :first_name
     end
     it "indexes on the person's middle name" do
-      pending "How do I test this?"
-      fail
+      expect(Person.get_searchable_attrs).to include :middle_name
     end
     it "indexes on the person's last name" do
-      pending "How do I test this?"
-      fail
+      expect(Person.get_searchable_attrs).to include :last_name
     end
     it "indexes on the person's nickname" do
-      pending "How do I test this?"
-      fail
+      expect(Person.get_searchable_attrs).to include :nickname
     end
   end
 
