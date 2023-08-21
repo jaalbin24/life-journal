@@ -1,4 +1,4 @@
-RSpec.shared_examples Searchable do |model_class|
+RSpec.shared_examples Searchable, elasticsearch: true do |model_class|
   let(:model) { model_class.to_s.underscore.to_sym }
 
   it "implements the Searchable concern" do
@@ -12,26 +12,27 @@ RSpec.shared_examples Searchable do |model_class|
   describe "methods" do
     describe "#delete_es_document" do
       it "enqueues a DeleteElasticsearchDocumentJob job" do
-        pending
-        fail
+        m = create model
+        expect { m.delete_es_document }.to have_enqueued_job DeleteElasticsearchDocumentJob
       end
     end
     describe "#index_es_document" do
       it "enqueues an IndexElasticsearchDocumentJob job" do
-        pending
-        fail
+        m = create model
+        expect { m.index_es_document }.to have_enqueued_job IndexElasticsearchDocumentJob
       end
     end
     describe "#update_es_document" do
       it "enqueues an UpdateElasticsearchDocumentJob job" do
-        pending
-        fail
+        m = create model
+        expect { m.update_es_document }.to have_enqueued_job UpdateElasticsearchDocumentJob
       end
     end
   end
 
   describe "class methods" do
     describe "#search" do
+      it "takes"
       it "returns exact matches" do
         pending
         fail
@@ -43,24 +44,33 @@ RSpec.shared_examples Searchable do |model_class|
     end
     describe "#searches" do
       it "sets @searchable_attrs" do
-        pending
-        fail
+        expect(model_class.get_searchable_attrs).to_not include :id
+        model_class.searches :id
+        expect(model_class.get_searchable_attrs).to include :id
       end
-      it "sets defines the elasticsearch indexes" do
-        pending
-        fail
+
+      it "defines the elasticsearch indexes" do
+        # Here we define some arbitrary attributes
+        model_class.searches :attribute1, :attribute2
+
+        # We push these new attributes to the elasticsearch server
+        model_class.__elasticsearch__.create_index! force: true
+
+        # Then we verify that the attributes have corresponding indexes
+        mappings = Elasticsearch::Model.client.indices.get_mapping(index: Person.index_name)
+        model_class.get_searchable_attrs.each do |attribute|
+          attribute_mapping = mappings.dig(model_class.index_name, 'mappings', 'properties', attribute.to_s)
+          expect(attribute_mapping).not_to be_nil, "mapping for #{attribute} is nil"
+          expect(attribute_mapping['type']).to eq('text')
+        end
       end
     end
     describe "#get_searchable_attrs" do
-      it "is private" do
-        pending
-        fail
-      end
-    end
-    describe "rebuild_elasticsearch_index" do
-      it "raises an error if run in a production environment" do
-        pending
-        fail
+      it "returns an array of the searchable attributes" do
+        model_class.searches :id
+        expect(model_class.get_searchable_attrs).to be_an Array
+        expect(model_class.get_searchable_attrs).to include :id
+        expect(model_class.get_searchable_attrs.size).to eq 1
       end
     end
   end

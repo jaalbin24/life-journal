@@ -16,6 +16,7 @@
 
 require 'support/authentication_helper'
 require 'support/test_id_helper'
+# require 'elasticsearch/extensions/test/cluster'           # For tests that require interacting with an Elasticsearch server
 
 RSpec.configure do |config|
 
@@ -102,4 +103,14 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  # Start an Elasticsearch cluster for tests that need it (elasticsearch: true)
+  # config.before :all, elasticsearch: true do
+    
+  # end
+
+  # # Stop any elasticsearch clusters after test run
+  # config.after :suite do
+  #   Elasticsearch::Extensions::Test::Cluster.stop(port: 9250, nodes: 1) if Elasticsearch::Extensions::Test::Cluster.running?(on: 9250)
+  # end
 end

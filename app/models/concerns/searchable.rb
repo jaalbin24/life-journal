@@ -57,10 +57,10 @@ module Searchable
       
       mappings dynamic: false do
         searchable_attrs.each do |atty|
-          indexes atty.to_sym, type: 'text'
+          indexes atty, type: 'text'
         end
       end
-      @searchable_attrs ||= searchable_attrs.map(&:to_s)
+      @searchable_attrs = searchable_attrs.map(&:to_sym)
     end
 
     # WARNING CAUTION DANGER CAREFUL WATCH OUT
@@ -76,11 +76,9 @@ module Searchable
     # End of danger
 
 
-    private
-
     def get_searchable_attrs
       raise StandardError.new "searchable_attrs are not defined for the #{self.name} class." unless @searchable_attrs
-      @searchable_attrs 
+      @searchable_attrs
     end
   end
 end
