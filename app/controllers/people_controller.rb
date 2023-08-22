@@ -12,10 +12,6 @@ class PeopleController < ApplicationController
     end
   end
 
-  def show
-    
-  end
-
   # GET /people
   def index
     @people = current_user.people.order(updated_at: :desc).page params[:page]
@@ -61,6 +57,18 @@ class PeopleController < ApplicationController
       redirect_to people_path, notice: "#{@person.name} was marked for deletion and will be deleted after 30 days."
     else
       redirect_to @continue_path, alert: "There was an error deleting #{@person.name}."
+    end
+  end
+
+  # GET /people/:id
+  def show
+    case params[:tab]&.to_sym
+    when :notes
+      @tab = :notes
+    when :mentions
+      @tab = :mentions
+    else
+      @tab = :biography
     end
   end
 

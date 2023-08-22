@@ -13,10 +13,10 @@
     <script src="https://unpkg.com/gsap@latest/dist/gsap.min.js"></script>
   </head>
 
-  <body data-barba="wrapper">
+  <body>
     <%=render "layouts/navbar"%>
     <main class="relative">
-      <div class="w-full h-full flex flex-col overflow-auto" data-barba="container">
+      <div class="w-full h-full flex flex-col overflow-auto">
         <%= render "layouts/flash"%>
         <%= yield %>
       </div>

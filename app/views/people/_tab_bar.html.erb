@@ -1,0 +1,13 @@
+<div class="tab-bar">
+  <ul class="flex flex-wrap">
+    <li class="mr-2">
+      <%= link_to "Biography", tab_person_path(@person, :biography), class: (@tab == :biography ? "tab-active" : "tab")%>
+    </li>
+    <li class="mr-2">
+      <%= link_to "Notes", tab_person_path(@person, :notes), class: (@tab == :notes ? "tab-active" : "tab")%>
+    </li>
+    <li class="mr-2">
+      <%= link_to "Mentions", tab_person_path(@person, :mentions), class: (@tab == :mentions ? "tab-active" : "tab")%>
+    </li>
+  </ul>
+</div>
