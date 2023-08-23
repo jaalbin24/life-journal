@@ -1,0 +1,12 @@
+<ul class="flex flex-col gap-1 p-3 grow">
+  <% if @person.notes.count != 0 %>
+    <% @person.notes.each do |n| %>
+      <li class="flex justify-between items-center bg-neutral-700 bg-opacity-40 p-2 rounded-lg shadow">
+        <span><%= n.content %></span>
+        <span class="shrink-0"><%= n.created_at.strftime("%b %d, %Y") %></span>            
+      </li>
+    <%end%>
+  <% else %>
+    <span class="mx-auto mt-10"><%= @person.name %> has no notes</span>
+  <% end %>
+</ul>

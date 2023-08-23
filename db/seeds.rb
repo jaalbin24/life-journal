@@ -32,7 +32,7 @@ traits.each do |k, v|
   )
 end
 
-50.times do
+100.times do
   person = me.people.create!(
     first_name: Faker::Name.first_name,
     last_name:  Faker::Name.last_name,
@@ -55,12 +55,11 @@ end
     person.avatar.attach(io: File.open(file_path), filename: File.basename(file_path))
   end
 end
-25.times do
-  me.people.create(
-    first_name: "John",
-    last_name: "Smith"
-  )
-end
+# John Smith is always in the database. I test the search feature by searching for him.
+me.people.create(
+  first_name: "John",
+  last_name: "Smith"
+)
 
 24.times do
   content = Array.new(rand(4..20)) do
@@ -72,7 +71,7 @@ end
     title: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5),
     content: ActionText::Content.new(content.join("<br><br>"))
   )
-  rand(1..5).times do
+  rand(1..7).times do
     entry.mentions.create!(
       person: Person.where.not(id: entry.people.pluck(:id)).sample
     )
@@ -89,13 +88,13 @@ end
   end
 end
 
-puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."        if User.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."      if Entry.count > 0
-puts "-- #{Entry.published.count} published"                        if Entry.published.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."          if User.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."        if Entry.count > 0
+puts "-- #{Entry.published.count} published"                                            if Entry.published.count > 0
 puts "-- #{ActionController::Base.helpers.pluralize Entry.drafts.count, 'draft'}"       if Entry.drafts.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Picture.count, 'picture'}."    if Picture.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Person.count, 'person'}."      if Person.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Mention.count, 'mention'}."    if Mention.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."      if Trait.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Quote.count, 'quote'}."      if Quote.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Note.count, 'note'}."        if Note.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."        if Trait.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Quote.count, 'quote'}."        if Quote.count > 0
+puts "Created #{ActionController::Base.helpers.pluralize Note.count, 'note'}."          if Note.count > 0

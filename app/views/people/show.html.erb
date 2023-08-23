@@ -1,4 +1,4 @@
-<div class="w-full flex justify-center">
+<div class="w-full min-h-full flex justify-center">
   <div class="w-2/3 p-5 flex flex-col gap-2">
     <div class="">
       <div class="card-body flex flex-col">
@@ -30,19 +30,19 @@
         </div>
       </div>
     </div>
-    <div class="card">
+    <div class="card grow">
       <%= render 'tab_bar' %>
       
-      <ul class="flex flex-col gap-1 p-3">
-        <%@person.notes.each do |n|%>
-          <li class="flex justify-between items-center bg-neutral-700 bg-opacity-40 p-2 rounded-lg shadow">
-            <span><%=n.content%></span>
-            <span class="shrink-0"><%=n.created_at.strftime("%b %d, %Y")%></span>            
-          </li>
-        <%end%>
-      </ul>
+      <% case @tab %>
+      <% when :notes %>
+        <%= render "notes" %>
+      <% when :mentions %>
+        <%= render "mentions" %>
+      <% else %>
+      
+      <% end %>
   </div>
-
+    <!--
     <div id="mentions-card" class="card relative" data-action="mousemove->fader#fadeOut mouseleave->fader#fadeIn" data-target="mentions-fader" data-controller="fader">
       <div class="card-header">
         <h5 class="font-bold">Mentions</h5>
@@ -71,5 +71,6 @@
         </div>
       </div>
     </div>
+    -->
   </div>
 </div>
