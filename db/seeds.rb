@@ -76,7 +76,7 @@ me.people.create(
       person: Person.where.not(id: entry.people.pluck(:id)).sample
     )
   end
-  rand(2..6).times do
+  rand(0..2).times do
     picture = entry.pictures.build(
       description: Faker::Lorem.sentences(number: rand(3..5)).join(" "),
       title: Faker::Fantasy::Tolkien.poem,

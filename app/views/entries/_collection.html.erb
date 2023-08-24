@@ -1,52 +1,48 @@
 <div class="pb-4 w-full">
-  <div class="grid grid-cols-2 gap-3">
-    <%entries.each do |e|%>
-      <div class="card border-slate-700">
-        <div class="card-header flex justify-between">
-          <div>
-            <div class="flex">
-              <a href="<%=entry_path(e)%>" class="shrink flex font-bold hover:underline h3">
-                <h3 class="shrink"><%=e.title.blank? ? "Untitled" : e.title%></h3>
+  <div class="grid grid-cols-3 gap-3"> 
+    <% entries.each_with_index do |e, i| %>
+      <% puts "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ #{i}: #{e.title}" %>
+      <% if e.pictures.count >= 1 %>
+        <div class="card relative h-64">
+          <%= image_tag e.pictures.sample.file, class: "h-full w-full object-cover rounded-t-lg" %>
+          <!--
+          <div class="w-full h-full absolute flex flex-col overflow-hidden rounded-lg">
+            <div class="bg-gradient-to-b from-transparent to-slate-800 grow"></div>
+            <div class="h-12 bg-slate-800"></div>
+          </div>
+          --> 
+          <div class="z-10 flex">
+            <div class="m-2 bg-slate-800">
+              <a href="<%= entry_path(e) %>" class="shrink flex font-bold hover:underline h3">
+                <h3 class="shrink"><%= e.title.blank? ? "Untitled" : e.title %></h3>
               </a>
-            </div>
-            <div class="flex flex-row align-center gap-3">
-              <h6 class="my-auto"><%=e.last_updated_caption%></h6>
-              <div class="flex flex-row">
-                <%e.people.each_with_index do |p, i|%>
-                  <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
-                <%end%>
+              <div class="flex flex-row align-center gap-2">
+                <h6 class="my-auto"><%= e.last_updated_caption %></h6>
+                <div class="flex flex-row">
+                  <% e.people.each_with_index do |p, i| %>
+                    <%= render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32} %>
+                  <% end %>
+                </div>
               </div>
             </div>
           </div>
-          <div class="flex items-center opacity-0 hover:opacity-100 transition-opacity">            
-            <a class="nav-link" href="<%=edit_entry_path(e)%>">
-              <%= image_tag 'edit_icon.svg', size: 24%>
-            </a>
-            <%=form_with model: e, url: entry_path(e), method: :delete, html: { onsubmit: "return confirm(\"Are you sure you want to delete the following entry?\\n\\n#{e.title}\\n#{e.published? ? "Published #{e.published_at.strftime("%b %d, %Y")}" : "Saved #{e.updated_at.strftime("%b %d, %Y")}"} #{}\");" } do%>
-              <button class="nav-link">
-                <%=trashcan_icon%>
-              </button>
-            <%end%>
+        </div>
+      <% else %>
+        <div class="card h-64 flex justify-center items-center gap-2">
+          <a href="<%= entry_path(e) %>" class="shrink flex font-bold hover:underline h3">
+            <h3 class="shrink text-center"><%= e.title.blank? ? "Untitled" : e.title %></h3>
+          </a>
+          <h6><%= e.last_updated_caption %></h6>
+          <div class="flex flex-row">
+            <% e.people.each_with_index do |p, i| %>
+              <%= render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32} %>
+            <% end %>
           </div>
         </div>
-        <div class="card-body max-h-48 flex gap-5 justify-between">
-          <div class="overflow-hidden relative grow">
-            <div class="w-full h-full bg-gradient-to-b from-transparent to-neutral-800 absolute"></div>
-            <%=e.content%>
-          </div>
-          <%if e.pictures.count >= 1%>
-            <%=image_tag e.pictures.sample.file, class: "h-full rounded-lg object-contain"%>
-          <%end%>
-        </div>
-      </div>
-    <%end%>
+      <% end %>
+    <% end %>
   </div>
 </div>
-<div class="flex gap-2 pb-10">
-  <div class="flex w-full justify-end">
-    <%=link_to "Previous", path_to_prev_page(entries), class: "btn-primary"%>
-  </div>
-  <div class="flex w-full">
-    <%=link_to "Next", path_to_next_page(entries), class: "btn-primary"%>
-  </div>
+<div class="flex justify-center mt-auto pb-10">
+  <%= paginate entries %>
 </div>

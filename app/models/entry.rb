@@ -23,11 +23,11 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Entry < ApplicationRecord
+  include Recoverable
+  paginates_per 9
   belongs_to :user
-  paginates_per 12
   has_rich_text :content, encrypted: true
   encrypts :title, deterministic: true
-  include Recoverable
   
   scope :published,   ->  {where(status: "published")}
   scope :drafts,      ->  {where(status: "draft")}

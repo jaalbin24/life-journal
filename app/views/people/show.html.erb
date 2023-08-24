@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <div class="card grow">
+    <div class="grow">
       <%= render 'tab_bar' %>
       
       <% case @tab %>
@@ -39,38 +39,7 @@
       <% when :mentions %>
         <%= render "mentions" %>
       <% else %>
-      
+        <%= render "biography"%>
       <% end %>
-  </div>
-    <!--
-    <div id="mentions-card" class="card relative" data-action="mousemove->fader#fadeOut mouseleave->fader#fadeIn" data-target="mentions-fader" data-controller="fader">
-      <div class="card-header">
-        <h5 class="font-bold">Mentions</h5>
-      </div>
-      <div class="card-body flex flex-col">
-        <div class="overflow-auto grow">
-          <ul class="flex flex-wrap gap-2">
-            <%@person.entries.order(published_at: :desc).each do |e|%>
-              <li class="py-1 px-2 bg-slate-700 rounded-lg shrink min-w-fit w-2/5 h-fit shadow shadow-black/50">
-                <div class="flex">
-                  <a href="<%=entry_path(e)%>" class="shrink flex font-bold hover:scale-101 max-w-full">
-                    <h3 class="shrink truncate max-w-full hover:underline"><%=e.title.blank? ? "Untitled" : e.title%></h3>
-                  </a>
-                </div>
-                <div class="flex flex-row align-center gap-3">
-                  <h6 class="my-auto"><%=e.last_updated_caption%></h6>
-                  <div class="flex flex-row">
-                    <%e.people.each_with_index do |p, i|%>
-                      <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
-                    <%end%>
-                  </div>
-                </div>
-              </li>
-            <%end%>
-          </ul>
-        </div>
-      </div>
-    </div>
-    -->
   </div>
 </div>

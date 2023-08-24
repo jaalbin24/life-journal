@@ -4,7 +4,7 @@
       <h4 class="">Sign in</h4>
       <div class="my-4">
         <%if @user.errors[:base].any? %>
-          <p class="p-2 bg-red-700 text-red-200 rounded-lg"><%= @user.errors[:base].first %></p>
+          <p class="form-error-message"><%= @user.errors[:base].first %></p>
         <% end %>
       </div>
       <%=form_for @user, url: sign_in_path do |f|%>

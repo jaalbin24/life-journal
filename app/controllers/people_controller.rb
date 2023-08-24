@@ -60,12 +60,13 @@ class PeopleController < ApplicationController
     end
   end
 
-  # GET /people/:id
+  # GET /people/:id/:tab/page/:page
   def show
     case params[:tab]&.to_sym
     when :notes
       @tab = :notes
     when :mentions
+      @entries = @person.entries.page(params[:page])
       @tab = :mentions
     else
       @tab = :biography

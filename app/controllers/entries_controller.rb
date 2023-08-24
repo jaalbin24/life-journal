@@ -5,7 +5,7 @@ class EntriesController < ApplicationController
   # GET /entries
   # GET /entries/published
   def index
-    @entries = current_user.entries.not_deleted.published.order(published_at: :desc).page params[:page]
+    @entries = current_user.entries.not_deleted.published.order(published_at: :desc).page
     @index_title = "Published"
   end
 

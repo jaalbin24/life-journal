@@ -25,7 +25,7 @@
     <% if !@people.empty? %>
       <div class="grid grid-cols-8 gap-3 shrink">
         <%@people.each do |p|%>
-          <a class="card hover:bg-neutral-700 hover:scale-105 transition-all hover:shadow hover:shadow-black/50" href="<%=person_path(p)%>">
+          <a class="card hover:bg-slate-700 hover:scale-105 transition-all hover:shadow hover:shadow-black/50" href="<%=person_path(p)%>">
             <div class="card-body flex flex-col justify-center items-center gap-2">
               <%=person_avatar(p, class: "person-avatar hover:scale-100", size: 164)%>
               <h5 class="truncate max-w-full font-bold">
