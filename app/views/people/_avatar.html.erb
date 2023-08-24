@@ -2,7 +2,7 @@
 <%css_class ||= ''%>
 <%size ||= 16%>
 <a href="<%=person_path(person)%>" class="<%=["#{tooltip ? "tooltip" : ''}", css_class].reject(&:blank?).join(' ')%>">
-  <%=person_avatar(person, class: "person-avatar", size: size)%>
+  <%=avatar(person, size: size)%>
   <%if tooltip%>
     <div class="tooltip-content">
       <%=person.name%>
