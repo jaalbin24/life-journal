@@ -27,4 +27,5 @@ class Note < ApplicationRecord
 
   validates :content, presence: true
   encrypts :content
+  paginates_per 10
 end

@@ -16,7 +16,8 @@ Rails.application.routes.draw do
       get 'page/:page',         action: :index
     end
     resources :notes, only: [:create]
-    member do 
+    member do
+      get 'edit'
       get ':tab',               action: :show, as: :tab
       get ':tab/page/:page',    action: :show
     end

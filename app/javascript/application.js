@@ -2,4 +2,4 @@
 import "controllers"
 import "./resources/picture"
 import "trix"
-import "@rails/actiontext"
+import "@rails/actiontext"import "@hotwired/turbo-rails"

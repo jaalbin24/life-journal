@@ -10,3 +10,4 @@ pin "trix"
 pin "@rails/actiontext", to: "actiontext.js"
 
 pin "picture", preload: true, to: %w[picture.js]
+pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true

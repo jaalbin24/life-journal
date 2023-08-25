@@ -64,6 +64,7 @@ class PeopleController < ApplicationController
   def show
     case params[:tab]&.to_sym
     when :notes
+      @notes = @person.notes.page(params[:page])
       @tab = :notes
     when :mentions
       @entries = @person.entries.page(params[:page])

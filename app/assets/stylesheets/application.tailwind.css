@@ -154,8 +154,12 @@
     @apply font-bold text-5xl
   }
 
+  .btn-amber {
+    @apply border border-yellow-500 hover:bg-yellow-500 py-2 transition-all
+  }
+
   .button {
-    @apply p-2 hover:scale-105 rounded transition-all hover:shadow hover:shadow-black/50
+    @apply p-2 rounded transition-all hover:shadow hover:shadow-black/50 font-medium cursor-pointer
   }
 
   .button-primary {

@@ -8,4 +8,20 @@ module ApplicationHelper
       end
     }</div>".html_safe
   end
+
+  def embedded_svg(filename, opt = {})
+    assets = Rails.application.assets
+    asset = assets.find_asset(filename)
+
+    if asset
+      file = asset.source.force_encoding("UTF-8")
+      doc = Nokogiri::HTML::DocumentFragment.parse file
+      svg = doc.at_css "svg"
+      svg["class"] = opt[:class] if opt[:class].present?
+    else
+      # doc = "<!-- SVG #{filename} not found -->"
+    end
+
+    raw doc
+  end
 end

@@ -33,11 +33,12 @@ traits.each do |k, v|
 end
 
 100.times do
+  biography = Array.new(rand(0..5)) { Faker::Lorem.paragraph_by_chars(number: rand(50..500), supplemental: true) }.join(" ")
   person = me.people.create!(
     first_name: Faker::Name.first_name,
     last_name:  Faker::Name.last_name,
     middle_name: (rand(0..9) <= 2 ? Faker::Name.first_name : nil),
-    biography: nil
+    biography: biography
   )
   rand(2..5).times do 
     person.personality.create!(
@@ -62,9 +63,7 @@ me.people.create(
 )
 
 24.times do
-  content = Array.new(rand(4..20)) do
-    Faker::Lorem.paragraph_by_chars(number: rand(50..500), supplemental: true)
-  end
+  content = Array.new(rand(4..20)) { Faker::Lorem.paragraph_by_chars(number: rand(50..500), supplemental: true) }
   entry = me.entries.create!(
     status: (rand(0..9) == 0 ? 'draft' : 'published'),
     published_at: rand(5..1000).days.ago,
