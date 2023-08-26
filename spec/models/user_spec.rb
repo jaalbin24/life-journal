@@ -2,14 +2,23 @@
 #
 # Table name: users
 #
-#  id              :uuid             not null, primary key
-#  deleted         :boolean
-#  deleted_at      :datetime
-#  email           :string
-#  password_digest :string
-#  status          :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                           :uuid             not null, primary key
+#  deleted                      :boolean
+#  deleted_at                   :datetime
+#  email                        :string
+#  password_digest              :string
+#  remember_me_token            :string
+#  remember_me_token_expires_at :datetime
+#  status                       :string
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#
+# Indexes
+#
+#  index_users_on_deleted            (deleted)
+#  index_users_on_deleted_at         (deleted_at)
+#  index_users_on_email              (email)
+#  index_users_on_remember_me_token  (remember_me_token)
 #
 require 'rails_helper'
 require 'models/concerns/image_validation'
@@ -52,6 +61,26 @@ RSpec.describe User, type: :model do
         u = create :user
         expect(u.email).to be_a String
       end
+      it "is indexed in te database" do
+        pending
+        fail
+      end
+    end
+    describe "remember_me_token" do
+      it do
+        pending
+        fail
+      end
+      it "is indexed in te database" do
+        pending
+        fail
+      end
+    end
+    describe "remember_me_token_expires_at" do
+      it do
+        pending
+        fail
+      end
     end
     it "contains no unexpected attributes" do
       # Before adding anything to the expected attributes array, be sure you've written tests for the new attribute
@@ -71,7 +100,54 @@ RSpec.describe User, type: :model do
   end
 
   describe "methods" do
-    # The user model currently has no instance methods to test
+    describe "#roll_remember_me_token" do
+      it "sets remember_me_token_expires_at to 2 weeks from now" do
+        pending
+        fail
+      end
+      it "calls SecureRandom.hex(16)" do
+        pending
+        fail
+      end
+      it "sets remember_me_token to a 32-character string" do
+        pending
+        fail
+      end
+      context "if successful" do
+        it "returns the user object" do
+          pending
+          fail
+        end
+      end
+      context "if unsuccessful" do
+        it "returns false" do
+          pending
+          fail
+        end
+      end
+    end
+    describe "#purge_remember_me_token" do
+      it "sets remember_me_token_expires_at to nil" do
+        pending
+        fail
+      end
+      it "sets remember_me_token to nil" do
+        pending
+        fail
+      end
+      context "if successful" do
+        it "returns the user object" do
+          pending
+          fail
+        end
+      end
+      context "if unsuccessful" do
+        it "returns false" do
+          pending
+          fail
+        end
+      end
+    end
   end
 
   describe "class methods" do

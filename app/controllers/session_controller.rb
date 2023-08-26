@@ -11,14 +11,13 @@ class SessionController < ApplicationController
 
   # POST /sign_in
   def create
-    if sign_in(email: user_params[:email], password: user_params[:password])
+    if sign_in(email: user_params[:email], password: user_params[:password], remember_me: params[:remember_me])
       redirect_to after_sign_in_path
       cookies.delete(:after_sign_in_path)
     else
       @user = User.new(user_params)
       @user.errors.add(:base, "Username or password incorrect")
       render :sign_in
-      # redirect_to sign_in_path(continue_path: @continue_path)
     end
   end
 
