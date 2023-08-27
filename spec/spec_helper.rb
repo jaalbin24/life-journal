@@ -16,6 +16,7 @@
 
 require 'support/authentication_helper'
 require 'support/test_id_helper'
+require 'support/query_matcher'
 # require 'elasticsearch/extensions/test/cluster'           # For tests that require interacting with an Elasticsearch server
 
 RSpec.configure do |config|

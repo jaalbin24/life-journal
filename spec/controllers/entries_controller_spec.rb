@@ -1,29 +1,39 @@
 require 'rails_helper'
-require 'controllers/concerns/authentication'
 
 RSpec.describe EntriesController, type: :controller do
 
-  it_behaves_like Authentication,       EntriesController
+  let(:user)                    { create :user }
+  let(:valid_params)            { { content: 'Test content', title: 'Test Title' } }
+  let(:invalid_params)          { { } }
+  let(:send_edit_request)       { get :edit, params: { id: user.entries.sample.id } }
+  let(:send_update_request)     { put :update, params: { id: user.entries.sample.id, entry: valid_params } }
+  let(:send_new_request)        { get :new }
+  let(:send_index_request)      { get :index }
+  let(:send_drafts_request)     { get :drafts }
+  let(:send_published_request)  { get :published }
 
   it 'has no unexpected actions' do
     pending
     fail
   end
 
-  before do
-    users = Array.new(2) do
-      user = create :user
-      create_list :entry, 3, :published,  user: user
-      create_list :entry, 2, :draft,      user: user
-      create_list :entry, 1, :deleted,    user: user
-      user
-    end
-    @user = users[0]
-    sign_in @user
+  it "implements the Authentication concern" do
+    expect(EntriesController.ancestors).to include Authentication
   end
+
+  before do
+    sign_in user
+    create :user
+    User.all.each do |u|
+      create_list :entry, 3, :published,  user: u
+      create_list :entry, 2, :draft,      user: u
+      create_list :entry, 1, :deleted,    user: u
+    end
+  end
+
   describe 'actions' do
     describe 'GET #index' do
-      before {get :index}
+      before { send_index_request }
       it 'renders the index view' do
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:index)
@@ -41,16 +51,17 @@ RSpec.describe EntriesController, type: :controller do
         expect(assigns(:entries).empty.count).to eq 0
       end
       it 'only shows entries that belong to the current user' do
-        pending
-        fail
+        expect(assigns(:entries)).to eq user.entries.not_deleted.published.order(published_at: :desc)
       end
       it 'requires authentication' do
-        pending
-        fail
+        skip_before(:each)
+        sign_out
+        send_index_request
+        expect(response).to redirect_to(sign_in_path)
       end
     end
     describe 'GET #drafts' do
-      before {get :drafts}
+      before { send_drafts_request }
       it 'renders the index view' do
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:index)
@@ -77,7 +88,7 @@ RSpec.describe EntriesController, type: :controller do
       end
     end
     describe 'GET #deleted' do
-      before {get :deleted}
+      before { get :deleted }
       it 'renders the index view' do
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:index)
@@ -96,7 +107,7 @@ RSpec.describe EntriesController, type: :controller do
       end
     end
     describe 'GET #show' do
-      before {get :show, params: {id: @user.entries.sample.id}}
+      before { get :show, params: { id: user.entries.sample.id } }
       it 'renders the show view' do
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:show)
@@ -111,8 +122,8 @@ RSpec.describe EntriesController, type: :controller do
       end
     end
     describe 'GET #edit' do
-      before {get :edit, params: {id: @user.entries.sample.id}}
       it 'renders the edit view' do
+        send_edit_request
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:edit)
       end
@@ -121,19 +132,14 @@ RSpec.describe EntriesController, type: :controller do
         fail
       end
       it 'requires authentication' do
-        pending
-        fail
+        sign_out
+        send_edit_request
+        expect(response).to redirect_to(sign_in_path)
       end
     end
     describe 'PUT #update' do
       context 'with valid parameters' do
-        let(:valid_params) do
-          {
-            content: 'Test content',
-            title: 'Test Title'
-          }
-        end
-        before {put :update, params: {id: @user.entries.sample.id, entry: valid_params}}
+        before { send_update_request }
         it 'updates the entry' do
           pending
           fail
@@ -148,7 +154,7 @@ RSpec.describe EntriesController, type: :controller do
         end
       end
       context 'with invalid parameters' do
-        # before {put :update, params: {id: @user.entries.sample.id, entry: nil}}
+        # before {put :update, params: {id: user.entries.sample.id, entry: nil}}
         it 'does not update the entry' do
           pending "The entry model has no validations. Invalid parameters are currently not possible."
           fail
@@ -172,7 +178,7 @@ RSpec.describe EntriesController, type: :controller do
       end
     end
     describe 'GET #new' do
-      before {get :new}
+      before { send_new_request }
       it 'renders the new view' do
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -187,7 +193,7 @@ RSpec.describe EntriesController, type: :controller do
       end
     end
     describe 'POST #create' do
-      # before {post :create}
+      # before { post :create }
       context 'with valid parameters' do
         it 'creates a new entry' do
           pending
@@ -226,6 +232,7 @@ RSpec.describe EntriesController, type: :controller do
       end
     end
   end
+
   describe 'methods' do
     describe '#set_entry' do
       it 'is private' do

@@ -6,6 +6,11 @@ RSpec.describe UsersController, type: :controller do
     pending
     fail
   end
+  
+  it "implements the Authentication concern" do
+    expect(EntriesController.ancestors).to include Authentication
+  end
+
   describe "actions" do
     before do
       @user = create :user
