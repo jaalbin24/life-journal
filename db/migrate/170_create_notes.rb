@@ -4,8 +4,8 @@ class CreateNotes < ActiveRecord::Migration[7.0]
       t.string :content
       t.references :user, null: false, foreign_key: {to_table: :users}, type: :uuid
       t.references :notable, polymorphic: true, null: false, type: :uuid
-      t.boolean     :deleted
-      t.datetime    :deleted_at
+      t.boolean     :deleted,                       index: true
+      t.datetime    :deleted_at,                    index: true
       t.timestamps
     end
   end

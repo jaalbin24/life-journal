@@ -5,8 +5,8 @@ class CreatePictures < ActiveRecord::Migration[7.0]
       t.string      :title
       t.references  :entry, null: false, foreign_key: true, type: :uuid
       t.references  :user, null: false, foreign_key: true, type: :uuid
-      t.boolean     :deleted
-      t.datetime    :deleted_at
+      t.boolean     :deleted,                       index: true
+      t.datetime    :deleted_at,                    index: true
       t.timestamps
     end
   end

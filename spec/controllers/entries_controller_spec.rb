@@ -1,6 +1,9 @@
 require 'rails_helper'
+require 'controllers/concerns/authentication'
 
 RSpec.describe EntriesController, type: :controller do
+
+  it_behaves_like Authentication,       EntriesController
 
   it 'has no unexpected actions' do
     pending

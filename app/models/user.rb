@@ -26,10 +26,11 @@ class User < ApplicationRecord
   include ImageValidation
   include Recoverable
   encrypts :email, deterministic: true, downcase: true
+  encrypts :remember_me_token, deterministic: true
   validates :email, presence:         { message: "You'll need an email" }
   validates :email, email_format:     { message: "That's not an email" }
   validates :email, uniqueness:       { message: "That email is already taken" }
-  validates :password, presence:      { message: "Your password can't be blank" }
+  validates :password, presence:      { message: "Your password can't be blank" }, on: :create
   validates :password, confirmation:  { message: "The passwords don't match" }
   has_many :entries,  dependent: :destroy
   has_many :people,   dependent: :destroy
@@ -38,15 +39,21 @@ class User < ApplicationRecord
   has_one_attached :avatar
   validate_images :avatar
 
+  after_commit :roll_remember_me_token, on: :create
+
   def roll_remember_me_token
-    self.remember_me_token_expires_at = 2.weeks.from_now
-    self.remember_me_token = SecureRandom.hex(16)
-    self.save
+    update_params = {
+      remember_me_token:            SecureRandom.hex(16),
+      remember_me_token_expires_at: 2.weeks.from_now
+    }
+    if self.update(update_params)
+      remember_me_token
+    else
+      false
+    end
   end
 
-  def purge_remember_me_token
-    self.remember_me_token = nil
-    self.remember_me_token_expires_at = nil
-    self.save
+  def remember_me_token_expired?
+    remember_me_token_expires_at <= DateTime.current
   end
 end

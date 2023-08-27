@@ -64,6 +64,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["deleted"], name: "index_entries_on_deleted"
+    t.index ["deleted_at"], name: "index_entries_on_deleted_at"
     t.index ["user_id"], name: "index_entries_on_user_id"
   end
 
@@ -85,6 +87,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["deleted"], name: "index_notes_on_deleted"
+    t.index ["deleted_at"], name: "index_notes_on_deleted_at"
     t.index ["notable_type", "notable_id"], name: "index_notes_on_notable"
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
@@ -103,6 +107,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["deleted"], name: "index_people_on_deleted"
+    t.index ["deleted_at"], name: "index_people_on_deleted_at"
     t.index ["user_id"], name: "index_people_on_user_id"
   end
 
@@ -124,6 +130,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["deleted"], name: "index_pictures_on_deleted"
+    t.index ["deleted_at"], name: "index_pictures_on_deleted_at"
     t.index ["entry_id"], name: "index_pictures_on_entry_id"
     t.index ["user_id"], name: "index_pictures_on_user_id"
   end
@@ -136,6 +144,8 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["deleted"], name: "index_quotes_on_deleted"
+    t.index ["deleted_at"], name: "index_quotes_on_deleted_at"
   end
 
   create_table "traits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

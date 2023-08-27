@@ -11,8 +11,8 @@ class CreatePeople < ActiveRecord::Migration[7.0]
       t.string      :biography
 
       t.string      :notes
-      t.boolean     :deleted
-      t.datetime    :deleted_at
+      t.boolean     :deleted,                       index: true
+      t.datetime    :deleted_at,                    index: true
       t.references  :user,      foreign_key: {to_table: :users}, type: :uuid
 
       t.timestamps

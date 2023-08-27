@@ -14,8 +14,10 @@
 #
 # Indexes
 #
-#  index_pictures_on_entry_id  (entry_id)
-#  index_pictures_on_user_id   (user_id)
+#  index_pictures_on_deleted     (deleted)
+#  index_pictures_on_deleted_at  (deleted_at)
+#  index_pictures_on_entry_id    (entry_id)
+#  index_pictures_on_user_id     (user_id)
 #
 # Foreign Keys
 #

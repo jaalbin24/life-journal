@@ -7,39 +7,22 @@ module Authentication
     helper_method :redirect_unauthenticated
   end
 
-  def sign_in(email:, password:, remember_me:)
-    user = User.find_by(email: email)
-    if user&.authenticate(password)
-      reset_session
-      session[:user_id] = user.id
-      if remember_me
-        p "========================"
-        p "REMEMBER ME"
-        p "========================"
-        remember_me_token = user.roll_remember_me_token
-        cookies.signed[:remember_me] = {
-          value: remember_me_token,
-          expires: user.remember_me_token_expires_at,
-          secure: Rails.env.production?
-        }
-      else
-        p "========================"
-        p "FORGET ME"
-        p "========================"
-        if user.purge_remember_me_token
-
-        else
-          p user.errors.full_messages.inspect
-        end
-      end
-      true
-    else
-      false
+  def sign_in(user, opts={remember_me: false})
+    session[:user_id] = user.id
+    if opts[:remember_me]
+      remember_me_token = user.roll_remember_me_token
+      cookies.signed[:remember_me] = {
+        value: remember_me_token,
+        expires: user.remember_me_token_expires_at,
+        http_only: true,
+        secure: Rails.env.production?
+      }
     end
+    user
   end
 
   def sign_out
-    current_user.purge_remember_me_token
+    current_user.roll_remember_me_token
     cookies.delete :remember_me
     reset_session
   end
@@ -47,7 +30,9 @@ module Authentication
   private
 
   def current_user
-    Current.user ||= User.find_by(id: session[:user_id])
+    Current.user ||= set_current_user
+    # p "🔥 current user = #{Current.user&.email}"
+    Current.user
   end
 
   def user_signed_in?
@@ -58,6 +43,30 @@ module Authentication
     unless user_signed_in?
       cookies[:after_sign_in_path] = request.path
       redirect_to sign_in_path
+    end
+  end
+
+  private
+
+  def set_current_user
+    if !session[:user_id].blank? # If the session cookie has a user id stored already, that's your user
+      # p "🔥 AUTH BY SESSION"
+      user = User.find_by(id: session[:user_id])
+    elsif !cookies.signed[:remember_me].blank? # Else if there is a remember me cookie, look it up
+      user = User.find_by(remember_me_token: cookies.signed[:remember_me])
+      if user # If a user has that remember me token
+        if user.remember_me_token_expired? # But the token is expired!
+          user.roll_remember_me_token
+          # p "🔥 TOKEN EXPIRED"
+          nil
+        else # And it is not expired, the user is authenticated. Congrats.
+          # p "🔥 AUTH BY TOKEN"
+          sign_in user
+        end
+      else # No user matches that remember me token. Tough luck. No authentication.
+        # p "🔥 NO USER FOUND"
+        nil
+      end
     end
   end
 end

@@ -11,7 +11,10 @@ class SessionController < ApplicationController
 
   # POST /sign_in
   def create
-    if sign_in(email: user_params[:email], password: user_params[:password], remember_me: params[:remember_me])
+    user = User.find_by(email: user_params[:email])
+    if user&.authenticate(user_params[:password])
+      reset_session
+      sign_in user, remember_me: (params[:remember_me] == '1')
       redirect_to after_sign_in_path
       cookies.delete(:after_sign_in_path)
     else

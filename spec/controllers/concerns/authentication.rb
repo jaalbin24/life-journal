@@ -1,52 +1,34 @@
 require "rails_helper"
 
 
-RSpec.shared_examples Authentication do
+RSpec.shared_examples Authentication do |controller_class|
   let(:user) { create :user }
   before { sign_out } # Make sure each test starts with no user signed in
 
   describe "#sign_in" do
-    context "with valid credentials" do
-      it "signs in the user" do
-        pending
-        fail
+    it "saves the user id in the session cookie" do
+      controller.sign_in(user)
+      expect(session[:user_id]).to eq user.id
+    end
+    it "returns the user" do
+      expect(controller.sign_in(user)).to eq user
+    end
+    context "with remember me set to true" do
+      it "rolls the user's remember me token" do
+        expect(user).to receive :roll_remember_me_token
+        controller.sign_in(user, remember_me: true)
       end
-      context "with remember me set to 1" do
-        it "calls user#roll_remember_me_token" do # So that old remember_me tokens will be expired
-          pending
-          fail
-        end
-        it "sets the remember_me cookie" do
-          pending
-          fail
-        end
-        describe "the remember_me cookie" do
-          it "expires two weeks from now" do
-
-          end
-          it "is signed" do
-
-          end          
-        end
-      end
-      context "with remember me set to 0" do
-        it "deletes the remember_me cookie" do
-          pending
-          fail
-        end
-        it "calls user#roll_remember_me_token" do # So that old remember_me tokens will be expired
-          pending
-          fail
-        end
+      it "saves the new remember me token in a signed, HTTP only cookie set to expire in two weeks" do
+        controller.sign_in(user, remember_me: true)
+        expect(cookies.signed[:remember_me]).to eq user.remember_me_token
+        expect() # Expect cookie to have an expiration date 2 weeks from now
+        expect(response.headers['Set-Cookie']).to include('HttpOnly')
       end
     end
-
-    context "with invalid credentials" do
-      it "does not sign in the user" do
-        expect(controller.sign_in(email: user.email, password: "wrongpassword")).to be_falsey
-        expect(session[:user_id]).to be_nil
-      end
+    context "with remember me set to false" do
+      
     end
+
   end
 
   describe "#sign_out" do
@@ -58,20 +40,72 @@ RSpec.shared_examples Authentication do
   end
 
   describe "#current_user" do
-    context "when user is signed in" do
+    it "calls set_current_user if Current.user is nil" do
+      pending
+      fail
+    end
+    it "returns Current.user" do
+      pending
+      fail
+    end
+  end
+  describe "#set_current_user" do
+    context "the session has a user id" do
       before { sign_in user }
-      it "returns the current user" do
+      it "returns the user with that id" do
         expect(controller.send(:current_user)).to eq(user)
       end
+      context "there is a remember_me_token cookie" do
+        it "does not query the database for a user with a remember_me_token" do
+          pending
+          fail
+        end
+        it "queries the database only once" do
+          pending
+          fail
+        end
+      end
+      context "there is no remember_me_token cookie" do
+        it "does not query the database for a user with a remember_me_token" do
+          pending
+          fail
+        end
+        it "queries the database only once" do
+          pending
+          fail
+        end
+      end
     end
-
-    context "when user is not signed in" do
-      it "returns nil" do
-        expect(controller.send(:current_user)).to be_nil
+    context "the session does not have a user id" do
+      context "there is a remember_me_token cookie" do
+        it "queries the database for the expiration date of the remember me token" do
+          pending
+          fail
+        end
+        context "the cookie is expired" do
+          # It is assumed that if the server receives a remember_me_token that has expired, the expiration date was maliciously modified.
+          # Modern browsers will not send expired cookies automatically. Therefore, the token should be rolled.
+          it "calls #roll_remember_me_token" do 
+            pending
+            fail
+          end
+          it "returns nil" do
+            expect(controller.send(:current_user)).to be_nil
+          end
+        end
+        context "the cookie is not expired" do
+          it "queries the database for a user with the remember me token" do
+            pending
+            fail
+          end
+          it "queries the database only once" do
+            pending
+            fail
+          end
+        end
       end
     end
   end
-
   describe "#user_signed_in?" do
     context "when user is signed in" do
       before { sign_in user }
@@ -91,7 +125,6 @@ RSpec.shared_examples Authentication do
   describe "#redirect_unauthenticated" do
     context "when the user is signed in" do
       before { sign_in user }
-      before { get :test }
       it "does nothing" do
         expect(controller).not_to receive(:redirect_to)
         controller.send(:redirect_unauthenticated)
@@ -99,15 +132,15 @@ RSpec.shared_examples Authentication do
     end
 
     context "when the user is not signed in" do
-      before { get :test }
       it "redirects to the sign in page" do
         expect(controller).to receive(:redirect_to).with(controller.send(:sign_in_path))
         controller.send(:redirect_unauthenticated)
       end
 
       it "redirects to the sign in page and sets the after_sign_in_path cookie" do
+        get controller_class.action_methods.first
         expect(response).to redirect_to(sign_in_path)
-        expect(response.cookies["after_sign_in_path"]).to eq("/test")
+        expect(response.cookies["after_sign_in_path"]).to eq(request.path)
       end
     end
   end

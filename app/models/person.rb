@@ -19,7 +19,9 @@
 #
 # Indexes
 #
-#  index_people_on_user_id  (user_id)
+#  index_people_on_deleted     (deleted)
+#  index_people_on_deleted_at  (deleted_at)
+#  index_people_on_user_id     (user_id)
 #
 # Foreign Keys
 #

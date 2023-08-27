@@ -19,7 +19,9 @@
 #
 # Indexes
 #
-#  index_people_on_user_id  (user_id)
+#  index_people_on_deleted     (deleted)
+#  index_people_on_deleted_at  (deleted_at)
+#  index_people_on_user_id     (user_id)
 #
 # Foreign Keys
 #
@@ -32,7 +34,7 @@ require 'models/concerns/searchable'
 
 RSpec.describe Person, type: :model do
 
-  it_behaves_like Searchable,      Person
+  it_behaves_like Searchable,       Person
   it_behaves_like Recoverable,      Person
   it_behaves_like ImageValidation,  Person
 

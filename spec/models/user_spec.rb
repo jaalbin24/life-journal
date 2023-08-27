@@ -61,25 +61,36 @@ RSpec.describe User, type: :model do
         u = create :user
         expect(u.email).to be_a String
       end
-      it "is indexed in te database" do
-        pending
-        fail
+      it "is indexed in the database" do
+        expect(ActiveRecord::Migration.index_exists?(:users, :email)).to be true
       end
     end
-    describe "remember_me_token" do
-      it do
-        pending
-        fail
+    describe "#remember_me_token" do
+      it "is encrypted deterministically" do
+        u = create :user
+        remember_me_token = u.remember_me_token
+        expect(User.encrypted_attributes).to include :remember_me_token
+        # Models are only searchable on encrypted attributes when encrypted deterministically
+        expect(User.find_by(remember_me_token: remember_me_token)).to eq u
       end
-      it "is indexed in te database" do
-        pending
-        fail
+      it "preserves capitalization" do
+        u = create :user
+        remember_me_token = u.remember_me_token
+        u.save
+        expect(u.reload.remember_me_token).to eq remember_me_token
+      end
+      it "returns a string" do
+        u = create :user
+        expect(u.remember_me_token).to be_a String
+      end
+      it "is indexed in the database" do
+        expect(ActiveRecord::Migration.index_exists?(:users, :remember_me_token)).to be true
       end
     end
     describe "remember_me_token_expires_at" do
-      it do
-        pending
-        fail
+      it "returns a ActiveSupport::TimeWithZone" do
+        u = create :user
+        expect(u.remember_me_token_expires_at).to be_a ActiveSupport::TimeWithZone
       end
     end
     it "contains no unexpected attributes" do
@@ -91,6 +102,8 @@ RSpec.describe User, type: :model do
         :status,
         :deleted,
         :deleted_at,
+        :remember_me_token,
+        :remember_me_token_expires_at,
         :created_at,
         :updated_at
       ]
@@ -102,50 +115,45 @@ RSpec.describe User, type: :model do
   describe "methods" do
     describe "#roll_remember_me_token" do
       it "sets remember_me_token_expires_at to 2 weeks from now" do
-        pending
-        fail
+        u = create :user
+        u.roll_remember_me_token
+        expect(u.remember_me_token_expires_at).to be_within(1.second).of 2.weeks.from_now
       end
       it "calls SecureRandom.hex(16)" do
-        pending
-        fail
+        u = create :user
+        allow(SecureRandom).to receive(:hex).with(16).and_return('fake_secure_random_string')
+        u.roll_remember_me_token
+        expect(u.remember_me_token).to eq('fake_secure_random_string')
       end
-      it "sets remember_me_token to a 32-character string" do
-        pending
-        fail
+      it "sets remember me token to a 32-character string" do
+        u = create :user
+        u.roll_remember_me_token
+        expect(u.remember_me_token.size).to eq 32
       end
       context "if successful" do
-        it "returns the user object" do
-          pending
-          fail
+        it "returns the new remember me token" do
+          u = create :user
+          expect(u.roll_remember_me_token).to eq u.remember_me_token
         end
       end
       context "if unsuccessful" do
         it "returns false" do
-          pending
-          fail
+          u = create :user
+          allow(u).to receive(:update).and_return(false) # Force a failure
+          expect(u.roll_remember_me_token).to be false
         end
       end
     end
-    describe "#purge_remember_me_token" do
-      it "sets remember_me_token_expires_at to nil" do
-        pending
-        fail
+    describe "#remember_me_token_expired?" do
+      it "returns false if remember_me_token_expires_at is in the future" do
+        u = build :user
+        u.remember_me_token_expires_at = 1.year.from_now
+        expect(u.remember_me_token_expired?).to be false
       end
-      it "sets remember_me_token to nil" do
-        pending
-        fail
-      end
-      context "if successful" do
-        it "returns the user object" do
-          pending
-          fail
-        end
-      end
-      context "if unsuccessful" do
-        it "returns false" do
-          pending
-          fail
-        end
+      it "returns true if remember_me_token_expires_at is in the past" do
+        u = build :user
+        u.remember_me_token_expires_at = 1.year.ago
+        expect(u.remember_me_token_expired?).to be true
       end
     end
   end
@@ -155,7 +163,15 @@ RSpec.describe User, type: :model do
   end
 
   describe "callbacks" do
-    # The user model currently has no callbacks to test
+    describe "after_commit" do
+      describe "on create" do
+        it "calls #roll_remember_token" do
+          u = build :user
+          expect(u).to receive(:roll_remember_me_token)
+          u.save
+        end
+      end
+    end
   end
 
   describe "associations" do
@@ -278,6 +294,36 @@ RSpec.describe User, type: :model do
         expect(u2.valid?).to be true
         u2.email = email
         expect(u2.valid?).to be false
+      end
+    end
+    describe "#password" do
+      it "must be present when creating a record" do
+        u = build :user, password: ""
+        expect(u.save).to be false
+        expect(u.errors[:password].empty?).to be false
+      end
+      it "must be present when updating the email attribute" do
+        pending
+        fail
+      end
+    end
+    describe "#password_confirmation" do
+      it "must be present when creating a record" do
+        u = build :user, password_confirmation: ""
+        expect(u.save).to be false
+        expect(u.errors[:password_confirmation].empty?).to be false
+      end
+      it "must be present when updating the email attribute" do
+        pending
+        fail
+      end
+    end
+    describe "password_digest" do
+      it "must be present always" do
+        u = build :user, password_digest: ""
+        expect(u.save).to be false
+        u = create :user
+        expect(u.update(password_digest: "")).to be false
       end
     end
   end

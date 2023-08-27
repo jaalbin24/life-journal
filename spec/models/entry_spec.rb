@@ -16,7 +16,9 @@
 #
 # Indexes
 #
-#  index_entries_on_user_id  (user_id)
+#  index_entries_on_deleted     (deleted)
+#  index_entries_on_deleted_at  (deleted_at)
+#  index_entries_on_user_id     (user_id)
 #
 # Foreign Keys
 #

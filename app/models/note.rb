@@ -14,8 +14,10 @@
 #
 # Indexes
 #
-#  index_notes_on_notable  (notable_type,notable_id)
-#  index_notes_on_user_id  (user_id)
+#  index_notes_on_deleted     (deleted)
+#  index_notes_on_deleted_at  (deleted_at)
+#  index_notes_on_notable     (notable_type,notable_id)
+#  index_notes_on_user_id     (user_id)
 #
 # Foreign Keys
 #
