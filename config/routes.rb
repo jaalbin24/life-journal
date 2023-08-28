@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
-  resources :entries, shallow: true do
+  concern :paginatable do
+    get '(page/:page)', action: :index, on: :collection, as: ''
+  end
+  resources :entries, shallow: true, concerns: :paginatable do
     collection do
-      get :published, action: :index,   as: :published
-      get :drafts,    action: :drafts, as: :draft
-      get :deleted,   action: :deleted, as: :deleted
-      get 'page/:page', action: :index
+      get 'published',            action: :index
+      get ':status/page/:page',   action: :index
     end
     resources :pictures, only: [:index, :create]
   end

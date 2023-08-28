@@ -13,7 +13,12 @@ module AuthenticationHelper
   end
   
   def sign_out
-    session.clear
-    Current.user = nil
+    if defined?(visit) # If this is a system test...
+      click_on "Sign out" 
+      sleep 2
+    else # Else this must be a controller test...
+      session.clear
+      Current.user = nil
+    end
   end  
 end

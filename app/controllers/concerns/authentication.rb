@@ -46,20 +46,20 @@ module Authentication
 
   def set_current_user
     if !session[:user_id].blank? # If the session cookie has a user id stored already, that's your user
-      puts "🔥 AUTH BY SESSION"
+      # puts "🔥 AUTH BY SESSION"
       user = User.find_by(id: session[:user_id])
     elsif !cookies.signed[:remember_me].blank? # Else if there is a remember me cookie, look it up
       user = User.find_by(remember_me_token: cookies.signed[:remember_me])
       if user # If a user has that remember me token
         if user.remember_me_token_expired? # But the token is expired!
-          puts "🔥 TOKEN EXPIRED"
+          # puts "🔥 TOKEN EXPIRED"
           nil
         else # And it is not expired, the user is authenticated. Congrats.
-          puts "🔥 AUTH BY TOKEN"
+          # puts "🔥 AUTH BY TOKEN"
           sign_in user
         end
       else # No user matches that remember me token. Tough luck. No authentication.
-        puts "🔥 NO USER FOUND"
+        # puts "🔥 NO USER FOUND"
         nil
       end
     end

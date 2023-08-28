@@ -8,8 +8,9 @@ RSpec.describe EntriesController, type: :controller do
   let(:send_edit_request)       { get :edit, params: { id: user.entries.sample.id } }
   let(:send_update_request)     { put :update, params: { id: user.entries.sample.id, entry: valid_params } }
   let(:send_new_request)        { get :new }
+  let(:send_show_request)       { get :show, params: { id: user.entries.sample.id } }
   let(:send_index_request)      { get :index }
-  let(:send_drafts_request)     { get :drafts }
+  let(:send_drafts_request)     { get :index, params: { status: "drafts" } }
   let(:send_published_request)  { get :published }
 
   it 'has no unexpected actions' do
@@ -33,31 +34,54 @@ RSpec.describe EntriesController, type: :controller do
 
   describe 'actions' do
     describe 'GET #index' do
-      before { send_index_request }
-      it 'renders the index view' do
-        expect(response).to have_http_status(:success)
-        expect(response).to render_template(:index)
-      end
-      it 'shows published entries' do
-        expect(assigns(:entries).count).to eq assigns(:entries).published.count
-      end
-      it 'does not show deleted entries' do
-        expect(assigns(:entries).deleted.count).to eq 0
-      end
-      it 'does not show draft entries' do
-        expect(assigns(:entries).drafts.count).to eq 0
-      end
-      it 'does not show empty entries' do
-        expect(assigns(:entries).empty.count).to eq 0
-      end
-      it 'only shows entries that belong to the current user' do
-        expect(assigns(:entries)).to eq user.entries.not_deleted.published.order(published_at: :desc)
-      end
-      it 'requires authentication' do
-        skip_before(:each)
+      it "requires authentication" do
         sign_out
         send_index_request
         expect(response).to redirect_to(sign_in_path)
+      end
+      context "with draft as the status param" do
+        before { send_drafts_request }
+        it 'renders the index view' do
+          expect(response).to have_http_status(:success)
+          expect(response).to render_template(:index)
+        end
+        it 'shows draft entries' do
+          expect(assigns(:entries).count).to eq assigns(:entries).drafts.count
+        end
+        it 'does not show deleted entries' do
+          expect(assigns(:entries).deleted.count).to eq 0
+        end
+        it 'does not show published entries' do
+          expect(assigns(:entries).published.count).to eq 0
+        end
+        it 'does not show empty entries' do
+          expect(assigns(:entries).empty.count).to eq 0
+        end
+        it 'only shows entries that belong to the current user' do
+          expect(assigns(:entries)).to eq user.entries.not_deleted.drafts.not_empty.order(updated_at: :desc)
+        end
+      end
+      context "with anything else as the status param" do
+        before { get :index, params: { status: "yeet" } }
+        it 'renders the index view' do
+          expect(response).to have_http_status(:success)
+          expect(response).to render_template(:index)
+        end
+        it 'shows published entries' do
+          expect(assigns(:entries).count).to eq assigns(:entries).published.count
+        end
+        it 'does not show deleted entries' do
+          expect(assigns(:entries).deleted.count).to eq 0
+        end
+        it 'does not show draft entries' do
+          expect(assigns(:entries).drafts.count).to eq 0
+        end
+        it 'does not show empty entries' do
+          expect(assigns(:entries).empty.count).to eq 0
+        end
+        it 'only shows entries that belong to the current user' do
+          expect(assigns(:entries)).to eq user.entries.not_deleted.published.order(published_at: :desc)
+        end
       end
     end
     describe 'GET #drafts' do
@@ -87,34 +111,34 @@ RSpec.describe EntriesController, type: :controller do
         fail
       end
     end
-    describe 'GET #deleted' do
-      before { get :deleted }
-      it 'renders the index view' do
-        expect(response).to have_http_status(:success)
-        expect(response).to render_template(:index)
-      end
-      it 'only shows deleted entries' do
-        expect(assigns(:entries).deleted.count).to eq assigns(:entries).count
-        expect(assigns(:entries).not_deleted.count).to eq 0
-      end
-      it 'only shows entries that belong to the current user' do
-        pending
-        fail
-      end
-      it 'requires authentication' do
-        pending
-        fail
-      end
-    end
+    # describe 'GET #deleted' do
+    #   before { get :deleted }
+    #   it 'renders the index view' do
+    #     expect(response).to have_http_status(:success)
+    #     expect(response).to render_template(:index)
+    #   end
+    #   it 'only shows deleted entries' do
+    #     expect(assigns(:entries).deleted.count).to eq assigns(:entries).count
+    #     expect(assigns(:entries).not_deleted.count).to eq 0
+    #   end
+    #   it 'only shows entries that belong to the current user' do
+    #     pending
+    #     fail
+    #   end
+    #   it 'requires authentication' do
+    #     pending
+    #     fail
+    #   end
+    # end
     describe 'GET #show' do
-      before { get :show, params: { id: user.entries.sample.id } }
+      before { send_show_request }
       it 'renders the show view' do
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:show)
       end
       it 'only shows an entry if it belongs to the current user' do
-        pending
-        fail
+        get :show, params: { id: Entry.where.not(id: user.entries.pluck(:id)).sample.id }
+        expect(response)
       end
       it 'requires authentication' do
         pending
