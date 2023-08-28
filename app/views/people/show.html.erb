@@ -32,14 +32,18 @@
     </div>
     <div class="grow">
       <%= render 'tab_bar' %>
-      
-      <% case @tab %>
-      <% when :notes %>
-        <%= render "notes" %>
-      <% when :mentions %>
-        <%= render "mentions" %>
-      <% else %>
-        <%= render "biography"%>
-      <% end %>
+      <div class="p-3 h-full">
+        <% case @tab %>
+        <% when :notes %>
+          <%= render "notes" %>
+        <% when :mentions %>
+          <%= render "mentions" %>
+        <% when :edit %>
+          <%= render "edit" %>
+        <% else %>
+          <%= render "biography"%>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

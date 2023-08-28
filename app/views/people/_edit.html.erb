@@ -1,0 +1,56 @@
+<div class="">
+  <% unless (errors = @person.errors[:base] + @person.errors[:name]).empty? %>
+    <div class="my-3 flex justify-center">
+      <p class="form-error-message">
+        <%= errors.first %>
+      </p>
+    </div>
+  <% end %>
+  <%= form_with model: @person do |f| %>
+    <div class="gap-2 grid grid-cols-6 grid-rows-3">
+      <div class="col-span-2">
+        <%=f.label :first, class: "font-bold"%>
+        <%=f.text_field :first_name, class: "input-field", placeholder: "First name"%>
+      </div>
+      <div class="col-span-2">
+        <%=f.label :middle, class: "font-bold"%>
+        <%=f.text_field :middle_name, class: "input-field", placeholder: "Middle name"%>
+      </div>
+      <div class="col-span-2">
+        <%=f.label :last, class: "font-bold"%>
+        <%=f.text_field :last_name, class: "input-field", placeholder: "Last name"%>
+      </div>
+      <div class="col-span-3">
+        <%=f.label :nickname, class: "font-bold"%>
+        <%=f.text_field :nickname, class: "input-field", placeholder: "Nickname"%>
+      </div>
+      <div class="flex h-full ml-auto gap-4 items-center mt-auto col-span-3 row-span-2">
+        <div>
+          <%= avatar(@person, size: 150) %>
+        </div>
+        <div class="flex flex-col justify-between h-full">
+          <div class="flex flex-col justify-center grow">
+            <%=f.label :avatar, class: "font-bold"%>
+            <label for="person_avatar" class="flex gap-3 rounded-lg w-56">  
+              <%=f.file_field :avatar, class: "file-field"%>
+            </label>
+            <%if @person.errors[:avatar].any?%>
+              <span class="text-red-500"><%=@person.errors[:avatar].first%></span>
+            <%end%>
+          </div>
+          <%=f.submit class: "btn-primary", "data-test-id": "save_person_button"%>
+        </div>
+      </div>
+      <div class="col-span-3 flex gap-2">
+        <div>
+          <%=f.label :title, class: "font-bold"%>
+          <%=f.text_field :title, class: "input-field", placeholder: "Captain, CEO, etc."%>
+        </div>
+        <div>
+          <%=f.label :gender, class: "font-bold"%>
+          <%=f.text_field :gender, class: "input-field", placeholder: "Male, female, etc."%>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -51,7 +51,7 @@ class Person < ApplicationRecord
   has_many :traits, through: :personality
 
   belongs_to :user
-  validates :name, presence: true
+  validates :name, presence: { message: "This person needs some kind of name" }
   validate_images :avatar
 
   def name

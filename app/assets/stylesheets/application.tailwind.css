@@ -36,7 +36,16 @@
     @apply text-base
   }
   .input-field {
-    @apply block bg-transparent hover:bg-slate-700 focus:bg-slate-700 hover:border-slate-700 focus:border-slate-700 hover:shadow focus:shadow rounded-lg border border-slate-600 outline-none px-3 py-2 w-full focus:ring-0
+    @apply block bg-transparent hover:bg-slate-700 focus:bg-slate-700 focus:border-slate-700 hover:shadow focus:shadow rounded-lg border border-slate-700 placeholder-slate-600 px-3 py-2 w-full focus:ring-0
+  }
+  .input-field.check-box {
+    @apply w-4 h-4 p-0 rounded checked:bg-sky-500 focus:ring-0 focus:ring-offset-0 cursor-pointer bg-slate-700
+  }
+  .input-field.check-box+label {
+    @apply cursor-pointer
+  }
+  .file-field {
+    @apply text-sm file:py-2 file:px-4 file:rounded-full file:border-0 focus:outline-none file:font-semibold file:bg-sky-700 file:text-white hover:cursor-pointer hover:file:bg-sky-600
   }
   .input-field.error {
     @apply border-red-500 focus:border-red-500
@@ -45,7 +54,7 @@
     @apply text-red-500
   }
   .form-error-message {
-    @apply p-2 text-red-600 bg-red-300 rounded-lg
+    @apply p-2 text-red-600 bg-red-300 rounded-lg text-center font-bold
   }
   .btn {
     @apply rounded bg-slate-700 hover:bg-slate-600 py-2 px-4 text-white font-medium cursor-pointer
@@ -53,8 +62,8 @@
   .btn-sm {
     @apply rounded bg-slate-700 hover:bg-slate-600 py-1 px-2 text-white font-medium cursor-pointer
   }
-  .btn-primary:not([disabled='']) {
-    @apply rounded hover:shadow hover:shadow-black/40 hover:scale-105 transition-all bg-slate-700 hover:bg-slate-600 py-2 px-4 text-white font-medium cursor-pointer
+  .btn-primary {
+    @apply py-2 px-4 rounded-lg bg-sky-700 hover:bg-sky-600 font-bold flex items-center gap-1 shrink-0 cursor-pointer
   }
   .btn-secondary {
     @apply rounded hover:shadow hover:shadow-black/40 py-2 px-4 hover:scale-105 transition-all bg-gray-400 hover:bg-gray-600 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white inline-block font-medium cursor-pointer
@@ -135,7 +144,7 @@
     @apply inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300
   }
   .tab-active {
-    @apply inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg dark:text-blue-500 dark:border-blue-500
+    @apply inline-block p-4 text-sky-600 border-b-2 border-sky-600 rounded-t-lg dark:text-sky-500 dark:border-sky-500
   }
   .entry-picture-container {
     @apply flex flex-col py-4 mt-4 justify-center items-center border border-x-0 border-neutral-500

@@ -68,7 +68,7 @@ me.people.create(
     status: (rand(0..9) == 0 ? 'draft' : 'published'),
     published_at: rand(5..1000).days.ago,
     title: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5),
-    content: ActionText::Content.new(content.join("<br><br>"))
+    content: content.join("<br><br>")
   )
   rand(1..7).times do
     entry.mentions.create!(

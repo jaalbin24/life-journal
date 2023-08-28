@@ -1,6 +1,6 @@
 class PeopleController < ApplicationController
   before_action :redirect_unauthenticated
-  before_action :set_person, only: %i[ show edit update destroy ]
+  before_action :set_person, only: %i[ show update destroy ]
 
   def search
     (redirect_to people_path; return) if query.blank?
@@ -22,20 +22,15 @@ class PeopleController < ApplicationController
     @person = Person.new
   end
 
-  # GET /people/:id/edit
-  def edit
-
-  end
-
   # PATCH/PUT /people/:id
   def update
     if @person.update(person_params)
-      flash.now[:notice] = "#{@person.name} was saved."
+      redirect_to
     else
       @person.reload
-      flash.now[:alert] = "There was an error saving #{@person.name}."
+      @tab = :edit
+      render :show
     end
-    render :edit
   end
 
   # POST /people
@@ -69,6 +64,8 @@ class PeopleController < ApplicationController
     when :mentions
       @entries = @person.entries.page(params[:page])
       @tab = :mentions
+    when :edit
+      @tab = :edit
     else
       @tab = :biography
     end

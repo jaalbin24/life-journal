@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   end
   resources :entries, shallow: true, concerns: :paginatable do
     collection do
-      get 'published',            action: :index
-      get ':status/page/:page',   action: :index
+      get ':status',              action: :index, constraints: { status: /(published|drafts)/ }
+      get ':status/page/:page',   action: :index, constraints: { status: /(published|drafts)/ }
     end
     resources :pictures, only: [:index, :create]
   end
@@ -18,8 +18,7 @@ Rails.application.routes.draw do
     end
     resources :notes, only: [:create]
     member do
-      get 'edit'
-      get ':tab',               action: :show, as: :tab
+      get ':tab',               action: :show, as: :tab, constraints: { status: /(biography|notes|mentions|edit)/ }
       get ':tab/page/:page',    action: :show
     end
   end
