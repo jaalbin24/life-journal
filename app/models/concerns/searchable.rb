@@ -34,7 +34,7 @@ module Searchable
   class_methods do
     def search(query)
       # Eventually, you'll have these arguments:
-      # opt={extact_match: false, autocomplete: false, full_text: false}
+      # opt={exact_match: false, autocomplete: false, full_text: false}
       __elasticsearch__.search(
         {
           query: {
@@ -46,6 +46,7 @@ module Searchable
           size: 200
         }
       ).records
+      
     end
 
     # Defines the attributes that can be used to search in the model.

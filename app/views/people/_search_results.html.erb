@@ -1,19 +1,20 @@
-<%= turbo_frame_tag 'search-results' do %>
-  <ul>
-    <% puts "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 #{@people&.count}"%>
-    <% @people&.each do |p| %>
-      <li class="group hover:bg-slate-700 rounded-lg flex justify-between items-center p-2">
-        <a onclick='return confirm("If you continue, your progress will be lost. Quit without saving your entry?");' class="flex gap-2 items-center grow" href="<%=person_path(p)%>">
-          <%= avatar p %>
-          <div>
-            <h6 class="font-bold"><%= p.name %></h6>
-            <span class="opacity-50">Added by AI</span>
-          </div>
-        </a>
-        <button class="invisible group-hover:visible hover:bg-slate-800 hover:bg-opacity-50 p-2 rounded-full">
-          <%= embedded_svg "x_icon.svg", class: "w-4 h-4" %>
-        </button>
-      </li>
+<div class="p-2">
+  <% if @people.blank? %>
+    <% if @query.blank? %>
+      <p class="text-center">Start typing to search</p>
+    <% else %>
+      <p class="text-center">No results for <%= @query %></p>
     <% end %>
-  </ul>
-<% end %>
+  <% else %>
+    <ul>
+      <% @people&.each do |p| %>
+        <li class="first:pt-0 last:pb-0 hover:bg-slate-700 rounded-lg flex justify-between items-center">
+          <a class="flex gap-2 items-center grow" href="<%=person_path(p)%>" onclick='return confirm("If you continue, your progress will be lost. Quit without saving your entry?");'>
+            <%= avatar p, size: 24 %>
+            <h6 class="font-bold"><%= p.name %></h6>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

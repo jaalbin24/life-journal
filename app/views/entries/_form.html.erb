@@ -14,21 +14,8 @@
     <% end %>
   </div>
   <div class="flex flex-col grow gap-2">
-    <div class="relative"> <!-- Search bar -->
-        <%= label_tag :search, "search", class: "hidden"%>
-        <div class="relative">
-          <button class="absolute inset-y-0 left-0 flex items-center pl-3">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
-          </button>
-          <%= text_field_tag :query, nil, id: "search", type: "search", class: "block w-full p-4 pl-10 text-sm input-field", placeholder: "Search for someone...", data: { controller: "search", action: "input->search#updateResults", url: search_people_path} %>
-        </div>
-      <div class="absolute z-50">
-        <%= render 'people/search_results' %>
-      </div>
-    </div>
-    <div class="card grow"> <!-- Mentions should be a turbo frame. -->
+    <%= render 'search_bar' %>
+    <div class="grow"> <!-- Mentions should be a turbo frame. -->
       <ul class="p-2">
         <% Person.first(3).each do |p| %>
           <li class="group hover:bg-slate-700 rounded-lg flex justify-between items-center p-2">

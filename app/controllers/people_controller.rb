@@ -6,10 +6,11 @@ class PeopleController < ApplicationController
     (redirect_to people_path; return) if query.blank?
     @query = query
     @people = Person.search(query).not_deleted.where(user: current_user).page(params[:page]).per(Person.default_per_page)
+    puts "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 #{@people&.count}"
     respond_to do |format|
       format.html { render :index }
       format.turbo_stream do 
-        render turbo_stream: turbo_stream.replace('search-results', partial: 'search_results')
+        render turbo_stream: turbo_stream.update('search-results', partial: 'search_results')
       end
     end
   end
