@@ -17,8 +17,8 @@
           <%= f.password_field :password, class: "input-field", placeholder: "Enter your password" %>
         </div>
         <div class="my-5 flex items-center gap-2">
-          <%= check_box_tag :remember_me, 1, false, class: "input-field check-box" %>
-          <%= label_tag :remember_me, "Remember me", class: "form-label"%>
+          <%= check_box_tag :stay_signed_in, 1, false, class: "input-field check-box" %>
+          <%= label_tag :stay_signed_in, "Stay signed in", class: "form-label"%>
         </div>
         <div class="flex mt-8 w-full justify-between items-center">
          <%= f.submit "Sign in", class: "btn-primary" %>

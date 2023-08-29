@@ -8,7 +8,9 @@ class PeopleController < ApplicationController
     @people = Person.search(query).not_deleted.where(user: current_user).page(params[:page]).per(Person.default_per_page)
     respond_to do |format|
       format.html { render :index }
-      format.json { render json: @people }
+      format.turbo_stream do 
+        render turbo_stream: turbo_stream.replace('search-results', partial: 'search_results')
+      end
     end
   end
 

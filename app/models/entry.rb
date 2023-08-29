@@ -26,6 +26,8 @@
 #
 class Entry < ApplicationRecord
   include Recoverable
+  include Searchable
+  searches :content_plain, :title
   paginates_per 9
   belongs_to :user
   has_rich_text :content, encrypted: true

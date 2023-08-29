@@ -2,23 +2,23 @@
 #
 # Table name: users
 #
-#  id                           :uuid             not null, primary key
-#  deleted                      :boolean
-#  deleted_at                   :datetime
-#  email                        :string
-#  password_digest              :string
-#  remember_me_token            :string
-#  remember_me_token_expires_at :datetime
-#  status                       :string
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
+#  id                              :uuid             not null, primary key
+#  deleted                         :boolean
+#  deleted_at                      :datetime
+#  email                           :string
+#  password_digest                 :string
+#  status                          :string
+#  stay_signed_in_token            :string
+#  stay_signed_in_token_expires_at :datetime
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
 #
 # Indexes
 #
-#  index_users_on_deleted            (deleted)
-#  index_users_on_deleted_at         (deleted_at)
-#  index_users_on_email              (email)
-#  index_users_on_remember_me_token  (remember_me_token)
+#  index_users_on_deleted               (deleted)
+#  index_users_on_deleted_at            (deleted_at)
+#  index_users_on_email                 (email)
+#  index_users_on_stay_signed_in_token  (stay_signed_in_token)
 #
 
 class User < ApplicationRecord
@@ -26,7 +26,7 @@ class User < ApplicationRecord
   include ImageValidation
   include Recoverable
   encrypts :email, deterministic: true, downcase: true
-  encrypts :remember_me_token, deterministic: true
+  encrypts :stay_signed_in_token, deterministic: true
   validates :email, presence:         { message: "You'll need an email" }
   validates :email, email_format:     { message: "That's not an email" }
   validates :email, uniqueness:       { message: "That email is already taken" }
@@ -39,21 +39,21 @@ class User < ApplicationRecord
   has_one_attached :avatar
   validate_images :avatar
 
-  after_commit :roll_remember_me_token, on: :create
+  after_commit :roll_stay_signed_in_token, on: :create
 
-  def roll_remember_me_token
+  def roll_stay_signed_in_token
     update_params = {
-      remember_me_token:            SecureRandom.hex(16),
-      remember_me_token_expires_at: 2.weeks.from_now
+      stay_signed_in_token:            SecureRandom.hex(16),
+      stay_signed_in_token_expires_at: 2.weeks.from_now
     }
     if self.update(update_params)
-      remember_me_token
+      stay_signed_in_token
     else
       false
     end
   end
 
-  def remember_me_token_expired?
-    remember_me_token_expires_at <= DateTime.current
+  def stay_signed_in_token_expired?
+    stay_signed_in_token_expires_at <= DateTime.current
   end
 end

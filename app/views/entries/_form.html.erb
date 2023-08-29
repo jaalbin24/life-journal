@@ -1,182 +1,75 @@
-<div data-controller="picture-viewer" class="flex h-full">
-  <%= form_with(model: entry, class: "grow flex flex-col gap-3 mt-4", id: "entry_form", html: {"data-entry-id": "#{entry.id}"}) do |f| %>
-    <%entry.mentions.each do |m|%>
-      <%=f.fields_for :mentions, m do |mf|%>
-        <%=mf.hidden_field :person_id%>
-      <%end%>
-    <%end%>
-    <%entry.pictures.each do |pic|%>
-      <%=f.fields_for :pictures, pic do |pf|%>
-        <%pf.file_field :file, class: "hidden"%>
-      <%end%>
-    <%end%>
-    <div class="card grow basis-1/2" data-controller="entry-form">
-      <div class="card-header flex items-center justify-between">
-        <div class="grow">
-          <%=f.text_field :title, class: "p-0 input-field border-none text-2xl font-bold shadow-none", placeholder: "Title"%>
-          <div class="flex items-center gap-3">
-            <h6><%=entry.last_updated_caption%></h6>
-            <div class="flex flex-row" id="mentions-avatar-container">
-              <%entry.people.each_with_index do |p, i|%>
-                <%=render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32}%>
-              <%end%>
-            </div>
-          </div>
-        </div>
-        <div class="flex flex-row gap-3">
-          <%unless entry.published?%>
-            <button data-action="click->entry-form#publish" class="btn-primary">Publish</button>
-          <%end%>
-          <%= f.submit class: "btn-primary" %>
-          <%=link_to "Back", @continue_path, class: "btn-primary"%>
+<div class="grid grid-cols-4 grow gap-2 mt-3">
+  <div class="col-span-3 flex flex-col grow">
+    <%= form_with model: @entry, class: "flex flex-col grow gap-8" do |f| %>
+      <div class="flex gap-8">
+        <%= f.text_field :title, class: "input-field", placeholder: "Title" %>
+        <div class="flex gap-2 justify-end">
+          <%= f.submit "Save", class: "btn-primary" %>
+          <%= f.submit "Publish", class: "btn-primary" %>
         </div>
       </div>
-      <div class="card-body flex flex-row gap-4 h-full">
-        <div class="w-full h-full flex flex-col">
-          <%=f.rich_text_area :content, class: "grow"%>
+      <div class="grow flex flex-col">
+        <%= f.rich_text_area :content, class: "grow" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="flex flex-col grow gap-2">
+    <div class="relative"> <!-- Search bar -->
+        <%= label_tag :search, "search", class: "hidden"%>
+        <div class="relative">
+          <button class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+          </button>
+          <%= text_field_tag :query, nil, id: "search", type: "search", class: "block w-full p-4 pl-10 text-sm input-field", placeholder: "Search for someone...", data: { controller: "search", action: "input->search#updateResults", url: search_people_path} %>
         </div>
-        <div class="flex flex-col h-full justify-between basis-1/4 gap-3">
-          <div class="grow w-full h-full flex flex-col gap-2" data-controller="people">
-            <div class="" data-action="focusin->people#search focusout->people#hideSearchResults" tabindex="-1">
-              <%=f.label :mentions, class: "font-bold"%>
-              <div id="people-search-box" class="border border-gray-500 rounded-t-lg rounded-b-lg hover:bg-zinc-700 hover:shadow-lg hover:border-transparent focus-within:bg-zinc-700 focus-within:shadow-lg focus-within:border-transparent relative">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </div>
-                <input id="people-search-field" data-action="input->people#search" type="search" autocomplete="off" id="search" class="bg-transparent block w-full p-2 pl-10 text-sm border-none focus:ring-0" placeholder="Search">
-              </div>
-              <div id="people-search-results-area" class="relative hidden" data-search-path="<%=search_people_path%>">
-                <div class="absolute inset-0 z-50" tabindex="-1">
-                  <div class="bg-zinc-700">
-                    <div class="mx-3 border border-x-0 border-b-0 border-gray-500"></div>
-                  </div>
-                  <ul class="list-none py-2 bg-zinc-700 rounded-b-lg text-center" id="people-search-mount-point">
-                    <!-- Search results will go here -->
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="card grow">
-              <div class="card-body">
-                <ul class="flex flex-wrap gap-2" id="people-name-mount-point">
-                  <%entry.people.each do |p|%>
-                    <li class="person-name" data-id="<%=p.id%>">
-                      <%= avatar(p, size: 24) %>
-                      <span name="person-name" class="truncate"><%=p.name%></span>
-                      <button class="close-button" type="button" data-action="click->people#removePersonFromEntry"></button>
-                    </li>
-                  <%end%>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div> 
+      <div class="absolute z-50">
+        <%= render 'people/search_results' %>
       </div>
     </div>
-    <div class="grid grid-cols-3 gap-3">
-      <div class="card">
-        <div class="card-header flex justify-between items-center">
-          <h5 class="font-bold">Pictures</h5>
-          <button type="button" data-action="click->picture-viewer#open" data-mode="new" class="btn-primary btn-sm flex items-center gap-1">New <%=plus_icon%></button>
-        </div>
-        <div class="card-body flex flex-col gap-2">
-          <div class="grid grid-cols-3 gap-2" data-controller="fader" id="pictures-mount-point">
-            <%entry.pictures.each do |p|%>
-              <div id="<%=p.id%>-card" class="relative rounded-lg overflow-hidden" data-action="mousemove->fader#fadeIn mouseleave->fader#fadeOut" data-target="<%=p.id%>-fader">
-                <div id="<%=p.id%>-fader"class="h-full w-full border-dashed border-gray-600 border flex rounded-lg bg-slate-900/50 z-20 absolute hiding opacity-0 transition-opacity">
-                  <div class="m-auto flex flex-col gap-2">
-                    <button data-action="click->picture-viewer#open" data-pic-id="<%=p.id%>" data-mode="edit" class="btn-primary" type="button"><%=edit_icon%></button>
-                    <button data-action="" class="btn-danger" type="button"><%=trashcan_icon%></button>
-                  </div>
-                </div>
-                <%= image_tag p.file, class: "h-48 w-full object-cover", id:"#{p.id}-img" %>
-              </div>
-            <%end%>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header flex justify-between items-center">
-          <h5 class="font-bold">Lessons</h5>
-          <button type="button" class="btn-primary btn-sm flex items-center gap-1">New <%=plus_icon%></button>
-        </div>
-        <div class="card-body">
-          <div class="flex flex-wrap gap-2">
-            <div class="basis-full mb-2">
-              <div id="lessons-search-box" class="border border-gray-500 rounded-t-lg rounded-b-lg hover:bg-zinc-700 hover:shadow-lg hover:border-transparent focus-within:bg-zinc-700 focus-within:shadow-lg focus-within:border-transparent relative">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </div>
-                <input id="lessons-search-field" data-action="input->lessons#search" type="search" autocomplete="off" id="search" class="bg-transparent block w-full p-2 pl-10 text-sm border-none focus:ring-0" placeholder="Search">
-              </div>
-              <div id="lessons-search-results-area" class="relative hidden" data-search-path="<%#search_lessons_path%>">
-                <div class="absolute inset-0 z-50" tabindex="-1">
-                  <div class="bg-zinc-700">
-                    <div class="mx-3 border border-x-0 border-b-0 border-gray-500"></div>
-                  </div>
-                  <ul class="list-none py-2 bg-zinc-700 rounded-b-lg text-center" id="lessons-search-mount-point">
-                    <!-- Search results will go here -->
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        
-      </div>
-    </div>
-  <%end%>
-
-  <div id="picture-viewer" class="bg-slate-800 bg-opacity-90 fixed h-screen w-screen top-0 left-0 flex opacity-0 hiding z-30 transition-opacity duration-300">
-    <button class="close-button absolute p-5 right-0 z-20" data-action="click->picture-viewer#close"></button>
-    <form id="edit_picture" action="" method="patch" class="w-full">
-      <div class="flex gap-3 h-full w-full p-6 justify-center">
-        <label id="new-picture-label" for="picture_file" class="hiding h-full w-1/2 my-auto flex flex-col items-center justify-center border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-          <div class="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-          </div>
-          <input class="hidden" accept="image/*" multiple="false" name="picture[file]" data-action="change->picture-viewer#newPicture" type="file" id="picture_file">
-        </label>
-        <div id="picture-viewer-img-container" class="h-full flex w-fit hiding">
-          <%=image_tag '', class: "shadow shadow-black/70 h-fit max-h-full my-auto object-contain rounded-lg", id: "picture-viewer-img"%>
-        </div>
-        <div class="basis-1/3">
-          <div class="card h-full">
-            <div class="card-body flex flex-col gap-3">
+    <div class="card grow"> <!-- Mentions should be a turbo frame. -->
+      <ul class="p-2">
+        <% Person.first(3).each do |p| %>
+          <li class="group hover:bg-slate-700 rounded-lg flex justify-between items-center p-2">
+            <a onclick='return confirm("If you continue, your progress will be lost. Quit without saving your entry?");' class="flex gap-2 items-center grow" href="<%=person_path(p)%>">
+              <%= avatar p %>
               <div>
-                <label class="font-bold">Title</label>
-                <input type="text" id="picture_title" class="input-field" name="picture[title]" placeholder="Title">
+                <h6 class="font-bold"><%= p.name %></h6>
+                <span class="opacity-50">Added by AI</span>
               </div>
-              <div class="grow">
-                <label class="font-bold">Description</label>
-                <textarea id="picture_description" class="input-field resize-none h-full" name="picture[description]" placeholder="Description"></textarea>
-              </div>
-              <div class="flex gap-5 justify-between w-full mt-6">
-                <div class="flex gap-2">
-                  <button class="btn-primary w-fit" type="button" data-action="click->picture-viewer#submitForm">Save</button>
-                  <button class="btn-secondary w-fit" type="button" data-action="click->picture-viewer#close">Cancel</button>
-                </div>
-                <div id="save-message-container" class="grow flex items-center gap-2">
-                  <div name="saved" class="text-green-400 overflow-hidden flex items-center hiding">
-                    Saved
-                  </div>
-                  <div name="error" class="text-red-500 overflow-hidden flex items-center hiding">
-                    Error while saving
-                  </div>
-                  <div name="saving" class="text-gray-400 overflow-hidden flex items-center hiding">
-                    Saving...
-                  </div>
-                </div>
-                <button class="btn-danger w-fit" type="button" data-action="click->picture-viewer#close">Delete</button>
-              </div>
+            </a>
+            <button class="invisible group-hover:visible hover:bg-slate-800 hover:bg-opacity-50 p-2 rounded-full">
+              <%= embedded_svg "x_icon.svg", class: "w-4 h-4" %>
+            </button>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card grow"> <!-- Pictures -->
+      <div class="card-body">
+        <div class="flex items-center justify-center w-full"> <!-- Picture upload area -->
+          <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-14 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+            <div class="flex items-center justify-center gap-3">
+              <%= embedded_svg "upload_icon.svg", class: "w-8 h-8" %>
+              <p>Upload</p>
             </div>
-          </div>
+            <input id="dropzone-file" type="file" class="hidden"/>
+          </label>
+        </div>
+        <div class=""> <!-- Picture rendering area -->
+        <ul>
+          <% Picture.first(3).each do |p| %>
+            <li class="flex justify-between items-center p-2">
+              <div class="flex gap-2 items-center">
+                <%= image_tag p.file, class: "h-12 object-contain" %>
+              </div>
+              <%= embedded_svg "x_icon.svg", class: "w-4 h-4" %>
+            </li>
+          <% end %>
+        </ul>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 </div>

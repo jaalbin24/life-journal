@@ -30,7 +30,7 @@
   max-width: 100% !important;
 } */
 
-.trix-button--icon-bold::before {
+/* .trix-button--icon-bold::before {
   background-size: 40% !important;
   background-image: url('assets/bold_icon.svg') !important;
 }
@@ -50,4 +50,4 @@ trix-editor h1 {
 }
 .trix-content h1 {
   font-size: 1.5rem !important;
-}
+} */

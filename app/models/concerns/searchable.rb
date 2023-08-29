@@ -40,8 +40,7 @@ module Searchable
           query: {
             multi_match: {
               query: query,
-              fields: get_searchable_attrs,
-              fuzziness: 'AUTO'
+              fields: get_searchable_attrs
             }
           },
           size: 200

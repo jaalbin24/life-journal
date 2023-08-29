@@ -6,8 +6,8 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string      :email,                         index: true
       t.string      :password_digest
       t.string      :status
-      t.string      :remember_me_token,             index: true, unique: true
-      t.datetime    :remember_me_token_expires_at
+      t.string      :stay_signed_in_token,             index: true, unique: true
+      t.datetime    :stay_signed_in_token_expires_at
 
       t.boolean     :deleted,                       index: true
       t.datetime    :deleted_at,                    index: true

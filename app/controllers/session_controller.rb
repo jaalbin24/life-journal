@@ -14,7 +14,7 @@ class SessionController < ApplicationController
     user = User.find_by(email: user_params[:email])
     if user&.authenticate(user_params[:password])
       reset_session
-      sign_in user, remember_me: (params[:remember_me] == '1')
+      sign_in user, stay_signed_in: (params[:stay_signed_in] == '1')
       redirect_to after_sign_in_path
       cookies.delete(:after_sign_in_path)
     else

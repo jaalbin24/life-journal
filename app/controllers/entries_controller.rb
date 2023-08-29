@@ -2,6 +2,14 @@ class EntriesController < ApplicationController
   before_action :redirect_unauthenticated
   before_action :set_entry, only: %i[ show edit update destroy ]
 
+  # GET /entries/search
+  def search
+    (redirect_to entries_path; return) if query.blank?
+    @query = query
+    @entries = Entry.search(query).published.not_deleted.where(user: current_user).page(params[:page]).per(Entry.default_per_page)
+    render :index
+  end
+
   # GET /entries
   # GET /entries/:status
   def index
@@ -98,5 +106,9 @@ class EntriesController < ApplicationController
         :_destroy
       ]
     )
+  end
+
+  def query
+    params[:query]
   end
 end

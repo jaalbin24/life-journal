@@ -2,23 +2,23 @@
 #
 # Table name: users
 #
-#  id                           :uuid             not null, primary key
-#  deleted                      :boolean
-#  deleted_at                   :datetime
-#  email                        :string
-#  password_digest              :string
-#  remember_me_token            :string
-#  remember_me_token_expires_at :datetime
-#  status                       :string
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
+#  id                              :uuid             not null, primary key
+#  deleted                         :boolean
+#  deleted_at                      :datetime
+#  email                           :string
+#  password_digest                 :string
+#  status                          :string
+#  stay_signed_in_token            :string
+#  stay_signed_in_token_expires_at :datetime
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
 #
 # Indexes
 #
-#  index_users_on_deleted            (deleted)
-#  index_users_on_deleted_at         (deleted_at)
-#  index_users_on_email              (email)
-#  index_users_on_remember_me_token  (remember_me_token)
+#  index_users_on_deleted               (deleted)
+#  index_users_on_deleted_at            (deleted_at)
+#  index_users_on_email                 (email)
+#  index_users_on_stay_signed_in_token  (stay_signed_in_token)
 #
 require 'rails_helper'
 require 'models/concerns/image_validation'
@@ -65,32 +65,32 @@ RSpec.describe User, type: :model do
         expect(ActiveRecord::Migration.index_exists?(:users, :email)).to be true
       end
     end
-    describe "#remember_me_token" do
+    describe "#stay_signed_in_token" do
       it "is encrypted deterministically" do
         u = create :user
-        remember_me_token = u.remember_me_token
-        expect(User.encrypted_attributes).to include :remember_me_token
+        stay_signed_in_token = u.stay_signed_in_token
+        expect(User.encrypted_attributes).to include :stay_signed_in_token
         # Models are only searchable on encrypted attributes when encrypted deterministically
-        expect(User.find_by(remember_me_token: remember_me_token)).to eq u
+        expect(User.find_by(stay_signed_in_token: stay_signed_in_token)).to eq u
       end
       it "preserves capitalization" do
         u = create :user
-        remember_me_token = u.remember_me_token
+        stay_signed_in_token = u.stay_signed_in_token
         u.save
-        expect(u.reload.remember_me_token).to eq remember_me_token
+        expect(u.reload.stay_signed_in_token).to eq stay_signed_in_token
       end
       it "returns a string" do
         u = create :user
-        expect(u.remember_me_token).to be_a String
+        expect(u.stay_signed_in_token).to be_a String
       end
       it "is indexed in the database" do
-        expect(ActiveRecord::Migration.index_exists?(:users, :remember_me_token)).to be true
+        expect(ActiveRecord::Migration.index_exists?(:users, :stay_signed_in_token)).to be true
       end
     end
-    describe "remember_me_token_expires_at" do
+    describe "stay_signed_in_token_expires_at" do
       it "returns a ActiveSupport::TimeWithZone" do
         u = create :user
-        expect(u.remember_me_token_expires_at).to be_a ActiveSupport::TimeWithZone
+        expect(u.stay_signed_in_token_expires_at).to be_a ActiveSupport::TimeWithZone
       end
     end
     it "contains no unexpected attributes" do
@@ -102,8 +102,8 @@ RSpec.describe User, type: :model do
         :status,
         :deleted,
         :deleted_at,
-        :remember_me_token,
-        :remember_me_token_expires_at,
+        :stay_signed_in_token,
+        :stay_signed_in_token_expires_at,
         :created_at,
         :updated_at
       ]
@@ -113,47 +113,47 @@ RSpec.describe User, type: :model do
   end
 
   describe "methods" do
-    describe "#roll_remember_me_token" do
-      it "sets remember_me_token_expires_at to 2 weeks from now" do
+    describe "#roll_stay_signed_in_token" do
+      it "sets stay_signed_in_token_expires_at to 2 weeks from now" do
         u = create :user
-        u.roll_remember_me_token
-        expect(u.remember_me_token_expires_at).to be_within(1.second).of 2.weeks.from_now
+        u.roll_stay_signed_in_token
+        expect(u.stay_signed_in_token_expires_at).to be_within(1.second).of 2.weeks.from_now
       end
       it "calls SecureRandom.hex(16)" do
         u = create :user
         allow(SecureRandom).to receive(:hex).with(16).and_return('fake_secure_random_string')
-        u.roll_remember_me_token
-        expect(u.remember_me_token).to eq('fake_secure_random_string')
+        u.roll_stay_signed_in_token
+        expect(u.stay_signed_in_token).to eq('fake_secure_random_string')
       end
-      it "sets remember me token to a 32-character string" do
+      it "sets stay signed in token to a 32-character string" do
         u = create :user
-        u.roll_remember_me_token
-        expect(u.remember_me_token.size).to eq 32
+        u.roll_stay_signed_in_token
+        expect(u.stay_signed_in_token.size).to eq 32
       end
       context "if successful" do
-        it "returns the new remember me token" do
+        it "returns the new stay signed in token" do
           u = create :user
-          expect(u.roll_remember_me_token).to eq u.remember_me_token
+          expect(u.roll_stay_signed_in_token).to eq u.stay_signed_in_token
         end
       end
       context "if unsuccessful" do
         it "returns false" do
           u = create :user
           allow(u).to receive(:update).and_return(false) # Force a failure
-          expect(u.roll_remember_me_token).to be false
+          expect(u.roll_stay_signed_in_token).to be false
         end
       end
     end
-    describe "#remember_me_token_expired?" do
-      it "returns false if remember_me_token_expires_at is in the future" do
+    describe "#stay_signed_in_token_expired?" do
+      it "returns false if stay_signed_in_token_expires_at is in the future" do
         u = build :user
-        u.remember_me_token_expires_at = 1.year.from_now
-        expect(u.remember_me_token_expired?).to be false
+        u.stay_signed_in_token_expires_at = 1.year.from_now
+        expect(u.stay_signed_in_token_expired?).to be false
       end
-      it "returns true if remember_me_token_expires_at is in the past" do
+      it "returns true if stay_signed_in_token_expires_at is in the past" do
         u = build :user
-        u.remember_me_token_expires_at = 1.year.ago
-        expect(u.remember_me_token_expired?).to be true
+        u.stay_signed_in_token_expires_at = 1.year.ago
+        expect(u.stay_signed_in_token_expired?).to be true
       end
     end
   end
@@ -167,7 +167,7 @@ RSpec.describe User, type: :model do
       describe "on create" do
         it "calls #roll_remember_token" do
           u = build :user
-          expect(u).to receive(:roll_remember_me_token)
+          expect(u).to receive(:roll_stay_signed_in_token)
           u.save
         end
       end

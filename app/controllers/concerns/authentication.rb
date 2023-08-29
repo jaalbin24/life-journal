@@ -7,13 +7,13 @@ module Authentication
     helper_method :redirect_unauthenticated
   end
 
-  def sign_in(user, opts={remember_me: false})
+  def sign_in(user, opts={stay_signed_in: false})
     session[:user_id] = user.id
-    if opts[:remember_me]
-      remember_me_token = user.roll_remember_me_token
-      cookies.signed[:remember_me] = {
-        value: remember_me_token,
-        expires: user.remember_me_token_expires_at,
+    if opts[:stay_signed_in]
+      stay_signed_in_token = user.roll_stay_signed_in_token
+      cookies.signed[:stay_signed_in] = {
+        value: stay_signed_in_token,
+        expires: user.stay_signed_in_token_expires_at,
         http_only: true,
         secure: Rails.env.production?
       }
@@ -22,8 +22,8 @@ module Authentication
   end
 
   def sign_out
-    current_user.roll_remember_me_token
-    cookies.delete :remember_me
+    current_user.roll_stay_signed_in_token
+    cookies.delete :stay_signed_in
     reset_session
   end
 
@@ -48,17 +48,17 @@ module Authentication
     if !session[:user_id].blank? # If the session cookie has a user id stored already, that's your user
       # puts "🔥 AUTH BY SESSION"
       user = User.find_by(id: session[:user_id])
-    elsif !cookies.signed[:remember_me].blank? # Else if there is a remember me cookie, look it up
-      user = User.find_by(remember_me_token: cookies.signed[:remember_me])
-      if user # If a user has that remember me token
-        if user.remember_me_token_expired? # But the token is expired!
+    elsif !cookies.signed[:stay_signed_in].blank? # Else if there is a stay signed in cookie, look it up
+      user = User.find_by(stay_signed_in_token: cookies.signed[:stay_signed_in])
+      if user # If a user has that stay signed in token
+        if user.stay_signed_in_token_expired? # But the token is expired!
           # puts "🔥 TOKEN EXPIRED"
           nil
         else # And it is not expired, the user is authenticated. Congrats.
           # puts "🔥 AUTH BY TOKEN"
           sign_in user
         end
-      else # No user matches that remember me token. Tough luck. No authentication.
+      else # No user matches that stay signed in token. Tough luck. No authentication.
         # puts "🔥 NO USER FOUND"
         nil
       end

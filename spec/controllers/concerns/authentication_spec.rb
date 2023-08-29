@@ -29,26 +29,26 @@ RSpec.describe Authentication, type: :controller do
     it "returns the user" do
       expect(controller.sign_in(user)).to eq user
     end
-    context "with remember me set to true" do
-      it "rolls the user's remember me token" do
-        expect(user).to receive :roll_remember_me_token
-        controller.sign_in(user, remember_me: true)
+    context "with stay signed in set to true" do
+      it "rolls the user's stay signed in token" do
+        expect(user).to receive :roll_stay_signed_in_token
+        controller.sign_in(user, stay_signed_in: true)
       end
-      it "saves the new remember me token in a signed cookie" do
-        controller.sign_in(user, remember_me: true)
+      it "saves the new stay signed in token in a signed cookie" do
+        controller.sign_in(user, stay_signed_in: true)
         get :no_auth_required
-        expect(cookies.signed[:remember_me]).to eq user.remember_me_token
+        expect(cookies.signed[:stay_signed_in]).to eq user.stay_signed_in_token
       end
     end
-    context "with remember me set to false" do
-      it "does not roll the user's remember me token" do
-        expect(user).to_not receive :roll_remember_me_token
-        controller.sign_in(user, remember_me: false)
+    context "with stay signed in set to false" do
+      it "does not roll the user's stay signed in token" do
+        expect(user).to_not receive :roll_stay_signed_in_token
+        controller.sign_in(user, stay_signed_in: false)
       end
-      it "does not save the new remember me token in a cookie" do
-        controller.sign_in(user, remember_me: false)
+      it "does not save the new stay signed in token in a cookie" do
+        controller.sign_in(user, stay_signed_in: false)
         get :no_auth_required
-        expect(cookies.signed[:remember_me]).to_not eq user.remember_me_token
+        expect(cookies.signed[:stay_signed_in]).to_not eq user.stay_signed_in_token
       end
     end
   end
@@ -71,24 +71,24 @@ RSpec.describe Authentication, type: :controller do
     end
   end
   describe "#set_current_user" do
-    let(:remember_me_cookie) { { value: user.remember_me_token, expires: user.remember_me_token_expires_at, http_only: true, secure: Rails.env.production? } }
+    let(:stay_signed_in_cookie) { { value: user.stay_signed_in_token, expires: user.stay_signed_in_token_expires_at, http_only: true, secure: Rails.env.production? } }
     context "the session has a user id" do
       before { sign_in user }
       it "returns the user with that id" do
         expect(controller.send(:set_current_user)).to eq(user)
       end
-      context "there is a remember_me_token cookie" do
-        before { cookies.signed[:remember_me] = remember_me_cookie }
-        it "does not query the database for a user with a remember me token" do
-          expect { controller.send(:set_current_user) }.to_not make_database_queries(matching: /remember_me_token/)
+      context "there is a stay_signed_in_token cookie" do
+        before { cookies.signed[:stay_signed_in] = stay_signed_in_cookie }
+        it "does not query the database for a user with a stay signed in token" do
+          expect { controller.send(:set_current_user) }.to_not make_database_queries(matching: /stay_signed_in_token/)
         end
         it "queries the database only once" do
           expect { controller.send(:set_current_user) }.to make_database_queries(count: 1)
         end
       end
-      context "there is no remember_me_token cookie" do
-        it "does not query the database for a user with a remember_me_token" do
-          expect { controller.send(:set_current_user) }.to_not make_database_queries(matching: /remember_me_token/)
+      context "there is no stay_signed_in_token cookie" do
+        it "does not query the database for a user with a stay_signed_in_token" do
+          expect { controller.send(:set_current_user) }.to_not make_database_queries(matching: /stay_signed_in_token/)
         end
         it "queries the database only once" do
           expect { controller.send(:set_current_user) }.to make_database_queries(count: 1)
@@ -101,14 +101,14 @@ RSpec.describe Authentication, type: :controller do
         allow(controller.send(:session)).to receive(:[]) # Default stub
         allow(controller.send(:session)).to receive(:[]).with(:user_id).and_return(nil)
       end
-      context "there is a remember me token cookie" do
-        before { cookies.signed[:remember_me] = remember_me_cookie }
-        it "queries the database for the expiration date of the remember me token" do
-          expect { get :auth_required }.to make_database_queries(matching: /remember_me_token/)
+      context "there is a stay signed in token cookie" do
+        before { cookies.signed[:stay_signed_in] = stay_signed_in_cookie }
+        it "queries the database for the expiration date of the stay signed in token" do
+          expect { get :auth_required }.to make_database_queries(matching: /stay_signed_in_token/)
         end
         context "the cookie is expired" do
           # Simulate an expired cookie
-          before { user.update!(remember_me_token_expires_at: 1.week.ago) }
+          before { user.update!(stay_signed_in_token_expires_at: 1.week.ago) }
           it "returns nil" do
             get :auth_required
             expect(controller.send(:set_current_user)).to be_nil
@@ -116,8 +116,8 @@ RSpec.describe Authentication, type: :controller do
         end
         context "the cookie is not expired" do
           # Simulate a non-expired cookie
-          before { user.update!(remember_me_token_expires_at: 1.week.from_now) }
-          it "queries the database for a user with the remember me token" do
+          before { user.update!(stay_signed_in_token_expires_at: 1.week.from_now) }
+          it "queries the database for a user with the stay signed in token" do
             get :auth_required
             expect(controller.send(:set_current_user)).to eq user
           end

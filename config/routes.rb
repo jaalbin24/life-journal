@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   end
   resources :entries, shallow: true, concerns: :paginatable do
     collection do
+      get "search"
+      get "search/page/:page",    action: :search
       get ':status',              action: :index, constraints: { status: /(published|drafts)/ }
       get ':status/page/:page',   action: :index, constraints: { status: /(published|drafts)/ }
     end
