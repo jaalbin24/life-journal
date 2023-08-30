@@ -6,7 +6,7 @@
       <p class="text-center">No results for <%= @keyword %></p>
     <% end %>
   <% else %>
-    <ul>
+    <ul class="flex flex-col gap-1">
       <% @people&.each do |p| %>
         <li class="first:pt-0 last:pb-0 hover:bg-slate-700 rounded-lg flex justify-between items-center">
           <a class="flex gap-2 items-center grow" href="<%=person_path(p)%>" onclick='return confirm("If you continue, your progress will be lost. Quit without saving your entry?");'>

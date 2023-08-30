@@ -3,8 +3,12 @@ class PeopleController < ApplicationController
   before_action :set_person, only: %i[ show update destroy ]
 
   def search
+    puts "🔥 # keyword: #{params[:keyword]}"
+    puts "🔥 # type: #{params[:type]}"
+    puts "🔥 # results: #{@people&.count}"
+
     @keyword = keyword
-    results = Person.search(keyword, page: params[:page])
+    results = Person.search(keyword, page: params[:page], type: params[:type])
     @people = Kaminari.paginate_array(results, total_count: results.total_count).page(params[:page]).per(Person.default_per_page)
     puts "🔥 # results: #{@people&.count}"
     respond_to do |format|

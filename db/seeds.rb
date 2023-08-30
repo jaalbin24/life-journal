@@ -51,7 +51,7 @@ end
       user: me
     )
   end
-  if rand(1..10) > 2
+  if true # rand(1..10) > 2
     file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*").sample
     person.avatar.attach(io: File.open(file_path), filename: File.basename(file_path))
   end

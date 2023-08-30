@@ -32,14 +32,18 @@ export default class extends Controller {
       if (keyword == null) {
         keyword = '';
       }
-      fetch(`${url}?keyword=${keyword}`, {
+      let wildcard = '?'
+      if (url.includes('?')) {
+        wildcard = '&';
+      }
+      fetch(`${url}${wildcard}keyword=${keyword}`, {
         headers: {
           "Accept": "text/vnd.turbo-stream.html",
           "X-Requested-With": "Turbo-Frame",
         },
       }).then(response => response.text())
         .then(body => Turbo.renderStreamMessage(body));
-    }, 300); // Wait for 200ms before searching. This can be adjusted
+    }, 100); // Wait for 200ms before searching. This can be adjusted
   }
 }
 

@@ -6,7 +6,7 @@
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
       </svg>
     </button>
-    <%= text_area_tag :keyword, nil, class: "peer focus:rounded-b-none resize-none w-full pl-10 input-field", placeholder: "Search for someone...", rows: 1, wrap: "off", id: "search", type: "search", data: { controller: "search", action: "input->search#updateResults", url: search_people_path} %>
+    <%= text_area_tag :keyword, nil, class: "peer focus:rounded-b-none resize-none w-full pl-10 input-field", placeholder: "Search for someone...", rows: 1, wrap: "off", id: "search", type: "search", data: { controller: "search", action: "input->search#updateResults", url: search_people_path(type: :autocomplete)} %>
     <div class="bg-slate-700 peer-focus:visible invisible">
       <div class="mx-3 border border-x-0 border-b-0 border-slate-600"></div>
     </div>

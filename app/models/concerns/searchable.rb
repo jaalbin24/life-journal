@@ -32,35 +32,47 @@ module Searchable
   end
   
   class_methods do
-    def search(keyword='*', opts={ type: :exact })
+    def search(keyword='*', opts={ })
       opts[:page] ||= 1
       opts[:user] ||= Current.user
+      opts[:type] ||= :autocomplete
       puts "🔥 Current.user: #{opts[:user]}"
       puts "🔥 keyword: #{keyword}"
       puts "🔥 page: #{opts[:page]}"
       puts "🔥 page.class: #{opts[:page].class}"
+
+      if opts[:type]&.to_sym == :autocomplete
+        must = {
+          multi_match: {
+            query: keyword,
+            type: 'bool_prefix',
+            fields: get_searchable_attrs  # Add more fields here
+          }
+        }
+      else
+        must = { 
+          multi_match: {
+            query: keyword,
+            fields: get_searchable_attrs
+          }
+        }
+      end
 
       if ['*', ''].include? keyword
         query = { match_all: {} }
       else
         query = {
           bool: {
-            must: [{
-              multi_match: {
-                query: keyword,
-                fields: get_searchable_attrs,
-                type: opts[:type] == :autocomplete ? 'prefix' : 'best_fields'
-              }
-            }],
-            filter: [{
-              term: {
+            must: [
+              must,
+            {
+              match: {
                 user_id: opts[:user].id
               }
             }]
           }
         }
       end
-
       __elasticsearch__.search({
         query: query,
         size: default_per_page,
