@@ -1,9 +1,9 @@
 <div class="p-2">
   <% if @people.blank? %>
-    <% if @query.blank? %>
+    <% if @keyword.blank? %>
       <p class="text-center">Start typing to search</p>
     <% else %>
-      <p class="text-center">No results for <%= @query %></p>
+      <p class="text-center">No results for <%= @keyword %></p>
     <% end %>
   <% else %>
     <ul>

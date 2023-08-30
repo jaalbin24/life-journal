@@ -3,10 +3,10 @@ class PeopleController < ApplicationController
   before_action :set_person, only: %i[ show update destroy ]
 
   def search
-    (redirect_to people_path; return) if query.blank?
-    @query = query
-    @people = Person.search(query).not_deleted.where(user: current_user).page(params[:page]).per(Person.default_per_page)
-    puts "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 #{@people&.count}"
+    @keyword = keyword
+    results = Person.search(keyword, page: params[:page])
+    @people = Kaminari.paginate_array(results, total_count: results.total_count).page(params[:page]).per(Person.default_per_page)
+    puts "🔥 # results: #{@people&.count}"
     respond_to do |format|
       format.html { render :index }
       format.turbo_stream do 
@@ -98,7 +98,7 @@ class PeopleController < ApplicationController
     @person = current_user.people.find(params[:id])
   end
 
-  def query
-    params[:query]
+  def keyword
+    params[:keyword]
   end
 end

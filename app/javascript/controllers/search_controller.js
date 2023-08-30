@@ -3,31 +3,44 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="search"
 export default class extends Controller {
   connect() {
-    this.element.addEventListener("keydown", this.preventNewlines);
+    this.element.addEventListener("keypress", this.handleKeyPress);
   }
 
   disconnect() {
-    this.element.removeEventListener("keydown", this.preventNewlines);
+    this.element.removeEventListener("keypress", this.handleKeyPress);
   }
 
-  preventNewlines(event) {
+  handleKeyPress(event) {
     if (event.key === "Enter") {
       event.preventDefault();
+      if (event.target.form != null) {
+        event.target.form.submit();
+      }
     }
   }
 
+  
   updateResults(event) {
-    const query = event.target.value;
+    const keyword = event.target.value;
     const url = event.target.getAttribute("data-url");
-    if (query === null || query === '' || query === ' ') {
-      return;
-    }
-    fetch(`${url}?query=${query}`, {
-      headers: {
-        "Accept": "text/vnd.turbo-stream.html",
-        "X-Requested-With": "Turbo-Frame",
-      },
-    }).then(response => response.text())
-      .then(body => Turbo.renderStreamMessage(body));
+  
+    // Clear the previous timer if it exists
+    clearTimeout(delayTimer);
+  
+    // And set the timer to make the request after no input has been received for 200ms
+    delayTimer = setTimeout(() => {
+      if (keyword == null) {
+        keyword = '';
+      }
+      fetch(`${url}?keyword=${keyword}`, {
+        headers: {
+          "Accept": "text/vnd.turbo-stream.html",
+          "X-Requested-With": "Turbo-Frame",
+        },
+      }).then(response => response.text())
+        .then(body => Turbo.renderStreamMessage(body));
+    }, 300); // Wait for 200ms before searching. This can be adjusted
   }
 }
+
+let delayTimer;

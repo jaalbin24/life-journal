@@ -4,10 +4,13 @@ class EntriesController < ApplicationController
 
   # GET /entries/search
   def search
-    (redirect_to entries_path; return) if query.blank?
-    @query = query
-    @entries = Entry.search(query).published.not_deleted.where(user: current_user).page(params[:page]).per(Entry.default_per_page)
-    render :index
+    @keyword = keyword
+    results = Entry.search(keyword, page: params[:page])
+    @entries = Kaminari.paginate_array(results, total_count: results.total_count).page(params[:page]).per(Entry.default_per_page)
+    puts "🔥 # results: #{@people&.count}"
+    respond_to do |format|
+      format.html { render :index }
+    end
   end
 
   # GET /entries
@@ -108,7 +111,7 @@ class EntriesController < ApplicationController
     )
   end
 
-  def query
-    params[:query]
+  def keyword
+    params[:keyword]
   end
 end

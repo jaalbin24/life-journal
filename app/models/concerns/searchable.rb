@@ -32,22 +32,42 @@ module Searchable
   end
   
   class_methods do
-    def search(query)
-      # Eventually, you'll have these arguments:
-      # opt={exact_match: false, autocomplete: false, full_text: false}
-      __elasticsearch__.search(
-        {
-          query: {
-            multi_match: {
-              query: query,
-              fields: get_searchable_attrs
-            }
-          },
-          size: 200
+    def search(keyword='*', opts={ type: :exact })
+      opts[:page] ||= 1
+      opts[:user] ||= Current.user
+      puts "🔥 Current.user: #{opts[:user]}"
+      puts "🔥 keyword: #{keyword}"
+      puts "🔥 page: #{opts[:page]}"
+      puts "🔥 page.class: #{opts[:page].class}"
+
+      if ['*', ''].include? keyword
+        query = { match_all: {} }
+      else
+        query = {
+          bool: {
+            must: [{
+              multi_match: {
+                query: keyword,
+                fields: get_searchable_attrs,
+                type: opts[:type] == :autocomplete ? 'prefix' : 'best_fields'
+              }
+            }],
+            filter: [{
+              term: {
+                user_id: opts[:user].id
+              }
+            }]
+          }
         }
-      ).records
-      
+      end
+
+      __elasticsearch__.search({
+        query: query,
+        size: default_per_page,
+        from: (opts[:page].to_i - 1) * default_per_page
+      }).records
     end
+    
 
     # Defines the attributes that can be used to search in the model.
     # Also inits elasticsearch settings.
@@ -57,6 +77,7 @@ module Searchable
       settings index: { number_of_shards: 1, number_of_replicas: 0 }
       
       mappings dynamic: false do
+        indexes :user_id, type: 'keyword'
         searchable_attrs.each do |atty|
           indexes atty, type: 'text'
         end

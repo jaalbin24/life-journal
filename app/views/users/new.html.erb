@@ -6,10 +6,10 @@
         <div class="my-3">
           <%= f.label :email, class: "form-label" %>
           <% if @user.errors[:email].any? %>
-            <%= f.text_field :email, class: "input-field error", placeholder: "Enter your email" %>
+            <%= f.email_field :email, class: "input-field error", placeholder: "Enter your email", autocomplete: false %>
             <span class="input-error-message"><%=@user.errors[:email].first%></span>
           <% else %>
-            <%= f.text_field :email, class: "input-field", placeholder: "Enter your email", autofocus: true %>
+            <%= f.email_field :email, class: "input-field", placeholder: "Enter your email", autofocus: true, autocomplete: false %>
           <% end %>
         </div>
         <div class="my-3">

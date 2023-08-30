@@ -1,0 +1,30 @@
+<div class="m-4 flex justify-between items-center">
+  <div class="flex gap-2 grow">
+    <a href="<%=new_person_path%>" class="btn-primary">
+      <%= embedded_svg "plus_icon.svg", class: "w-4 h-4" %>
+      New person
+    </a>
+    <% if @keyword %>
+      <h4 class="flex items-center">
+        <% if @keyword.blank? %>
+          Showing all people
+        <% else %>
+          Showing results for<span class="font-bold ml-2">"<%=@keyword%>"</span>
+        <% end %>
+      </h4>
+    <% end %>
+  </div>
+  <div class="basis-1/3 shrink-0">
+    <%= form_with url: search_people_path, method: :get do |f| %>
+      <%= f.label :keyword, class: "hidden"%>
+      <div class="relative">
+        <button class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
+        </button>
+        <%= f.text_area :keyword, class: "resize-none w-full pl-10 input-field", placeholder: "Search for someone...", rows: 1, wrap: "off", id: "search", type: "search", data: { controller: "search" } %>
+      </div>
+    <%end%>
+  </div>
+</div>
