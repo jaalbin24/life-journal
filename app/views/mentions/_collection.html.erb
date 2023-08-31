@@ -1,0 +1,16 @@
+<ul class="p-2" data-controller="mentions">
+  <% @mentions&.each do |m| %>
+    <li class="group hover:bg-slate-800 rounded-lg flex justify-between items-center p-2">
+      <a class="flex gap-2 items-center grow">
+        <%= avatar m.person %>
+        <div>
+          <h6 class="font-bold"><%= m.person.name %></h6>
+          <span class="opacity-50"><%=mention_added_by(m)%></span>
+        </div>
+      </a>
+      <button class="invisible group-hover:visible hover:bg-slate-700 hover:bg-opacity-50 p-2 rounded-full" url="<%= mention_path(m) %>"data-action="click->mentions#delete">
+        <%= embedded_svg "x_icon.svg", class: "w-4 h-4" %>
+      </button>
+    </li>
+  <% end %>
+</ul>

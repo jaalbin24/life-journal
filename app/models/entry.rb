@@ -35,20 +35,6 @@ class Entry < ApplicationRecord
   
   scope :published,   ->  {where(status: "published")}
   scope :drafts,      ->  {where(status: "draft")}
-  scope :empty, -> {
-    left_outer_joins(:mentions, :pictures)
-    .where(title: [nil, ''])
-    .where(content_plain: [nil, ''])
-    .where(mentions: { id: nil })
-    .where(pictures: { id: nil })
-  }
-  scope :not_empty, -> {
-    left_outer_joins(:mentions, :pictures)
-    .where.not(title: [nil, ''])
-    .or(where.not(content_plain: [nil, '']))
-    .or(where.not(mentions: { id: nil }))
-    .or(where.not(pictures: { id: nil }))
-  }
 
   has_many :mentions, dependent: :destroy
   accepts_nested_attributes_for :mentions, allow_destroy: true
@@ -65,25 +51,6 @@ class Entry < ApplicationRecord
 
   def draft?
     status == 'draft'
-  end
-
-  def empty?
-    title.blank? &&
-    content_plain.blank? &&
-    mentions.count == 0 &&
-    pictures.count == 0
-  end
-
-  def last_updated_caption
-    if published?
-      if published_at.nil?
-        "Published at an unknown date"
-      else
-        "Published #{published_at.strftime("%b %d, %Y")}"
-      end
-    else
-      "Saved #{updated_at.strftime("%b %d, %Y")}"
-    end
   end
 
   private

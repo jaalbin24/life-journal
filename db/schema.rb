@@ -72,10 +72,13 @@ ActiveRecord::Schema[7.0].define(version: 920) do
   create_table "mentions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "person_id"
     t.uuid "entry_id"
+    t.uuid "user_id"
+    t.string "added_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["entry_id"], name: "index_mentions_on_entry_id"
     t.index ["person_id"], name: "index_mentions_on_person_id"
+    t.index ["user_id"], name: "index_mentions_on_user_id"
   end
 
   create_table "notes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -179,6 +182,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
   add_foreign_key "entries", "users"
   add_foreign_key "mentions", "entries"
   add_foreign_key "mentions", "people"
+  add_foreign_key "mentions", "users"
   add_foreign_key "notes", "users"
   add_foreign_key "people", "users"
   add_foreign_key "personalities", "people"

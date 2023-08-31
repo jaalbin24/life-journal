@@ -35,14 +35,48 @@ RSpec.shared_examples Searchable, elasticsearch: true do |model_class|
 
   describe "class methods" do
     describe "#search" do
-      it "returns exact matches" do
-        m = create model
-        sleep 1 # Give time for the IndexElasticsearchDocumentJob job to fire
-        atty = model_class.get_searchable_attrs.first
-        atty_value = m.send(atty)
-        result = model_class.search(atty_value).first
-        expect(result).to eq(m), "If this fails, it might be due to the timing of the background API calls."
+      context "with type set to exact" do
+        it "returns exact matches" do
+          m = create model
+          atty = model_class.get_searchable_attrs.first
+          m.update(atty => "exactmatch")
+          sleep 1 # Give time for the Elasticsearch background jobs to fire
+          atty_value = m.send(atty)
+          result = model_class.search("notanexactmatch", user: m.user).first
+          expect(result).to_not eq(m), "If this fails, it might be due to the timing of the background API calls."
+          result = model_class.search("exactmatch", user: m.user).first
+          expect(result).to eq(m), "If this fails, it might be due to the timing of the background API calls."
+        end
       end
+      context "with no type passed" do
+        it "defaults to autocomplete" do
+          m = create model
+          atty = model_class.get_searchable_attrs.first
+          m.update(atty => "Abcdefghijklmnopqrstuvwxyz")
+          sleep 1 # Give time for the Elasticsearch background jobs to fire
+          atty_value = m.send(atty)
+          result = model_class.search("Abcdefg", user: m.user).first
+          expect(result).to eq(m), "If this fails, it might be due to the timing of the background API calls."
+        end
+      end
+      context "with no user passed" do
+        it "defaults to the current user" do
+          u1 = create :user
+          u2 = create :user
+          Current.user = u1
+          expect(Current).to receive(:user).and_return(u1)
+          model_class.search
+        end
+      end
+      context "with no page number passed" do
+        it "defaults to page 1" do
+          pending
+          fail
+          m = create model
+          model_class.search
+        end
+      end
+      
     end
     describe "#searches" do
       it "sets @searchable_attrs" do
@@ -51,7 +85,6 @@ RSpec.shared_examples Searchable, elasticsearch: true do |model_class|
         expect(model_class.get_searchable_attrs).to include :id
       end
       it "defines the elasticsearch indexes" do
-
         # Here we define some arbitrary attributes
         model_class.searches :attribute1, :attribute2
 

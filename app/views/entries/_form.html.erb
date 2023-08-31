@@ -1,12 +1,9 @@
 <div class="grid grid-cols-4 grow gap-2 mt-3">
   <div class="col-span-3 flex flex-col grow">
     <%= form_with model: @entry, class: "flex flex-col grow gap-8" do |f| %>
-      <div class="flex gap-8">
+      <div class="flex gap-2">
         <%= f.text_field :title, class: "input-field", placeholder: "Title" %>
-        <div class="flex gap-2 justify-end">
-          <%= f.submit "Save", class: "btn-primary" %>
-          <%= f.submit "Publish", class: "btn-primary" %>
-        </div>
+        <%= render 'save_bar' %>
       </div>
       <div class="grow flex flex-col">
         <%= f.rich_text_area :content, class: "grow" %>
@@ -14,49 +11,42 @@
     <% end %>
   </div>
   <div class="flex flex-col grow gap-2">
-    <%= render 'search_bar' %>
-    <div class="grow"> <!-- Mentions should be a turbo frame. -->
-      <ul class="p-2">
-        <% Person.first(3).each do |p| %>
-          <li class="group hover:bg-slate-700 rounded-lg flex justify-between items-center p-2">
-            <a onclick='return confirm("If you continue, your progress will be lost. Quit without saving your entry?");' class="flex gap-2 items-center grow" href="<%=person_path(p)%>">
-              <%= avatar p %>
-              <div>
-                <h6 class="font-bold"><%= p.name %></h6>
-                <span class="opacity-50">Added by AI</span>
+    <% if @entry.persisted? %>
+      <%= render 'search_bar' %>
+      <%= turbo_frame_tag 'mentions' do %>
+        <%= render 'mentions/collection' %>
+      <%end%>
+      <div class="card grow"> <!-- Pictures -->
+        <div class="card-body">
+          <div class="flex items-center justify-center w-full"> <!-- Picture upload area -->
+            <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-14 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+              <div class="flex items-center justify-center gap-3">
+                <%= embedded_svg "upload_icon.svg", class: "w-8 h-8" %>
+                <p>Upload</p>
               </div>
-            </a>
-            <button class="invisible group-hover:visible hover:bg-slate-800 hover:bg-opacity-50 p-2 rounded-full">
-              <%= embedded_svg "x_icon.svg", class: "w-4 h-4" %>
-            </button>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-    <div class="card grow"> <!-- Pictures -->
-      <div class="card-body">
-        <div class="flex items-center justify-center w-full"> <!-- Picture upload area -->
-          <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-14 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-            <div class="flex items-center justify-center gap-3">
-              <%= embedded_svg "upload_icon.svg", class: "w-8 h-8" %>
-              <p>Upload</p>
-            </div>
-            <input id="dropzone-file" type="file" class="hidden"/>
-          </label>
-        </div>
-        <div class=""> <!-- Picture rendering area -->
-        <ul>
-          <% Picture.first(3).each do |p| %>
-            <li class="flex justify-between items-center p-2">
-              <div class="flex gap-2 items-center">
-                <%= image_tag p.file, class: "h-12 object-contain" %>
-              </div>
-              <%= embedded_svg "x_icon.svg", class: "w-4 h-4" %>
-            </li>
-          <% end %>
-        </ul>
+              <input id="dropzone-file" type="file" class="hidden"/>
+            </label>
+          </div>
+          <div class=""> <!-- Picture rendering area -->
+          <ul>
+            <% Picture.first(3).each do |p| %>
+              <li class="flex justify-between items-center p-2">
+                <div class="flex gap-2 items-center">
+                  <%= image_tag p.file, class: "h-12 object-contain" %>
+                </div>
+                <%= embedded_svg "x_icon.svg", class: "w-4 h-4" %>
+              </li>
+            <% end %>
+          </ul>
+          </div>
         </div>
       </div>
-    </div>
+    <% else %>
+      <div class="card grow">
+        <div class="card-body flex items-center justify-center">
+          <span>Save this entry to add mentions and pictures.</span>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

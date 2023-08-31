@@ -18,7 +18,7 @@ class EntriesController < ApplicationController
   def index
     case params[:status]&.to_sym
     when :drafts
-      @entries = current_user.entries.not_deleted.drafts.not_empty.order(created_at: :desc).page params[:page]
+      @entries = current_user.entries.not_deleted.drafts.order(created_at: :desc).page params[:page]
       @index_title = "Drafts"
     else
       @entries = current_user.entries.not_deleted.published.order(published_at: :desc).page
@@ -40,27 +40,19 @@ class EntriesController < ApplicationController
 
   # GET /entries/new
   def new
-    empty_draft = current_user.entries.drafts.empty.first
-    if empty_draft
-      @entry = empty_draft
-      @entry.touch
-    else
-      @entry = current_user.entries.create(
-        status: "draft",
-      )
-    end
+    @entry = Entry.new
   end
 
   # GET /entries/:id/edit
   def edit
+    @mentions = @entry.mentions
   end
 
   # POST /entries
   def create
     @entry = current_user.entries.build(entry_params)
     if @entry.save!
-      flash[:success] = "Entry was successfully created#{": #{@entry.title}"}."
-      redirect_to @entry
+      redirect_to edit_entry_path(@entry)
     else
       render :new, status: :unprocessable_entity
     end
@@ -69,11 +61,15 @@ class EntriesController < ApplicationController
   # PATCH/PUT /entries/:id
   def update
     if @entry.update(entry_params)
-      flash[:notice] = "Your entry was #{@entry.published? ? 'published' : 'saved'}."
       redirect_to edit_entry_path(@entry)
     else
       render :edit, status: :unprocessable_entity
     end
+    # respond_to do |format|
+    #   format.turbo_stream do 
+    #     render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
+    #   end
+    # end
   end
 
   # DELETE /entries/:id
@@ -91,7 +87,7 @@ class EntriesController < ApplicationController
   def set_entry
     @entry = current_user.entries.find(params[:id])
   end
-
+  
   # Only allow a list of trusted parameters through.
   def entry_params
     params.require(:entry).permit(

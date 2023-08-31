@@ -6,7 +6,7 @@ module ButtonsHelper
     end
 
     def delete_entry_button(entry)
-      form_with model: entry, url: entry_path(entry), method: :delete, html: { onsubmit: "return confirm(\"Are you sure you want to delete the following entry?\\n\\n#{entry.title}\\n#{entry.last_updated_caption}\");"} do
+      form_with model: entry, url: entry_path(entry), method: :delete, html: { onsubmit: "return confirm(\"Are you sure you want to delete the following entry?\\n\\n#{entry.title}\\n#{entry_last_updated(entry)}\");"} do
         "<button class='button button-danger'>
           #{trashcan_icon}
         </button>".html_safe

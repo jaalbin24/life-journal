@@ -58,28 +58,7 @@ RSpec.describe Entry, type: :model do
         expect(Entry.empty.count).to be 0
       end
     end
-    describe "#not_empty" do
-      it "does not select entries without a title, content, mention, or picture" do
-        entry = create :entry, :empty
-        expect(Entry.not_empty.count).to be 0
-      end
-      it "selects entries with content" do
-        create :entry, content: ActionText::Content.new(Faker::Lorem.paragraphs.join("\n\n"))
-        expect(Entry.not_empty.count).to be 1
-      end
-      it "selects entries with a title" do
-        create :entry, title: "Test Title"
-        expect(Entry.not_empty.count).to be 1
-      end
-      it "selects entries with pictures" do
-        create :entry, num_pictures: 1
-        expect(Entry.not_empty.count).to be 1
-      end
-      it "selects entries with mentions" do
-        create :entry, num_mentions: 1
-        expect(Entry.not_empty.count).to be 1
-      end
-    end
+
     describe "#published" do
       it "selects published entries" do
         create :entry, :published
@@ -183,38 +162,6 @@ RSpec.describe Entry, type: :model do
       it "returns false if the entry is not a draft" do
         e = create :entry, :published
         expect(e.draft?).to be false
-      end
-    end
-    describe "#empty?" do
-      it "returns true if the entry is empty" do
-        e = create :entry, :empty
-        expect(e.empty?).to be true
-      end
-      it "returns false if the entry has a title" do
-        e = create :entry, :empty, title: "Test Title"
-        expect(e.empty?).to be false
-      end
-      it "returns false if the entry has content" do
-        e = create :entry, :empty, content: "Test Content"
-        expect(e.empty?).to be false
-      end
-      it "returns false if the entry has any mentions" do
-        e = create :entry, :empty, num_mentions: 1
-        expect(e.empty?).to be false
-      end
-      it "returns false if the entry has any pictures" do
-        e = create :entry, :empty, num_pictures: 1
-        expect(e.empty?).to be false
-      end
-    end
-    describe "#last_updated_caption" do
-      it "returns the right message when the entry is published" do
-        e = create :entry, :published
-        expect(e.last_updated_caption).to eq "Published #{e.published_at.strftime("%b %d, %Y")}"
-      end
-      it "returns the right message when the entry is a draft" do
-        e = create :entry, :draft
-        expect(e.last_updated_caption).to eq "Saved #{e.updated_at.strftime("%b %d, %Y")}"
       end
     end
   end

@@ -10,7 +10,7 @@
                 <h3 class="shrink"><%= e.title.blank? ? "Untitled" : e.title %></h3>
               </a>
               <div class="flex flex-row align-center gap-2">
-                <h6 class="my-auto"><%= e.last_updated_caption %></h6>
+                <h6 class="my-auto"><%= entry_last_updated(e) %></h6>
                 <div class="flex flex-row">
                   <% e.people.each_with_index do |p, i| %>
                     <%= render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32} %>
@@ -26,7 +26,7 @@
             <a href="<%= entry_path(e) %>" class="shrink flex font-bold hover:underline h3">
               <h3 class="shrink text-center"><%= e.title.blank? ? "Untitled" : e.title %></h3>
             </a>
-            <h6><%= e.last_updated_caption %></h6>
+            <h6><%= entry_last_updated(e) %></h6>
             <div class="flex flex-row">
               <% e.people.each_with_index do |p, i| %>
                 <%= render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32} %>

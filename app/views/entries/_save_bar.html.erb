@@ -1,0 +1,9 @@
+<div class="shrink-0 flex gap-2 justify-end items-center">
+  <% if @entry.persisted? %>
+    Last saved at <%=@entry.updated_at.strftime('%-I:%M%P')%>
+  <% else %>
+    Not saved
+  <% end %>
+  <input type="submit" name="commit" value="Save" class="btn-primary" data-disable-with="Save">
+  <input type="submit" name="commit" value="Publish" class="btn-primary" data-disable-with="Publish">
+</div>

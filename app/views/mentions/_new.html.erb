@@ -1,0 +1,24 @@
+<div class="p-2">
+  <% if @mentions.blank? %>
+    <% if @keyword.blank? %>
+      <p class="text-center">Start typing to search</p>
+    <% else %>
+      <p class="text-center">No results for <%= @keyword %></p>
+    <% end %>
+  <% else %>
+    <ul class="flex flex-col gap-1" data-controller="mentions">
+      <% @mentions&.each do |m| %>
+        <li class="first:pt-0 last:pb-0 hover:bg-slate-700 rounded-lg flex justify-between items-center">
+          <%= form_with model: m, url: entry_mentions_path(@entry) do |form| %>
+            <%= form.hidden_field :person_id %>
+            <%= form.hidden_field :entry_id %>
+            <button class="flex gap-2 items-center grow">
+              <%= avatar m.person, size: 24 %>
+              <h6 class="font-bold"><%= m.person.name %></h6>
+            </button>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

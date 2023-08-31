@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get ':status/page/:page',   action: :index, constraints: { status: /(published|drafts)/ }
     end
     resources :pictures, only: [:index, :create]
+    resources :mentions, only: [:create, :new]
   end
   resources :users, except: :index
   resources :people do
@@ -24,6 +25,7 @@ Rails.application.routes.draw do
       get ':tab/page/:page',    action: :show
     end
   end
+  resources :mentions
   resources :notes, only: [:destroy]
   resources :pictures, only: [:show, :update]
   # Define your application asroutes per the DSL in https://guides.rubyonrails.org/routing.html

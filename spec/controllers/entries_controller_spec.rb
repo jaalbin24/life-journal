@@ -58,7 +58,7 @@ RSpec.describe EntriesController, type: :controller do
           expect(assigns(:entries).empty.count).to eq 0
         end
         it 'only shows entries that belong to the current user' do
-          expect(assigns(:entries)).to eq user.entries.not_deleted.drafts.not_empty.order(updated_at: :desc)
+          expect(assigns(:entries)).to eq user.entries.not_deleted.drafts.order(updated_at: :desc)
         end
       end
       context "with anything else as the status param" do

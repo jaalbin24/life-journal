@@ -33,9 +33,9 @@ module Searchable
   
   class_methods do
     def search(keyword='*', opts={ })
-      opts[:page] ||= 1
-      opts[:user] ||= Current.user
-      opts[:type] ||= :autocomplete
+      opts[:page] ||= 1                 # Default values don't work properly when defined
+      opts[:user] ||= Current.user      # in the arguments, so they're down here now
+      opts[:type] ||= :autocomplete     
       puts "🔥 Current.user: #{opts[:user]}"
       puts "🔥 keyword: #{keyword}"
       puts "🔥 page: #{opts[:page]}"

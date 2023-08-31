@@ -10,7 +10,7 @@
       <%=form_with model: @user, url: sign_in_path do |f|%>
         <div class="my-5">
           <%= f.label :email, class: "form-label" %>
-          <%= f.email_field :email, class: "input-field", placeholder: "Enter your email", autofocus: true %>
+          <%= f.email_field :email, class: "input-field", placeholder: "Enter your email", autofocus: true, autocomplete: false %>
         </div>
         <div class="my-5">
           <%= f.label :password, class: "form-label" %>
