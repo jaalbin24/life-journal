@@ -27,13 +27,6 @@ class EntriesController < ApplicationController
     render :index
   end
 
-  # GET /entries/deleted
-  def deleted
-    @entries = current_user.entries.deleted.page params[:page]
-    @index_title = "Deleted"
-    render :index
-  end
-
   # GET /entries/:id
   def show
   end
@@ -48,16 +41,6 @@ class EntriesController < ApplicationController
     @mentions = @entry.mentions
   end
 
-  # POST /entries
-  def create
-    @entry = current_user.entries.build(entry_params)
-    if @entry.save!
-      redirect_to edit_entry_path(@entry)
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
   # PATCH/PUT /entries/:id
   def update
     if @entry.update(entry_params)
@@ -70,6 +53,16 @@ class EntriesController < ApplicationController
     #     render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
     #   end
     # end
+  end
+
+  # POST /entries
+  def create
+    @entry = current_user.entries.build(entry_params)
+    if @entry.save!
+      redirect_to edit_entry_path(@entry)
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   # DELETE /entries/:id

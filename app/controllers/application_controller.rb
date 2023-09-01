@@ -1,13 +1,19 @@
 class ApplicationController < ActionController::Base
-    include Authentication
+  include Authentication
 
-    before_action :configure_continue_path
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-    def configure_continue_path
-        @continue_path ||= params[:continue_path]
-    end
+  before_action :configure_continue_path
 
-    def continue_path(args={fallback_location: fbl_path})
-        @continue_path ? @continue_path : fbl_path
-    end
+  def configure_continue_path
+    @continue_path ||= params[:continue_path]
+  end
+
+  def continue_path(args={fallback_location: fbl_path})
+    @continue_path ? @continue_path : fbl_path
+  end
+
+  def not_found
+    render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
+  end
 end
