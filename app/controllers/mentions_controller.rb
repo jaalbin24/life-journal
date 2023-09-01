@@ -28,7 +28,6 @@ class MentionsController < ApplicationController
         entry: @entry
       )
     end
-    puts "🔥 @mentions: #{@mentions.inspect}"
     respond_to do |format|
       format.turbo_stream do 
         render turbo_stream: turbo_stream.update('new-mentions', partial: 'new')

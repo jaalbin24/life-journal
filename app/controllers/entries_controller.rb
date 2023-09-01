@@ -7,7 +7,6 @@ class EntriesController < ApplicationController
     @keyword = keyword
     results = Entry.search(keyword, page: params[:page])
     @entries = Kaminari.paginate_array(results, total_count: results.total_count).page(params[:page]).per(Entry.default_per_page)
-    puts "🔥 # results: #{@people&.count}"
     respond_to do |format|
       format.html { render :index }
     end

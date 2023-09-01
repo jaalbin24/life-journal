@@ -21,6 +21,7 @@ export default class extends Controller {
   }
 
   delete(event) {
+    console.log("DELETE");
     const url = event.currentTarget.getAttribute("url");
     if (url === null) return;
     console.log(url);
@@ -36,6 +37,7 @@ export default class extends Controller {
   }
 
   new(event) {
+    console.log("NEW");
     const keyword = event.target.value;
     const url = event.target.getAttribute("data-url");
   
@@ -61,20 +63,12 @@ export default class extends Controller {
     }, 100); // Wait for 200ms before searching. This can be adjusted
   }
 
-  create(event) {
-    console.log("CREATE");
-    const url = event.currentTarget.getAttribute("url");
-    if (url === null) return;
-    console.log(url);
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        "Accept": "text/vnd.turbo-stream.html",
-        "X-Requested-With": "Turbo-Frame",
-        'X-CSRF-Token': csrfToken
-      },
-    }).then(response => response.text())
-      .then(body => Turbo.renderStreamMessage(body));
+  closeResults() {
+    let turboFrame = document.querySelector("#new-mentions")
+    turboFrame.classList.add("pointer-events-none");
+    setTimeout(() => {
+      turboFrame.classList.remove("pointer-events-none");
+    }, 1000);
   }
 }
 let delayTimer;

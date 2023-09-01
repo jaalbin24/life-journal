@@ -10,13 +10,18 @@
       </div>
     <% end %>
   </div>
-  <div class="flex flex-col grow gap-2">
+  <div class="flex flex-col grow-0 gap-2">
     <% if @entry.persisted? %>
       <%= render 'search_bar' %>
-      <%= turbo_frame_tag 'mentions' do %>
-        <%= render 'mentions/collection' %>
-      <%end%>
-      <div class="card grow"> <!-- Pictures -->
+      <div class="">
+        <h5 class="font-bold">Mentions</h5>
+        <div class="h-96 overflow-auto">
+        <%= turbo_frame_tag 'mentions', data: { "test-id": "mentions-turbo-frame" } do %>
+          <%= render 'mentions/collection' %>
+        <%end%>
+        </div>
+      </div>
+      <div class="card grow basis-1/2"> <!-- Pictures -->
         <div class="card-body">
           <div class="flex items-center justify-center w-full"> <!-- Picture upload area -->
             <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-14 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">

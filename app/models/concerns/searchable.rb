@@ -36,17 +36,13 @@ module Searchable
       opts[:page] ||= 1                 # Default values don't work properly when defined
       opts[:user] ||= Current.user      # in the arguments, so they're down here now
       opts[:type] ||= :autocomplete     
-      puts "🔥 Current.user: #{opts[:user]}"
-      puts "🔥 keyword: #{keyword}"
-      puts "🔥 page: #{opts[:page]}"
-      puts "🔥 page.class: #{opts[:page].class}"
-
+      
       if opts[:type]&.to_sym == :autocomplete
         must = {
           multi_match: {
             query: keyword,
             type: 'bool_prefix',
-            fields: get_searchable_attrs  # Add more fields here
+            fields: get_searchable_attrs
           }
         }
       else
@@ -58,7 +54,7 @@ module Searchable
         }
       end
 
-      if ['*', ''].include? keyword
+      if ['*', ''].include? keyword && opts[:type]&.to_sym != :autocomplete
         query = { match_all: {} }
       else
         query = {

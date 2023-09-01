@@ -1,5 +1,5 @@
 <div class="p-2">
-  <% if @mentions.blank? %>
+  <% if @mentions.blank? || @keyword.nil?%>
     <% if @keyword.blank? %>
       <p class="text-center">Start typing to search</p>
     <% else %>
@@ -12,7 +12,7 @@
           <%= form_with model: m, url: entry_mentions_path(@entry) do |form| %>
             <%= form.hidden_field :person_id %>
             <%= form.hidden_field :entry_id %>
-            <button class="flex gap-2 items-center grow">
+            <button data-test-id="add-mention-<%=m.person.id%>"class="flex gap-2 items-center grow" data-action="click->mentions#closeResults">
               <%= avatar m.person, size: 24 %>
               <h6 class="font-bold"><%= m.person.name %></h6>
             </button>

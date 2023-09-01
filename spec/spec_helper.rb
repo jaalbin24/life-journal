@@ -15,7 +15,7 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'support/authentication_helper'
-require 'support/test_id_helper'
+require 'support/system_helper'
 require 'support/query_matcher'
 # require 'elasticsearch/extensions/test/cluster'           # For tests that require interacting with an Elasticsearch server
 
@@ -25,7 +25,7 @@ RSpec.configure do |config|
   config.include AuthenticationHelper
 
   # Includes the test_id method for selecting elements with the data-test-id attribute
-  config.include TestIdHelper
+  config.include SystemHelper
   
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
