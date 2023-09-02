@@ -171,7 +171,7 @@
     @apply hover:bg-opacity-30 input-field !important
   } */
   span[data-trix-button-group] {
-    @apply border-slate-700 rounded overflow-hidden !important
+    @apply border-slate-700 rounded-lg overflow-hidden !important
   }
   span[data-trix-button-group] button {
     @apply border-0 bg-slate-700 bg-opacity-30 hover:bg-opacity-100 !important
