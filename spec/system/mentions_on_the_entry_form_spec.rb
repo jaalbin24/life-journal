@@ -102,5 +102,15 @@ RSpec.describe 'Mentions', type: :system do
         end
       end
     end
+    context "when the entry has no mentions" do
+      let(:empty_mention_message) { "No one is mentioned in this entry. Start typing or search for someone to mention." }
+      it "shows a message to the user in the mentions collection turbo frame" do
+        try_it_twice do
+          mentioned_mary.destroy # To clear out the mentions
+          refresh
+          expect(mentions).to have_content empty_mention_message + ""
+        end
+      end
+    end
   end
 end

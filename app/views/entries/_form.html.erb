@@ -13,8 +13,7 @@
   <div class="flex flex-col grow-0 gap-2">
     <% if @entry.persisted? %>
       <%= render 'search_bar' %>
-      <div class="">
-        <h5 class="font-bold">Mentions</h5>
+      <div>
         <div class="h-96 overflow-auto">
         <%= turbo_frame_tag 'mentions', data: { "test-id": "mentions-turbo-frame" } do %>
           <%= render 'mentions/collection' %>
@@ -33,16 +32,21 @@
             </label>
           </div>
           <div class=""> <!-- Picture rendering area -->
-          <ul>
-            <% Picture.first(3).each do |p| %>
-              <li class="flex justify-between items-center p-2">
-                <div class="flex gap-2 items-center">
-                  <%= image_tag p.file, class: "h-12 object-contain" %>
-                </div>
-                <%= embedded_svg "x_icon.svg", class: "w-4 h-4" %>
-              </li>
-            <% end %>
-          </ul>
+            <ul>
+              <% Picture.first(3).each do |p| %>
+                <li class="group hover:bg-slate-800 rounded-lg flex justify-between items-center p-2">
+                  <div class="flex gap-2 items-center grow">
+                    <%= image_tag p.file, class: "h-12 object-contain rounded-lg" %>
+                  </div>
+                  <button 
+                    class="invisible group-hover:visible hover:bg-slate-700 hover:bg-opacity-50 p-2 rounded-full"
+                    url="<%=  %>"
+                    data-action="click->pictures#delete">
+                    <%= embedded_svg "x_icon.svg", class: "w-4 h-4 pointer-events-none" %>
+                  </button>
+                </li>
+              <% end %>
+            </ul>
           </div>
         </div>
       </div>
