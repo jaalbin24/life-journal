@@ -4,6 +4,11 @@
   <% else %>
     Not saved
   <% end %>
-  <input type="submit" name="commit" value="Save" class="btn-primary" data-disable-with="Save">
-  <input type="submit" name="commit" value="Publish" class="btn-primary" data-disable-with="Publish">
+  <% if @entry.published? %>
+    <input type="submit" name="commit" value="Save" class="btn-secondary" data-disable-with="Save">
+    <button class="btn-secondary" data-action="click->entries#unpublish">Unpublish</button>
+  <% else %>
+    <input type="submit" name="commit" value="Save" class="btn-secondary" data-disable-with="Save">
+    <button class="btn-primary" data-action="click->entries#publish">Publish</button>
+  <% end %>
 </div>

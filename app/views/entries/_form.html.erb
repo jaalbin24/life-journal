@@ -1,12 +1,13 @@
 <div class="grid grid-cols-4 grow gap-2 mt-3">
   <div class="col-span-3 flex flex-col grow">
-    <%= form_with model: @entry, class: "flex flex-col grow gap-8" do |f| %>
+    <%= form_with model: @entry, class: "flex flex-col grow gap-4", data: { controller: "entries" } do |f| %>
+      <%= f.hidden_field :status %>
       <div class="flex gap-2">
         <%= f.text_field :title, class: "input-field", placeholder: "Title" %>
         <%= render 'save_bar' %>
       </div>
       <div class="grow flex flex-col">
-        <%= f.rich_text_area :content, class: "grow" %>
+        <%= f.rich_text_area :content, class: "grow input-field focus:bg-opacity-30 hover:bg-opacity-30 outline-none", placeholder: "What's on your mind?" %>
       </div>
     <% end %>
   </div>

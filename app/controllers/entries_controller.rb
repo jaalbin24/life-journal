@@ -43,15 +43,20 @@ class EntriesController < ApplicationController
   # PATCH/PUT /entries/:id
   def update
     if @entry.update(entry_params)
-      redirect_to edit_entry_path(@entry)
+      respond_to do |format|
+        format.turbo_stream do 
+          render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
+        end
+        format.html { redirect_to edit_entry_path(@entry) }
+      end
     else
-      render :edit, status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
+        end
+        format.html { render :edit, status: :unprocessable_entity }
+      end
     end
-    # respond_to do |format|
-    #   format.turbo_stream do 
-    #     render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
-    #   end
-    # end
   end
 
   # POST /entries
