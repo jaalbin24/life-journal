@@ -24,6 +24,6 @@ module LifeJournal
 
 
     # This prevents a cascade of warning messages every time the dev db is seeded or tests are run
-    config.active_storage.variant_processor = :image_processing
+    config.active_storage.variant_processor = ImageProcessing::MiniMagick
   end
 end
