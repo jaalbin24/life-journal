@@ -230,10 +230,6 @@ RSpec.describe EntriesController, type: :controller do
               { person_id: 1 },
               { person_id: 2, _destroy: "1" }
             ],
-            pictures_attributes: [
-              { file: "file1.jpg" },
-              { file: "file2.jpg", _destroy: "1" }
-            ]
           }
         )
       end
@@ -248,8 +244,6 @@ RSpec.describe EntriesController, type: :controller do
           :content,
           :title,
           :status,
-          mentions_attributes: [:id, :person_id, :_destroy],
-          pictures_attributes: [:file, :id, :_destroy]
         )
 
         controller.send(:entry_params)

@@ -46,7 +46,7 @@ class Person < ApplicationRecord
     dependent: :destroy
   )
   has_many :entries, through: :mentions
-  has_many :personality
+  has_many :personality, dependent: :destroy
   has_many :notes, as: :notable
   has_many :traits, through: :personality
 

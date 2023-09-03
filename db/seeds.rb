@@ -1,5 +1,28 @@
+# This method is used to generate the journal entries. It is rather hacky, but it
+# works well at seeding the database, and I haven't found a way to accomplish this with standard Rails methods.
+def generate_content_for(entry)
+  num_paragraphs = 20
+  change_paragraph_has_image = 0.1
+  content = Array.new(num_paragraphs) do
+    # Create the entry's content paragraph-by-paragraph
+    this_paragraph = Faker::Lorem.paragraph_by_chars(number: rand(50..500), supplemental: true)
+    # Add the picture
+    if rand(100) <= 100 * change_paragraph_has_image
+      file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'entry_pictures')}/*").sample
+      blob = ActiveStorage::Blob.create_and_upload!(
+        io: File.open(file_path),
+        filename: File.basename(file_path),
+        content_type: "image/#{File.extname(file_path).downcase}".gsub(".", "")
+      )
+      this_paragraph += %Q(<br><br><action-text-attachment sgid="#{blob.attachable_sgid}" caption="#{Faker::Lorem.sentences(number: rand(3..5)).join(" ")}" url="#{Rails.application.routes.url_helpers.rails_blob_url blob}"></action-text-attachment>)
+    end
+    this_paragraph
+  end.reject(&:blank?).join("<br><br>")
+  entry.update!(content: content)
+end
+
 traits    = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
-quotes    = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
+# quotes    = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
 notes     = JSON.parse(File.read(Rails.root.join('db/seed_data/notes.json')))
 
 # Sort traits.json by positivity rating
@@ -16,13 +39,13 @@ me = User.create(
   password: "123"
 )
 
-quotes.each do |q|
-  Quote.create(
-    content: q['body'],
-    author: (q['author'] unless q['author'].blank?),
-    source: (q['source'] unless q['source'].blank?)
-  )
-end
+# quotes.each do |q|
+#   Quote.create(
+#     content: q['body'],
+#     author: (q['author'] unless q['author'].blank?),
+#     source: (q['source'] unless q['source'].blank?)
+#   )
+# end
 
 traits.each do |k, v|
   Trait.create!(
@@ -63,27 +86,19 @@ me.people.create(
 )
 
 24.times do
-  content = Array.new(rand(4..20)) { Faker::Lorem.paragraph_by_chars(number: rand(50..500), supplemental: true) }
+  # Create the entry
   entry = me.entries.create!(
     status: (rand(0..9) == 0 ? 'draft' : 'published'),
     published_at: rand(5..1000).days.ago,
-    title: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5),
-    content: content.join("<br><br>")
+    title: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5)
   )
+  generate_content_for(entry)
+
+  # Create the mentions
   rand(1..7).times do
     entry.mentions.create!(
       person: Person.where.not(id: entry.people.pluck(:id)).sample
     )
-  end
-  rand(0..2).times do
-    picture = entry.pictures.build(
-      description: Faker::Lorem.sentences(number: rand(3..5)).join(" "),
-      title: Faker::Fantasy::Tolkien.poem,
-      user: me
-    )
-    file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'entry_pictures')}/*").sample
-    picture.file.attach(io: File.open(file_path), filename: File.basename(file_path))
-    picture.save!
   end
 end
 
@@ -91,7 +106,6 @@ puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."  
 puts "Created #{ActionController::Base.helpers.pluralize Entry.count, 'entry'}."        if Entry.count > 0
 puts "-- #{Entry.published.count} published"                                            if Entry.published.count > 0
 puts "-- #{ActionController::Base.helpers.pluralize Entry.drafts.count, 'draft'}"       if Entry.drafts.count > 0
-puts "Created #{ActionController::Base.helpers.pluralize Picture.count, 'picture'}."    if Picture.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Person.count, 'person'}."      if Person.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Mention.count, 'mention'}."    if Mention.count > 0
 puts "Created #{ActionController::Base.helpers.pluralize Trait.count, 'trait'}."        if Trait.count > 0

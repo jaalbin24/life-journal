@@ -13,24 +13,7 @@ RSpec.shared_examples Searchable, elasticsearch: true do |model_class|
   end
 
   describe "methods" do
-    describe "#delete_es_document" do
-      it "enqueues a DeleteElasticsearchDocumentJob job" do
-        m = create model
-        expect { m.delete_es_document }.to have_enqueued_job DeleteElasticsearchDocumentJob
-      end
-    end
-    describe "#index_es_document" do
-      it "enqueues an IndexElasticsearchDocumentJob job" do
-        m = create model
-        expect { m.index_es_document }.to have_enqueued_job IndexElasticsearchDocumentJob
-      end
-    end
-    describe "#update_es_document" do
-      it "enqueues an UpdateElasticsearchDocumentJob job" do
-        m = create model
-        expect { m.update_es_document }.to have_enqueued_job UpdateElasticsearchDocumentJob
-      end
-    end
+    # This concern currently doesn't implement any instance methods
   end
 
   describe "class methods" do
@@ -111,58 +94,6 @@ RSpec.shared_examples Searchable, elasticsearch: true do |model_class|
   end
 
   describe "callbacks" do
-    describe "after_commit" do
-      context "on create" do
-        it "calls the #index_es_document method" do
-          m = build model
-          expect(m).to receive(:index_es_document)
-          m.save
-        end
-        it "does not call the #update_es_document method" do
-          m = build model
-          expect(m).to_not receive(:update_es_document)
-          m.save
-        end
-        it "does not call the #delete_es_document method" do
-          m = build model
-          expect(m).to_not receive(:delete_es_document)
-          m.save
-        end
-      end
-      context "on update" do
-        it "calls the #update_es_document method" do
-          m = create model
-          expect(m).to receive(:update_es_document)
-          m.save
-        end
-        it "does not call the #index_es_document method" do
-          m = create model
-          expect(m).to_not receive(:index_es_document)
-          m.save
-        end
-        it "does not call the #delete_es_document method" do
-          m = create model
-          expect(m).to_not receive(:delete_es_document)
-          m.save
-        end
-      end
-      context "on destroy" do
-        it "calls the #delete_es_document method" do
-          m = create model
-          expect(m).to receive(:delete_es_document)
-          m.destroy
-        end
-        it "does not call the #index_es_document method" do
-          m = create model
-          expect(m).to_not receive(:index_es_document)
-          m.destroy
-        end
-        it "does not call the #update_es_document method" do
-          m = create model
-          expect(m).to_not receive(:update_es_document)
-          m.destroy
-        end
-      end
-    end
+    # This concern does not trigger any callbacks
   end
 end

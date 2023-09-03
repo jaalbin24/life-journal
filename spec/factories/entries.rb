@@ -46,13 +46,11 @@ FactoryBot.define do
     end
 
     transient do
-      num_pictures { 0 } # Sets the number of pictures to be created alongside the entry
       num_mentions { 0 } # Sets the number of mentions to be created alongside the entry
     end
 
     # Create associated records
     after(:create) do |entry, evaluator|
-      create_list(:picture, evaluator.num_pictures, entry: entry, user: entry.user)
       create_list(:mention, evaluator.num_mentions, entry: entry)
     end
   end

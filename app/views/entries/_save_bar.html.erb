@@ -1,10 +1,9 @@
 <div class="flex justify-center mx-auto">
 <% if @save_bar_message %>
-  <span id="entry-save-bar-message" class="<%=@save_bar_message[:class]%>"><%=@save_bar_message[:message]%></span>
-  <span id="entry-last-saved" class="hidden"><%=last_saved_at(@entry)%></span>
+  <span id="entry-save-bar-message" class="last-saved-message <%= @save_bar_message[:class] %>"><%= @save_bar_message[:message] %></span>
+  <span id="entry-last-saved" class="hidden last-saved-message"><%= last_saved_at(@entry) %></span>
   <script>
     var saveTimer; // Declare the timer variable outside the function
-
     function startTimer() {
       clearTimeout(saveTimer); // Clear the existing timer if it's running
       saveTimer = setTimeout(function() {
@@ -15,12 +14,11 @@
         replacementElement.classList.remove("hidden");
       }, 3000); // Start a new timer with a delay of 3000ms (3 seconds)
     }
-
     // Call the startTimer function initially
     startTimer();
   </script>
 <% else %>
-  <span><%=last_saved_at(@entry)%></span>
+  <span class="last-saved-message"><%= last_saved_at(@entry) %></span>
 <% end %>
 </div>
 <div class="flex gap-2">

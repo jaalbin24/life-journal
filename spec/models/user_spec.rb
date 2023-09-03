@@ -199,18 +199,6 @@ RSpec.describe User, type: :model do
         expect(Entry.count).to be 0
       end
     end
-    describe "#pictures" do
-      it "is a has_many relationship" do
-        expect(User.reflect_on_association(:pictures).macro).to eq(:has_many)
-      end
-      it "are destroyed when the user is destroyed" do
-        u = create :user
-        u.pictures = create_list(:picture, 2, user: u)
-        expect(Picture.count).to be 2
-        u.destroy
-        expect(Picture.count).to be 0
-      end
-    end
     describe "#notes" do
       it "is a has_many relationship" do
         expect(User.reflect_on_association(:notes).macro).to eq(:has_many)

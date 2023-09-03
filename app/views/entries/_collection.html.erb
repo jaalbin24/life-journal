@@ -1,9 +1,9 @@
 <div class="pb-4 w-full">
   <div class="grid grid-cols-3 gap-3"> 
     <% entries.each_with_index do |e, i| %>
-      <% if e.pictures.count >= 1 %>
+      <% if e.content.embeds_blobs.count != 0 %>
         <div class="card relative h-64">
-          <%= image_tag e.pictures.sample.file, class: "h-full w-full object-cover rounded-t-lg" %>
+          <%= image_tag e.content.embeds_blobs.sample, class: "h-full w-full object-cover rounded-t-lg" %>
           <div class="z-10 flex">
             <div class="m-2 bg-slate-800">
               <a href="<%= entry_path(e) %>" class="shrink flex font-bold hover:underline h3">

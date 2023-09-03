@@ -181,27 +181,6 @@ RSpec.describe Entry, type: :model do
         m_ids.each { |id| expect(Mention.exists? id).to be false }
       end
     end
-    describe "#pictures" do
-      it "returns all picture objects related to the entry" do
-        e = create :entry, num_pictures: 3
-        expect(e.pictures.count).to be 3
-        expect(e.pictures.first.class).to be Picture
-      end
-      it "are not required to create the entry" do
-        e = build :entry, pictures: []
-        expect(e.valid?).to be true
-        expect(e.save).to be true
-      end
-      it "are deleted when the entry is deleted" do
-        e = create :entry, num_pictures: 3
-        p_ids = e.pictures.pluck(:id)
-        expect(Entry.exists? e.id).to be true
-        p_ids.each { |id| expect(Picture.exists? id).to be true }
-        expect(e.destroy).to be_truthy
-        expect(Entry.exists? e.id).to be false
-        p_ids.each { |id| expect(Picture.exists? id).to be false }
-      end
-    end
     describe "#people" do
       it "returns all person objects related to the entry" do
         e = create :entry, num_mentions: 3

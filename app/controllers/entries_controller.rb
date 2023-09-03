@@ -46,7 +46,7 @@ class EntriesController < ApplicationController
       respond_to do |format|
         format.turbo_stream do
           @save_bar_message = {
-            class: "text-green-400",
+            class: "",
             message: @entry.published? ? "Published" : (@entry.status_before_last_save == "published" ? "Unpublished" : "Saved")
           }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
@@ -57,7 +57,7 @@ class EntriesController < ApplicationController
       respond_to do |format|
         format.turbo_stream do
           @save_bar_message = {
-            class: "text-red-400",
+            class: "error-message",
             message: "Not saved"
           }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
@@ -98,17 +98,7 @@ class EntriesController < ApplicationController
     params.require(:entry).permit(
       :content,
       :title,
-      :status,
-      mentions_attributes: [
-        :id,
-        :person_id,
-        :_destroy
-      ],
-      pictures_attributes: [
-        :file,
-        :id,
-        :_destroy
-      ]
+      :status
     )
   end
 

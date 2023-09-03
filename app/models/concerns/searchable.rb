@@ -13,22 +13,6 @@ module Searchable
   included do
     include Elasticsearch::Model
     include Elasticsearch::Model::Callbacks
-
-    after_commit :index_es_document,    on: [:create]
-    after_commit :update_es_document,   on: [:update]
-    after_commit :delete_es_document,   on: [:destroy]
-
-    def index_es_document
-      IndexElasticsearchDocumentJob.perform_later self
-    end
-
-    def update_es_document
-      UpdateElasticsearchDocumentJob.perform_later self
-    end
-
-    def delete_es_document
-      DeleteElasticsearchDocumentJob.perform_later self
-    end
   end
   
   class_methods do

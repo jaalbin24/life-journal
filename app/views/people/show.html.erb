@@ -5,11 +5,11 @@
         <div class="w-full flex justify-end">            
           <div class="absolute flex items-center gap-1 opacity-0 hover:opacity-100 transition-opacity">
             <a class="btn-primary btn-sm" href="<%=edit_person_path(@person)%>">
-              <%= image_tag 'edit_icon.svg', size: 24%>
+              <%= image_tag 'edit.svg', size: 24%>
             </a>
             <%=form_with model: @person, url: person_path(@person), method: :delete, html: { onsubmit: "return confirm(\"Are you sure you want to delete the following person?\\n\\n#{@person.name}\");" } do%>
               <button class="btn-sm btn-danger">
-                <%=trashcan_icon%>
+                <%= embedded_svg 'trashcan.svg' %>
               </button>
             <%end%>
           </div>
