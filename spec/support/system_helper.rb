@@ -42,4 +42,9 @@ module SystemHelper
       end
     end
   end
+
+  def turbo_request
+    request.headers['Accept'] = 'text/vnd.turbo-stream.html'
+    yield if block_given?
+  end
 end

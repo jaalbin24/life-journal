@@ -16,12 +16,11 @@ module Searchable
   end
   
   class_methods do
-    def search(keyword='*', opts={ })
-      opts[:page] ||= 1                 # Default values don't work properly when defined
-      opts[:user] ||= Current.user      # in the arguments, so they're down here now
-      opts[:type] ||= :autocomplete     
-      
-      if opts[:type]&.to_sym == :autocomplete
+    def search(keyword='', page: 1, user: Current.user, type: :autocomplete)
+      page ||= 1
+      type ||= :autocomplete
+      user ||= Current.user
+      if type.to_sym == :autocomplete
         must = {
           multi_match: {
             query: keyword,
@@ -38,7 +37,7 @@ module Searchable
         }
       end
 
-      if ['*', ''].include? keyword && opts[:type]&.to_sym != :autocomplete
+      if ['*', ''].include? keyword
         query = { match_all: {} }
       else
         query = {
@@ -47,7 +46,7 @@ module Searchable
               must,
             {
               match: {
-                user_id: opts[:user].id
+                user_id: user.id
               }
             }]
           }
@@ -56,7 +55,7 @@ module Searchable
       __elasticsearch__.search({
         query: query,
         size: default_per_page,
-        from: (opts[:page].to_i - 1) * default_per_page
+        from: (page.to_i - 1) * default_per_page
       }).records
     end
     

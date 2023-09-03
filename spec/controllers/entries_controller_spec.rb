@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe EntriesController, type: :controller do
 
   let(:user)                    { create :user }
-  let(:valid_params)            { { content: "Test content", title: "Test Title" } }
+  let(:valid_params)            { { content: "Test this content", title: "Test That Title" } }
   # let(:invalid_params)          { { } }
   let(:send_edit_request)       { get :edit, params: { id: user.entries.sample.id } }
   let(:send_new_request)        { get :new }
@@ -57,12 +57,13 @@ RSpec.describe EntriesController, type: :controller do
         expect(response).to redirect_to(sign_in_path)
       end
       context "with draft as the status param" do
-        before { send_drafts_request }
         it "renders the index view" do
+          send_drafts_request
           expect(response).to have_http_status(:success)
           expect(response).to render_template(:index)
         end
         it "shows the correct type of entries" do
+          send_drafts_request
           # Shows only draft entries
           expect(assigns(:entries).count).to eq assigns(:entries).drafts.count
           # Does not show deleted entries
@@ -71,6 +72,13 @@ RSpec.describe EntriesController, type: :controller do
           expect(assigns(:entries).published.count).to eq 0
           # Only shows entries belonging to the user
           expect(assigns(:entries).where.not(user_id: user.id).count).to eq 0
+        end
+        context "with a page param" do
+          it "shows the expected page" do
+            create_list :entry, Entry.default_per_page + 1, :draft, user: user
+            get :index, params: { status: "drafts", page: 2 }
+            expect(assigns(:entries)).to eq user.entries.not_deleted.drafts.order(created_at: :desc).page 2
+          end
         end
       end
       context "with anything else as the status param" do
@@ -88,6 +96,13 @@ RSpec.describe EntriesController, type: :controller do
           expect(assigns(:entries).drafts.count).to eq 0
           # Only shows entries belonging to the user
           expect(assigns(:entries).where.not(user_id: user.id).count).to eq 0
+        end
+        context "with a page param" do
+          it "shows the expected page" do
+            create_list :entry, Entry.default_per_page + 1, :published, user: user
+            get :index, params: { status: "scooby", page: 2 }
+            expect(assigns(:entries)).to eq user.entries.not_deleted.published.order(created_at: :desc).page 2
+          end
         end
       end
     end
@@ -147,40 +162,52 @@ RSpec.describe EntriesController, type: :controller do
           entry = user.entries.sample
           new_title = "UPDATED TEST TITLE"
           expect(entry.title).to_not eq new_title
-          put :update, params: { id: entry.id, entry: { title: new_title } }
+          turbo_request { put :update, params: { id: entry.id, entry: { title: new_title } } }
           entry.reload
           expect(entry.title).to eq new_title
         end
-        it "redirects to the edit page with a 302 code" do
-          entry = user.entries.sample
-          put :update, params: { id: entry.id, entry: valid_params }
-          expect(response).to redirect_to edit_entry_path(entry)
-          expect(response).to have_http_status(302)
+        # context "when the response format is html" do
+        #   it "redirects to the edit page with a 302 code" do
+        #     entry = user.entries.sample
+        #     put :update, params: { id: entry.id, entry: valid_params }
+        #     expect(response).to redirect_to edit_entry_path(entry)
+        #     expect(response).to have_http_status(302)
+        #   end
+        # end
+        context "when the response format is turbo stream" do
+          before { turbo_request { send_update_request } }
+          it "updates the entry save bar frame" do
+            expect(response.body).to include 'turbo-stream'
+            expect(response.body).to include 'target="entry-save-bar"'
+            expect(response.body).to include 'action="update"'
+          end
         end
       end
-      # The entry model currently has no possible invalid parameters
-      # context "with invalid parameters" do
-      #   it "does not update the entry" do
-      #     pending "The entry model has no validations. Invalid parameters are currently not possible."
-      #     fail
-      #   end
-      #   it "renders the edit view" do
-      #     pending "The entry model has no validations. Invalid parameters are currently not possible."
-      #     fail
-      #   end
-      #   it "returns a 422 code" do
-      #     pending "The entry model has no validations. Invalid parameters are currently not possible."
-      #     fail
-      #   end
-      # end
-      # it "only updates an entry if it belongs to the current user" do
-      #   pending
-      #     fail
-      # end
-      # it "requires authentication" do
-      #   pending
-      #   fail
-      # end
+      context "with invalid parameters" do
+        it "does not update the entry" do
+          pending "The entry model has no validations. Invalid parameters are currently not possible."
+          fail
+        end
+        it "returns a 422 code" do
+          pending "The entry model has no validations. Invalid parameters are currently not possible."
+          fail
+        end
+        context "when the response format is turbo stream" do
+          it "updates the entry save bar frame with the save bar partial" do
+            pending
+            fail
+          end
+          it "shows the right save bar message" do
+            pending
+            fail
+          end
+        end
+      end
+      it "requires authentication" do
+        sign_out
+        send_update_request
+        expect(response).to redirect_to(sign_in_path)
+      end
     end
     describe "POST #create" do
       it "requires authentication" do

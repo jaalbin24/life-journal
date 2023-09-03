@@ -5,8 +5,8 @@ class EntriesController < ApplicationController
   # GET /entries/search
   def search
     @keyword = keyword
-    results = Entry.search(keyword, page: params[:page])
-    @entries = Kaminari.paginate_array(results, total_count: results.total_count).page(params[:page]).per(Entry.default_per_page)
+    results = Entry.search(keyword, page: page)
+    @entries = Kaminari.paginate_array(results, total_count: results.total_count).page(page).per(Entry.default_per_page)
     respond_to do |format|
       format.html { render :index }
     end
@@ -17,10 +17,10 @@ class EntriesController < ApplicationController
   def index
     case params[:status]&.to_sym
     when :drafts
-      @entries = current_user.entries.not_deleted.drafts.order(created_at: :desc).page params[:page]
+      @entries = current_user.entries.not_deleted.drafts.order(created_at: :desc).page page
       @index_title = "Drafts"
     else
-      @entries = current_user.entries.not_deleted.published.order(published_at: :desc).page
+      @entries = current_user.entries.not_deleted.published.order(published_at: :desc).page page
       @index_title = "Published"
     end
     render :index
@@ -51,7 +51,6 @@ class EntriesController < ApplicationController
           }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
         end
-        format.html { redirect_to edit_entry_path(@entry) }
       end
     else
       respond_to do |format|
@@ -62,7 +61,6 @@ class EntriesController < ApplicationController
           }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
         end
-        format.html { render :edit, status: :unprocessable_entity }
       end
     end
   end
@@ -104,5 +102,9 @@ class EntriesController < ApplicationController
 
   def keyword
     params[:keyword]
+  end
+
+  def page
+    params[:page] || 1
   end
 end
