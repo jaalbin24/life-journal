@@ -5,15 +5,6 @@ require 'rails_helper'
 RSpec.describe 'Mentions', type: :system do
   describe "", :js do
     # Used to test typing in the search field
-    def fill_and_check(input, expectations={ present: [], absent: [] })
-      try_it_twice do
-        aggregate_failures do
-          fill_in "mentions-search", with: input
-          expectations[:present]&.each { |content| expect(page).to have_content content }
-          expectations[:absent]&.each { |content| expect(page).to_not have_content content }
-        end
-      end
-    end
     let(:user)            { create :user }
     let!(:bartholomew)    { create :person, user: user, first_name: "Bartholomew" }
     let!(:barabbas)       { create :person, user: user, first_name: "Barabbas" }
@@ -22,6 +13,8 @@ RSpec.describe 'Mentions', type: :system do
     let!(:entry)          { create :entry, user: user }
     let!(:mentioned_mary) { create :mention, entry: entry, person: mary, user: user }
     let(:mentions)        { find(test_id("mentions-turbo-frame")) }
+    let(:search_bar)      { find("#mentions-search") }      
+
 
 
     before do
@@ -33,18 +26,17 @@ RSpec.describe 'Mentions', type: :system do
       context "when the entry is not persisted" do
         it "is not permited" do
           visit new_entry_path
-          expect(page).to have_content "Save this entry to add mentions and pictures."
+          expect(page).to have_content "Save your entry before adding mentions."
         end
       end
       context "when the entry is persisted" do
         describe "Search functionality" do
           let(:start_typing)  { "Start typing to search" }
-          let(:search_bar)    { find("#mentions-search") }      
           it "searches and narrows down results as the user types" do
-            fill_and_check("b", present: ["Bartholomew", "Barabbas"], absent: ["Peter"])
-            fill_and_check("ba", present: ["Bartholomew", "Barabbas"], absent: ["Peter"])
-            fill_and_check("bar", present: ["Bartholomew", "Barabbas"], absent: ["Peter"])
-            fill_and_check("bart", present: ["Bartholomew"], absent: ["Barabbas", "Peter"])
+            fill_and_check(search_bar, with: "b", present: ["Bartholomew", "Barabbas"], absent: ["Peter"])
+            fill_and_check(search_bar, with: "ba", present: ["Bartholomew", "Barabbas"], absent: ["Peter"])
+            fill_and_check(search_bar, with: "bar", present: ["Bartholomew", "Barabbas"], absent: ["Peter"])
+            fill_and_check(search_bar, with: "bart", present: ["Bartholomew"], absent: ["Barabbas", "Peter"])
           end
 
           it "shows the default message before the user starts typing and when the user deletes their input" do
@@ -52,9 +44,9 @@ RSpec.describe 'Mentions', type: :system do
               expect(page).to_not have_content start_typing
               search_bar.set search_bar.value # Focus on the search field
               expect(page).to have_content start_typing
-              fill_and_check("", present: [start_typing])
-              fill_and_check("q", absent: [start_typing])
-              fill_and_check("", present: [start_typing])
+              fill_and_check(search_bar, with: "", present: [start_typing])
+              fill_and_check(search_bar, with: "q", absent: [start_typing])
+              fill_and_check(search_bar, with: "", present: [start_typing])
             end
           end
 
@@ -72,8 +64,8 @@ RSpec.describe 'Mentions', type: :system do
             try_it_twice do
               expect(page).to_not have_content start_typing
               search_keyword = "qwerty"
-              fill_and_check(search_keyword, present: ["No results for #{search_keyword}"])
-              fill_and_check("", present: [start_typing])
+              fill_and_check(search_bar, with: search_keyword, present: ["No results for #{search_keyword}"])
+              fill_and_check(search_bar, with: "", present: [start_typing])
             end
           end
         end
@@ -84,7 +76,7 @@ RSpec.describe 'Mentions', type: :system do
       it "happens when the user clicks on a person in the search results dropdown" do
         try_it_twice do
           expect(mentions).to_not have_content "Bartholomew"
-          fill_and_check "Bartholomew"
+          fill_and_check search_bar, with: "Bartholomew"
           add_bartholomew.click
           expect(mentions).to have_content "Bartholomew"
         end

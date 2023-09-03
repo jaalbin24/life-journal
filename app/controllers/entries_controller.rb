@@ -44,7 +44,11 @@ class EntriesController < ApplicationController
   def update
     if @entry.update(entry_params)
       respond_to do |format|
-        format.turbo_stream do 
+        format.turbo_stream do
+          @save_bar_message = {
+            class: "text-green-400",
+            message: @entry.published? ? "Published" : (@entry.status_before_last_save == "published" ? "Unpublished" : "Saved")
+          }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
         end
         format.html { redirect_to edit_entry_path(@entry) }
@@ -52,6 +56,10 @@ class EntriesController < ApplicationController
     else
       respond_to do |format|
         format.turbo_stream do
+          @save_bar_message = {
+            class: "text-red-400",
+            message: "Not saved"
+          }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
         end
         format.html { render :edit, status: :unprocessable_entity }

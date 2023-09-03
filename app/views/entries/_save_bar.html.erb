@@ -1,14 +1,34 @@
-<div class="shrink-0 flex gap-2 justify-end items-center">
-  <% if @entry.persisted? %>
-    Last saved at <%=@entry.updated_at.strftime('%-I:%M%P')%>
-  <% else %>
-    Not saved
-  <% end %>
+<div class="flex justify-center mx-auto">
+<% if @save_bar_message %>
+  <span id="entry-save-bar-message" class="<%=@save_bar_message[:class]%>"><%=@save_bar_message[:message]%></span>
+  <span id="entry-last-saved" class="hidden"><%=last_saved_at(@entry)%></span>
+  <script>
+    var saveTimer; // Declare the timer variable outside the function
+
+    function startTimer() {
+      clearTimeout(saveTimer); // Clear the existing timer if it's running
+      saveTimer = setTimeout(function() {
+        var elementToReplace = document.getElementById('entry-save-bar-message');
+        var replacementElement = document.getElementById('entry-last-saved');
+
+        elementToReplace.classList.add("hidden");
+        replacementElement.classList.remove("hidden");
+      }, 3000); // Start a new timer with a delay of 3000ms (3 seconds)
+    }
+
+    // Call the startTimer function initially
+    startTimer();
+  </script>
+<% else %>
+  <span><%=last_saved_at(@entry)%></span>
+<% end %>
+</div>
+<div class="flex gap-2">
+  <button class="btn-secondary">Save</button>
   <% if @entry.published? %>
-    <input type="submit" name="commit" value="Save" class="btn-secondary" data-disable-with="Save">
     <button class="btn-secondary" data-action="click->entries#unpublish">Unpublish</button>
   <% else %>
-    <input type="submit" name="commit" value="Save" class="btn-secondary" data-disable-with="Save">
     <button class="btn-primary" data-action="click->entries#publish">Publish</button>
   <% end %>
 </div>
+

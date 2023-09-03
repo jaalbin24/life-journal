@@ -45,6 +45,8 @@ class Entry < ApplicationRecord
   before_create :init_status
   before_save :cache_plain_content, :update_published_at
 
+  validate :attachments_must_be_images
+
   def published?
     status == 'published'
   end
@@ -54,6 +56,17 @@ class Entry < ApplicationRecord
   end
 
   private
+
+  def attachments_must_be_images
+    return unless content.attached?
+
+    content.attachments.each do |attachment|
+      if !attachment.image?
+        errors.add(:content, "should only contain image attachments")
+        break
+      end
+    end
+  end
 
   def cache_plain_content
     self.content_plain = content.body.to_plain_text.strip unless content.blank?

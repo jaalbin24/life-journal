@@ -24,4 +24,12 @@ module ApplicationHelper
 
     raw doc
   end
+
+  def last_saved_at(model)
+    if model.persisted?
+      "Last saved at #{model.updated_at.strftime('%-I:%M%P')}"
+    else
+      "Not saved"
+    end
+  end
 end
