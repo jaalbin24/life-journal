@@ -1,0 +1,16 @@
+<div class="tab-bar">
+  <ul class="flex flex-wrap">
+    <li class="mr-2">
+      <%= link_to "All", tab_entries_path(:all), class: ([:all, nil].include?(@tab) ? "tab tab-active" : "tab") %>
+    </li>
+    <li class="mr-2">
+      <%= link_to "Published", tab_entries_path(:published), class: (@tab == :published ? "tab tab-active" : "tab") %>
+    </li>
+    <li class="mr-2">
+      <%= link_to "Drafts", tab_entries_path(:drafts), class: (@tab == :drafts ? "tab tab-active" : "tab") %>
+    </li>
+    <li class="mr-2">
+      <%= link_to "Trash", tab_entries_path(:trash), class: (@tab == :trash ? "tab tab-active" : "tab") %>
+    </li>
+  </ul>
+</div>

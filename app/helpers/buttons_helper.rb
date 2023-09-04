@@ -14,4 +14,13 @@ module ButtonsHelper
       </button>".html_safe
     end
   end
+
+  def recover_entry_button(entry)
+    form_with model: entry, url: recover_entry_path(entry), method: :post do
+      "<button class='btn-primary'>
+        #{ embedded_svg 'redo.svg', class: "w-5 h-5" }
+        Recover
+      </button>".html_safe
+    end
+  end
 end

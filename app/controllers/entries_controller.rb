@@ -1,6 +1,6 @@
 class EntriesController < ApplicationController
   before_action :redirect_unauthenticated
-  before_action :set_entry, only: %i[ show edit update destroy ]
+  before_action :set_entry, only: %i[ show edit update destroy recover ]
 
   # GET /entries/search
   def search
@@ -15,13 +15,19 @@ class EntriesController < ApplicationController
   # GET /entries
   # GET /entries/:status
   def index
-    case params[:status]&.to_sym
-    when :drafts
-      @entries = current_user.entries.not_deleted.drafts.order(created_at: :desc).page page
-      @index_title = "Drafts"
-    else
+    case tab
+    when :published
+      @tab = :published
       @entries = current_user.entries.not_deleted.published.order(published_at: :desc).page page
-      @index_title = "Published"
+    when :drafts
+      @tab = :drafts
+      @entries = current_user.entries.not_deleted.drafts.order(created_at: :desc).page page
+    when :trash
+      @tab = :trash
+      @entries = current_user.entries.deleted.order(deleted_at: :desc).page page
+    else
+      @tab = :all
+      @entries = current_user.entries.not_deleted.published.order(published_at: :desc).page page
     end
     render :index
   end
@@ -78,9 +84,25 @@ class EntriesController < ApplicationController
   # DELETE /entries/:id
   def destroy
     if @entry.mark_as_deleted
-      redirect_to entries_url, notice: "Your entry was deleted."
+      respond_to do |format|
+        format.html { redirect_to @entry }
+      end
     else
-      redirect_to @continue_path, alert: "Your entry could not be deleted."
+      respond_to do |format|
+        format.html { redirect_to @entry }
+      end
+    end
+  end
+  
+  def recover
+    if @entry.recover
+      respond_to do |format|
+        format.html { redirect_to @entry }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @entry }
+      end
     end
   end
 
@@ -102,6 +124,10 @@ class EntriesController < ApplicationController
 
   def keyword
     params[:keyword]
+  end
+
+  def tab
+    params[:tab]&.to_sym || :all
   end
 
   def page

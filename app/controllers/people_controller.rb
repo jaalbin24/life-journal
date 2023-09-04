@@ -4,8 +4,8 @@ class PeopleController < ApplicationController
 
   def search
     @keyword = keyword
-    results = Person.search(keyword, page: params[:page], type: params[:type])
-    @people = Kaminari.paginate_array(results, total_count: results.total_count).page(params[:page]).per(Person.default_per_page)
+    results = Person.search(keyword, page: page, type: params[:type])
+    @people = Kaminari.paginate_array(results, total_count: results.total_count).page(page).per(Person.default_per_page)
     respond_to do |format|
       format.html { render :index }
       format.turbo_stream do 
@@ -16,7 +16,14 @@ class PeopleController < ApplicationController
 
   # GET /people
   def index
-    @people = current_user.people.order(updated_at: :desc).page params[:page]
+    case tab
+    when :trash
+      @tab = :trash
+      @people = current_user.people.deleted.order(deleted_at: :desc).page page
+    else
+      @tab = :all
+      @people = current_user.people.not_deleted.order(updated_at: :desc).page page
+    end
   end
 
   # GET /people/new
@@ -27,11 +34,12 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/:id
   def update
     if @person.update(person_params)
-      redirect_to
+      redirect_to tab_person_path(@person, :info)
     else
-      @person.reload
-      @tab = :edit
-      render :show
+      @tab = :info
+      respond_to do |format|
+        format.html { render :show }
+      end
     end
   end
 
@@ -39,10 +47,8 @@ class PeopleController < ApplicationController
   def create
     @person = current_user.people.build(person_params)
     if @person.save
-      flash[:success] = "#{@person.name} was created."
-      redirect_to edit_person_path(@person)
+      redirect_to tab_person_path(@person, :info)
     else
-      flash.now[:alert] = "There was an error creating that person."
       @person.avatar.detach
       render :new
     end
@@ -59,17 +65,17 @@ class PeopleController < ApplicationController
 
   # GET /people/:id/:tab/page/:page
   def show
-    case params[:tab]&.to_sym
+    case tab
     when :notes
-      @notes = @person.notes.page(params[:page])
+      @notes = @person.notes.page(page)
       @tab = :notes
     when :mentions
-      @entries = @person.entries.page(params[:page])
+      @entries = @person.entries.page(page)
       @tab = :mentions
-    when :edit
-      @tab = :edit
-    else
+    when :biography
       @tab = :biography
+    else
+      @tab = :info
     end
   end
 
@@ -99,5 +105,13 @@ class PeopleController < ApplicationController
 
   def keyword
     params[:keyword]
+  end
+
+  def tab
+    params[:tab]&.to_sym
+  end
+
+  def page
+    params[:page] || 1
   end
 end

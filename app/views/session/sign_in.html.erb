@@ -7,7 +7,7 @@
           <p class="form-error-message"><%= @user.errors[:base].first %></p>
         <% end %>
       </div>
-      <%=form_with model: @user, url: sign_in_path do |f|%>
+      <%= form_with model: @user, url: sign_in_path, data: { turbo: false } do |f|%>
         <div class="my-5">
           <%= f.label :email, class: "form-label" %>
           <%= f.email_field :email, class: "input-field", placeholder: "Enter your email", autofocus: true, autocomplete: false %>
@@ -18,7 +18,7 @@
         </div>
         <div class="my-5 flex items-center gap-2">
           <%= check_box_tag :stay_signed_in, 1, false, class: "input-field check-box" %>
-          <%= label_tag :stay_signed_in, "Stay signed in", class: "form-label"%>
+          <%= label_tag :stay_signed_in, "Stay signed in", class: "form-label" %>
         </div>
         <div class="flex mt-8 w-full justify-between items-center">
          <%= f.submit "Sign in", class: "btn-primary" %>

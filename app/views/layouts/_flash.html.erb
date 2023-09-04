@@ -1,17 +1,17 @@
 <%unless flash.empty?%>
   <%if flash[:notice]%>
     <div class="bg-blue-300 p-3 m-3 mb-0 rounded-lg text-blue-800 text-center font-bold border border-blue-800">
-      <%=flash[:notice]%>
+      <%= flash[:notice]%>
     </div>
   <%end%>
   <%if flash[:alert]%>
     <div class="bg-red-300 p-3 m-3 mb-0 rounded-lg text-red-800 text-center font-bold border border-red-800">
-      <%=flash[:alert]%>
+      <%= flash[:alert]%>
     </div>
   <%end%>
   <%if flash[:success]%>
     <div class="bg-green-300 p-3 m-3 mb-0 rounded-lg text-green-800 text-center font-bold border border-green-800">
-      <%=flash[:success]%>
+      <%= flash[:success]%>
     </div>
   <%end%>
 <%end%>

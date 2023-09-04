@@ -51,18 +51,18 @@ class Person < ApplicationRecord
   has_many :traits, through: :personality
 
   belongs_to :user
-  validates :name, presence: { message: "This person needs some kind of name" }
+  validate :name_is_present
   validate_images :avatar
 
   def name
-    [(nickname.blank? ? first_name : nickname), last_name].reject(&:blank?).join(" ").titleize
+    [(nickname.blank? ? first_name : nickname), last_name].reject(&:blank?).join(" ").downcase.titleize
   end
 
   def full_name
     # This strange formatting of title in the first element keeps the starting character in the
     # Person's title capitalized while leaving the rest of the characters well alone. This is done
     # to prevent words like "CEO" becoming "Ceo when using a simple title.titleize"
-    [("#{title[0].capitalize}#{title[1..-1]}" if title), first_name&.titleize, middle_name&.titleize, last_name&.titleize].reject(&:blank?).join(" ")
+    ([("#{title[0].capitalize}#{title[1..-1]}" unless title.blank?)] + [first_name, middle_name, last_name].reject(&:blank?).map { |s| s.downcase.titleize }).join(" ")
   end
 
   def show_path
@@ -74,6 +74,17 @@ class Person < ApplicationRecord
       Rails.application.routes.url_helpers.url_for(self.avatar)
     else
       ActionController::Base.helpers.image_url('default_profile_picture.png')
+    end
+  end
+
+  private
+
+  def name_is_present
+    if name.blank?
+      errors.add(:first_name, "This person needs some kind of name")
+      errors.add(:middle_name, "This person needs some kind of name")
+      errors.add(:last_name, "This person needs some kind of name")
+      errors.add(:nickname, "This person needs some kind of name")
     end
   end
 end

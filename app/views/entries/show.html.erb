@@ -1,5 +1,15 @@
 <div class="w-full flex justify-center">
   <div class="w-2/3 p-5">
+    <% if @entry.deleted? %>
+      <div class="flex justify-center" data-controller="dismissable">
+        <h5 class="text-center form-error-message flex gap-2 items-center my-4" data-dismissable-target="alertBox">
+          This entry was deleted on <%= @entry.deleted_at.strftime("%b %d, %Y") %>. It will be permanently deleted on <%= @entry.will_be_permanently_deleted_at.strftime("%b %d, %Y") %>
+          <button type="button" data-action="click->dismissable#dismiss" class="hover:opacity-50">
+            <%= embedded_svg 'x_icon.svg', class: "w-4 h-4" %>
+          </button>
+        </h5>
+      </div>
+    <% end %>
     <div class="flex mb-5">
       <div class="grow">
         <h2 class="font-bold"><%=@entry.title%></h2>
@@ -12,10 +22,16 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-col gap-2 shrink-0">
-        <%=edit_entry_button(@entry)%>
-        <%=delete_entry_button(@entry)%>
-      </div>
+      <% if @entry.deleted? %>
+        <div class="flex flex-col gap-2 shrink-0 justify-center">
+          <%= recover_entry_button(@entry) %>
+        </div>
+      <% else %>
+        <div class="flex flex-col gap-2 shrink-0 justify-center">
+          <%= edit_entry_button(@entry) %>
+          <%= delete_entry_button(@entry) %>
+        </div>
+      <% end %>
     </div>
     <div class="card">
       <div class="card-body">

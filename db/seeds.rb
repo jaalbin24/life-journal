@@ -21,18 +21,18 @@ def generate_content_for(entry)
   entry.update!(content: content)
 end
 
-traits    = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
+# traits    = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
 # quotes    = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
 notes     = JSON.parse(File.read(Rails.root.join('db/seed_data/notes.json')))
 
 # Sort traits.json by positivity rating
-File.open(Rails.root.join('db/seed_data/traits.json'), "w") do |file|
-  file.write("{\n")
-  sorted_traits = traits.sort_by {|k, v| v['positivity']}
-  file.write((sorted_traits.map {|k, v| "  \"#{k}\": {\n  \"positivity\": #{v['positivity']}\n  }"}).join(",\n"))
+# File.open(Rails.root.join('db/seed_data/traits.json'), "w") do |file|
+#   file.write("{\n")
+#   sorted_traits = traits.sort_by {|k, v| v['positivity']}
+#   file.write((sorted_traits.map {|k, v| "  \"#{k}\": {\n  \"positivity\": #{v['positivity']}\n  }"}).join(",\n"))
   
-  file.write("\n}")
-end
+#   file.write("\n}")
+# end
 
 me = User.create(
   email: "j@example.com",
@@ -47,13 +47,13 @@ me = User.create(
 #   )
 # end
 
-traits.each do |k, v|
-  Trait.create!(
-    word:       k,
-    positivity:   v['positivity'],
-    description:  Faker::Lorem.paragraphs(number: 2, supplemental: true).join("\n\n")
-  )
-end
+# traits.each do |k, v|
+#   Trait.create!(
+#     word:       k,
+#     positivity:   v['positivity'],
+#     description:  Faker::Lorem.paragraphs(number: 2, supplemental: true).join("\n\n")
+#   )
+# end
 
 100.times do
   biography = Array.new(rand(0..5)) { Faker::Lorem.paragraph_by_chars(number: rand(50..500), supplemental: true) }.join(" ")
@@ -63,11 +63,11 @@ end
     middle_name: (rand(0..9) <= 2 ? Faker::Name.first_name : nil),
     biography: biography
   )
-  rand(2..5).times do 
-    person.personality.create!(
-      trait: Trait.where.not(id: person.traits.pluck(:id)).sample
-    )
-  end
+  # rand(2..5).times do 
+  #   person.personality.create!(
+  #     trait: Trait.where.not(id: person.traits.pluck(:id)).sample
+  #   )
+  # end
   rand(10..20).times do
     person.notes.create!(
       content: notes.sample,
@@ -78,6 +78,7 @@ end
     file_path = Dir.glob("#{Rails.root.join('db', 'seed_data', 'avatars')}/*").sample
     person.avatar.attach(io: File.open(file_path), filename: File.basename(file_path))
   end
+  print "🧑"
 end
 # John Smith is always in the database. I test the search feature by searching for him.
 me.people.create(
@@ -99,7 +100,9 @@ me.people.create(
     entry.mentions.create!(
       person: Person.where.not(id: entry.people.pluck(:id)).sample
     )
+    print "🗣️"
   end
+  print "📗"
 end
 
 puts "Created #{ActionController::Base.helpers.pluralize User.count, 'user'}."          if User.count > 0

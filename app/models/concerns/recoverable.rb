@@ -17,10 +17,10 @@ module Recoverable
   end
 
   class_methods do
+    # Sets the time to wait before deletion
     def delete_after(time) # EXAMPLE: delete_after 30.days
       @TIME_TO_WAIT_BEFORE_DELETION = time
     end
-
 
     def TIME_TO_WAIT_BEFORE_DELETION
       @TIME_TO_WAIT_BEFORE_DELETION ||= 30.days # default to 30.days
@@ -51,6 +51,12 @@ module Recoverable
       self
     else
       false
+    end
+  end
+
+  def will_be_permanently_deleted_at
+    if deleted?
+      deletion_date = deleted_at + self.class.TIME_TO_WAIT_BEFORE_DELETION
     end
   end
 

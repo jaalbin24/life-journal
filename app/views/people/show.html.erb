@@ -1,34 +1,7 @@
 <div class="w-full min-h-full flex justify-center">
   <div class="w-2/3 p-5 flex flex-col gap-2">
     <div class="">
-      <div class="card-body flex flex-col">
-        <div class="w-full flex justify-end">            
-          <div class="absolute flex items-center gap-1 opacity-0 hover:opacity-100 transition-opacity">
-            <a class="btn-primary btn-sm" href="<%=edit_person_path(@person)%>">
-              <%= image_tag 'edit.svg', size: 24%>
-            </a>
-            <%=form_with model: @person, url: person_path(@person), method: :delete, html: { onsubmit: "return confirm(\"Are you sure you want to delete the following person?\\n\\n#{@person.name}\");" } do%>
-              <button class="btn-sm btn-danger">
-                <%= embedded_svg 'trashcan.svg' %>
-              </button>
-            <%end%>
-          </div>
-        </div>
-        <div class="flex gap-3 items-center pl-6">
-          <%= avatar(@person, size: 180) %>
-          <div class="my-auto flex flex-col gap-2 w-full">
-            <h2 class="truncate w-full font-bold"><%= @person.name %></h2>
-            <ul class="flex gap-2">
-              <% @person.traits.order(positivity: :desc).each do |t| %>
-                <li class="rounded-full px-2 py-1 <%= color_class(t) %>">
-                  <%= t.word %>
-                </li>
-              <% end %>
-            </ul>
-            <p class="opacity-50 text-sm">Remember people are complex and cannot be meaningfully reduced to a list of traits. You should always look for the best in people.</p>
-          </div>
-        </div>
-      </div>
+      <%= render "show_header" %>
     </div>
     <div class="grow">
       <%= render 'tab_bar' %>
@@ -38,10 +11,10 @@
           <%= render "notes" %>
         <% when :mentions %>
           <%= render "mentions" %>
-        <% when :edit %>
-          <%= render "edit" %>
+        <% when :biography %>
+          <%= render "biography" %>
         <% else %>
-          <%= render "biography"%>
+          <%= render "form" %>
         <% end %>
       </div>
     </div>

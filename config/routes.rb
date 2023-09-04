@@ -6,22 +6,26 @@ Rails.application.routes.draw do
     collection do
       get "search"
       get "search/page/:page",    action: :search
-      get ':status',              action: :index, constraints: { status: /(published|drafts)/ }
-      get ':status/page/:page',   action: :index, constraints: { status: /(published|drafts)/ }
+      get ':tab',              action: :index, constraints: { tab: /(all|published|drafts|trash)/ }, as: :tab
+      get ':tab/page/:page',   action: :index, constraints: { tab: /(all|published|drafts|trash)/ }
+    end
+    member do
+      post 'recover'
     end
     resources :mentions, only: [:create, :new]
   end
   resources :users, except: :index
-  resources :people do
+  resources :people, shallow: true, concerns: :paginatable do
     collection do
       get "search"
       get "search/page/:page",  action: :search
-      get 'page/:page',         action: :index
+      get ':tab',               action: :index, constraints: { tab: /(all|trash)/ }, as: :tab
+      get ':tab/page/:page',    action: :index, constraints: { tab: /(all|trash)/ }
     end
     resources :notes, only: [:create]
     member do
-      get ':tab',               action: :show, as: :tab, constraints: { status: /(biography|notes|mentions|edit)/ }
-      get ':tab/page/:page',    action: :show
+      get ':tab',               action: :show, constraints: { tab: /(biography|notes|mentions|info)/ }, as: :tab
+      get ':tab/page/:page',    action: :show, constraints: { tab: /(biography|notes|mentions|info)/ }
     end
   end
   resources :mentions
