@@ -7,7 +7,7 @@
     </div>
   <% end %>
   <%= form_with model: @person, data: { turbo: false } do |f| %>
-    <div class="gap-2 grid grid-cols-6 grid-rows-3">
+    <div class="gap-2 grid grid-cols-6">
       <div class="col-span-2">
         <%= f.label :first, class: "form-label" %>
         <%= f.text_field :first_name, class: "input-field #{"error" if @person.errors[:first_name].any?}", placeholder: "First name" %>
@@ -23,15 +23,27 @@
         <%= f.text_field :last_name, class: "input-field #{"error" if @person.errors[:last_name].any?}", placeholder: "Last name" %>
         <span class="error-message"><%=@person.errors[:last_name].first%></span>
       </div>
-      <div class="col-span-3">
+    </div>
+    <div class="flex gap-2">
+      <div class="basis-2/3 flex flex-col">
         <%= f.label :nickname, class: "form-label" %>
         <%= f.text_field :nickname, class: "input-field #{"error" if @person.errors[:nickname].any?}", placeholder: "Nickname" %>
         <span class="error-message"><%=@person.errors[:nickname].first%></span>
+        <div class="flex gap-2">
+          <div class="grow">
+            <%= f.label :title, class: "form-label" %>
+            <%= f.text_field :title, class: "input-field", placeholder: "Captain, CEO, etc." %>
+          </div>
+          <div class="grow">
+            <%= f.label :gender, class: "form-label" %>
+            <%= f.text_field :gender, class: "input-field", placeholder: "Male, female, etc." %>
+          </div>
+        </div>
       </div>
-      <div class="flex h-full ml-auto gap-4 items-center mt-auto col-span-3 row-span-2">
-        <%= avatar(@person, size: 64) %>
-        <div class="flex flex-col justify-between h-full">
-          <div class="flex flex-col justify-center grow">
+      <div class="flex flex-col grow justify-between">
+        <div class="flex items-center justify-center my-auto">
+          <%= avatar(@person, size: 64) %>
+          <div>
             <%= f.label :avatar, class: "form-label" %>
             <label for="person_avatar" class="flex gap-3 rounded-lg w-56">  
               <%= f.file_field :avatar, class: "file-field" %>
@@ -40,19 +52,18 @@
               <span class="text-red-500"><%= @person.errors[:avatar].first %></span>
             <% end %>
           </div>
+        </div>
+        <div class="flex justify-end">
           <%= f.submit class: "btn-primary", "data-test-id": "save_person_button" %>
         </div>
       </div>
-      <div class="col-span-3 flex gap-2">
-        <div>
-          <%= f.label :title, class: "form-label" %>
-          <%= f.text_field :title, class: "input-field", placeholder: "Captain, CEO, etc." %>
-        </div>
-        <div>
-          <%= f.label :gender, class: "form-label" %>
-          <%= f.text_field :gender, class: "input-field", placeholder: "Male, female, etc." %>
-        </div>
-      </div>
+      
     </div>
   <% end %>
+  <% if @person.persisted? %>
+    <hr class="border-slate-700 my-4">
+    <div class="flex justify-end">
+      <%= mark_as_deleted_button @person %>
+    </div>
+  <% end%>
 <% end %>

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :redirect_unauthenticated, except: [:new, :create]
-
+  before_action :set_user
   # GET /users
   def index
     @users = User.all
@@ -8,6 +8,12 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
+    case tab
+    when 0
+
+    else
+      @tab = :account
+    end
   end
 
   # GET /users/new
@@ -34,29 +40,42 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to user_url(@user), notice: "User was successfully updated." }
+        format.html { redirect_to tab_user_path(@user, :account) }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        @tab = :account
+        format.html { render :show }
       end
     end
   end
 
-  # DELETE /users/1 or /users/1.json
+  # DELETE /users/1
   def destroy
     @user.destroy
-
     respond_to do |format|
       format.html { redirect_to users_url, notice: "User was successfully destroyed." }
     end
   end
 
   private
-    def after_sign_up_path
-      root_path
-    end
+  
+  def tab
+    params[:tab] || :account
+  end
 
+  def set_user
+    @user = current_user
+  end
 
-    def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation)
-    end
+  def after_sign_up_path
+    root_path
+  end
+
+  def user_params
+    params.require(:user).permit(
+      :email,
+      :password,
+      :password_confirmation,
+      :password_challenge
+    )
+  end
 end

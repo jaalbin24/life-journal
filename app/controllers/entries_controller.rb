@@ -1,6 +1,6 @@
 class EntriesController < ApplicationController
   before_action :redirect_unauthenticated
-  before_action :set_entry, only: %i[ show edit update destroy recover ]
+  before_action :set_entry, only: %i[ show edit update destroy recover mark_as_deleted ]
 
   # GET /entries/search
   def search
@@ -83,6 +83,19 @@ class EntriesController < ApplicationController
 
   # DELETE /entries/:id
   def destroy
+    if @entry.destroy
+      respond_to do |format|
+        format.html { redirect_to entries_path }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @entry }
+      end
+    end
+  end
+
+  # POST /entries/:id/mark_as_deleted
+  def mark_as_deleted
     if @entry.mark_as_deleted
       respond_to do |format|
         format.html { redirect_to @entry }
@@ -94,6 +107,7 @@ class EntriesController < ApplicationController
     end
   end
   
+  # POST /entries/:id/recover
   def recover
     if @entry.recover
       respond_to do |format|

@@ -2,39 +2,7 @@
   <div class="card m-auto w-1/4">
     <div class="card-body">
       <h2 class="text-center font-bold my-5">Sign up</h2>
-      <%= form_for @user, url: users_path do |f|%>
-        <div class="my-3">
-          <%= f.label :email, class: "form-label" %>
-          <% if @user.errors[:email].any? %>
-            <%= f.email_field :email, class: "input-field error", placeholder: "Enter your email", autocomplete: false %>
-            <span class="error-message"><%=@user.errors[:email].first%></span>
-          <% else %>
-            <%= f.email_field :email, class: "input-field", placeholder: "Enter your email", autofocus: true, autocomplete: false %>
-          <% end %>
-        </div>
-        <div class="my-3">
-          <%= f.label :password, class: "form-label" %>
-          <% if @user.errors[:password].any? %>
-            <%= f.password_field :password, class: "input-field error", placeholder: "At least 8 characters" %>
-            <span class="error-message"><%=@user.errors[:password].first%></span>
-          <% else %>
-            <%= f.password_field :password, class: "input-field", placeholder: "At least 8 characters" %>
-          <% end %>
-        </div>
-        <div class="my-3">
-          <%= f.label :password_again, class: "form-label" %>
-          <% if @user.errors[:password_confirmation].any? %>
-            <%= f.password_field :password_confirmation, class: "input-field error", placeholder: "In case there's a typo" %>
-            <span class="error-message"><%=@user.errors[:password_confirmation].first%></span>
-          <% else %>
-            <%= f.password_field :password_confirmation, class: "input-field", placeholder: "In case there's a typo" %>
-          <% end %>
-        </div>
-        <div class="flex mt-8 w-full justify-between items-center">
-         <%= f.submit "Sign up", class: "btn-primary" %>
-         <%= link_to "Sign in", sign_in_path, class: "text-blue-500 hover:underline" %>
-        </div>
-      <%end%>
+      <%= render "form" %>
     </div>
   </div>
 </div>

@@ -32,6 +32,7 @@ class User < ApplicationRecord
   validates :email, uniqueness:       { message: "That email is already taken" }
   validates :password, presence:      { message: "Your password can't be blank" }, on: :create
   validates :password, confirmation:  { message: "The passwords don't match" }
+  validate :password_challenge_provided, on: :update
   has_many :entries,  dependent: :destroy
   has_many :people,   dependent: :destroy
   has_many :notes,    dependent: :destroy, foreign_key: :user_id
@@ -55,5 +56,28 @@ class User < ApplicationRecord
 
   def stay_signed_in_token_expired?
     stay_signed_in_token_expires_at <= DateTime.current
+  end
+
+  def change_password(old_password, new_password)
+    if self.authenticate old_password
+      self.update(password: new_password)
+    else
+      false
+    end
+  end
+
+  attr_accessor :password_challenge
+  
+  private
+  
+  # Based on the code found at
+  # https://github.com/rails/rails/blob/42db7f307f9cc1fb0cc5da68c830d08f625429cf/activemodel/lib/active_model/secure_password.rb#L125
+  def password_challenge_provided
+    # Changing the email or password requires the password
+    if email_changed? || password_digest_changed?
+      unless password_digest_was.present? && BCrypt::Password.new(password_digest_was).is_password?(password_challenge)
+        errors.add(:password_challenge, "Please provide your password to make this change")
+      end
+    end
   end
 end

@@ -1,0 +1,9 @@
+<div class="tab-bar">
+  <ul class="flex flex-wrap">
+    <% tabs.each do |tab| %>
+      <li class="mr-2">
+        <%= link_to tab.to_s.titleize, send("tab_#{model.to_s.downcase}_path", tab), class: (tab == active_tab ? "tab tab-active" : "tab") %>
+      </li>
+    <% end %>
+  </ul>
+</div>

@@ -53,6 +53,10 @@ class Entry < ApplicationRecord
     status == 'draft'
   end
 
+  def summarize
+    "Title #{title}\\nStatus: #{status}\\nLast saved: #{updated_at}"
+  end
+
   private
 
   def attachments_must_be_images

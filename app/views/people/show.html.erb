@@ -1,10 +1,10 @@
 <div class="w-full min-h-full flex justify-center">
   <div class="w-2/3 p-5 flex flex-col gap-2">
     <div class="">
-      <%= render "show_header" %>
+      <%= render "header_member" %>
     </div>
     <div class="grow">
-      <%= render 'tab_bar' %>
+      <%= render "layouts/tab_bar_member", model: @person, tabs: [:info, :biography, :notes, :mentions], active_tab: @tab %>
       <div class="p-3 h-full">
         <% case @tab %>
         <% when :notes %>

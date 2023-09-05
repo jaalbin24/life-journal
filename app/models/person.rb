@@ -77,6 +77,10 @@ class Person < ApplicationRecord
     end
   end
 
+  def summarize
+    full_name
+  end
+
   private
 
   def name_is_present
