@@ -1,0 +1,10 @@
+<% if model.deleted? %>
+  <div class="flex justify-center" data-controller="dismissable">
+    <h5 class="text-center form-error-message flex gap-2 items-center my-4" data-dismissable-target="alertBox">
+      This <%= model.class.to_s.downcase %> will be permanently deleted on <%= model.will_be_permanently_deleted_at.strftime("%b %d, %Y") %>
+      <button type="button" data-action="click->dismissable#dismiss" class="hover:opacity-50">
+        <%= embedded_svg 'x_icon.svg', class: "w-4 h-4" %>
+      </button>
+    </h5>
+  </div>
+<% end %>

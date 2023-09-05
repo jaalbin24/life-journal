@@ -56,10 +56,10 @@ class PeopleController < ApplicationController
 
   # DELETE /people/:id
   def destroy
-    if @person.mark_as_deleted
-      redirect_to people_path, notice: "#{@person.name} was marked for deletion and will be deleted after 30 days."
+    if @person.destroy
+      redirect_to people_path
     else
-      redirect_to @continue_path, alert: "There was an error deleting #{@person.name}."
+      redirect_to @person, alert: "There was an error deleting #{@person.name}."
     end
   end
 
@@ -95,7 +95,8 @@ class PeopleController < ApplicationController
       :title,
       :gender,
       :nickname,
-      :avatar
+      :avatar,
+      :deleted
     )
   end
 

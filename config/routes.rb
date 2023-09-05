@@ -2,19 +2,13 @@ Rails.application.routes.draw do
   concern :paginatable do
     get '(page/:page)', action: :index, on: :collection, as: ''
   end
-  concern :recoverable do
-    member do
-      post 'recover'
-      post 'mark_as_deleted'
-    end
-  end
   concern :searchable do
     collection do
       get "search"
       get "search/page/:page",    action: :search
     end
   end
-  resources :entries, shallow: true, concerns: [:paginatable, :recoverable, :searchable] do
+  resources :entries, shallow: true, concerns: [:paginatable, :searchable] do
     collection do
       get ':tab',              action: :index, constraints: { tab: /(all|published|drafts|trash)/ }, as: :tab
       get ':tab/page/:page',   action: :index, constraints: { tab: /(all|published|drafts|trash)/ }
@@ -27,7 +21,7 @@ Rails.application.routes.draw do
       get ':tab/page/:page',    action: :show, constraints: { tab: /(account)/ }
     end
   end
-  resources :people, shallow: true, concerns: [:paginatable, :recoverable, :searchable] do
+  resources :people, shallow: true, concerns: [:paginatable, :searchable] do
     collection do
       get ':tab',               action: :index, constraints: { tab: /(all|trash)/ }, as: :tab
       get ':tab/page/:page',    action: :index, constraints: { tab: /(all|trash)/ }

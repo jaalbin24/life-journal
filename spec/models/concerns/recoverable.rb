@@ -38,6 +38,12 @@ RSpec.shared_examples Recoverable do |model_class|
         instance.save
       end
     end
+    describe "after_save" do
+      it "calls the handle_recovery_or_deletion method" do
+        pending
+        fail
+      end
+    end
   end
 
   describe "attributes" do
@@ -70,59 +76,50 @@ RSpec.shared_examples Recoverable do |model_class|
         expect(instance.deleted).to be true
       end
       it "sets the deleted_at attr to the current time" do
-       instance = build :entry
+        instance = build :entry
         expect(instance.deleted_at).to be nil
         instance.mark_as_deleted
         expect(instance.deleted_at).to be_within(1.second).of(Time.current)
       end
-      it "saves the model" do
-       instance = build :entry
-        expect(instance.persisted?).to be false
+      it "does not save the model" do
+        instance = build :entry
         instance.mark_as_deleted
-        expect(instance.persisted?).to be true
-      end
-      it "returns the model if the marking was successful" do
-       instance = create :entry
-        expect(instance.mark_as_deleted).to be instance
-      end
-      it "returns false if the marking was unsuccessful" do
-       instance = create :entry
-        allow(instance).to receive(:save).and_return(false)
-        expect(instance.mark_as_deleted).to be false
+        expect(instance.persisted?).to be false
       end
     end
     describe "#recover" do
       it "sets the deleted attr to false" do
-       instance = create :entry, :deleted
+        instance = create :entry, :deleted
         expect(instance.deleted).to be true
         instance.recover
         expect(instance.deleted).to be false
       end
       it "does not change the deleted_at attr" do
-       instance = create :entry, :deleted
+        instance = create :entry, :deleted
         expect { instance.recover }.to_not change { instance.deleted_at }
       end
-      it "saves the model" do
-       instance = build :entry, :deleted
-        expect(instance.persisted?).to be false
+      it "does not save the model" do
+        instance = build :entry, :deleted
         instance.recover
-        expect(instance.persisted?).to be true
-      end
-      it "returns the model if the recovery was successful" do
-       instance = create :entry, :deleted
-        expect(instance.recover).to be instance
-      end
-      it "returns false if the recovery was unsuccessful" do
-       instance = create :entry, :deleted
-        allow(instance).to receive(:save).and_return(false)
-        expect(instance.recover).to be false
+        expect(instance.persisted?).to be false
       end
     end
     describe "#init_deleted" do
       it "is a private method" do
-       instance = create :entry
+        instance = create :entry
         expect(instance.respond_to?(:init_deleted, true)).to be_truthy # The method exists
         expect { instance.init_deleted }.to raise_error NoMethodError # But it's private
+      end
+    end
+    describe "#handle_recovery_or_deletion" do
+      it "is a private method" do
+        instance = create :entry
+        expect(instance.respond_to?(:handle_recovery_or_deletion, true)).to be_truthy # The method exists
+        expect { instance.handle_recovery_or_deletion }.to raise_error NoMethodError # But it's private
+      end
+      it do
+        pending
+        fail
       end
     end
   end

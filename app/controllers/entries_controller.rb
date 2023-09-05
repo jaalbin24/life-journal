@@ -1,6 +1,6 @@
 class EntriesController < ApplicationController
   before_action :redirect_unauthenticated
-  before_action :set_entry, only: %i[ show edit update destroy recover mark_as_deleted ]
+  before_action :set_entry, only: %i[ show edit update destroy ]
 
   # GET /entries/search
   def search
@@ -48,8 +48,8 @@ class EntriesController < ApplicationController
 
   # PATCH/PUT /entries/:id
   def update
-    if @entry.update(entry_params)
-      respond_to do |format|
+    respond_to do |format|
+      if @entry.update(entry_params)
         format.turbo_stream do
           @save_bar_message = {
             class: "",
@@ -57,9 +57,8 @@ class EntriesController < ApplicationController
           }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
         end
-      end
-    else
-      respond_to do |format|
+        format.html { redirect_to @entry }
+      else
         format.turbo_stream do
           @save_bar_message = {
             class: "error-message",
@@ -67,6 +66,7 @@ class EntriesController < ApplicationController
           }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
         end
+        format.html { redirect_to @entry }
       end
     end
   end
@@ -94,32 +94,6 @@ class EntriesController < ApplicationController
     end
   end
 
-  # POST /entries/:id/mark_as_deleted
-  def mark_as_deleted
-    if @entry.mark_as_deleted
-      respond_to do |format|
-        format.html { redirect_to @entry }
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to @entry }
-      end
-    end
-  end
-  
-  # POST /entries/:id/recover
-  def recover
-    if @entry.recover
-      respond_to do |format|
-        format.html { redirect_to @entry }
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to @entry }
-      end
-    end
-  end
-
   private
   
   # Use callbacks to share common setup or constraints between actions.
@@ -132,7 +106,8 @@ class EntriesController < ApplicationController
     params.require(:entry).permit(
       :content,
       :title,
-      :status
+      :status,
+      :deleted
     )
   end
 

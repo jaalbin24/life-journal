@@ -14,6 +14,7 @@ module Recoverable
     scope :not_deleted,     ->      {where(deleted: false)}
     scope :deleted_before,  ->  (i) {where('deleted_at < ?', i)}
     before_create :init_deleted
+    before_save :handle_recovery_or_deletion, if: :deleted_changed?
   end
 
   class_methods do
@@ -38,20 +39,10 @@ module Recoverable
   def mark_as_deleted
     self.deleted = true
     self.deleted_at = DateTime.now
-    if self.save
-      self
-    else
-      false
-    end
   end
 
   def recover
     self.deleted = false
-    if self.save
-      self
-    else
-      false
-    end
   end
 
   def will_be_permanently_deleted_at
@@ -64,5 +55,14 @@ module Recoverable
 
   def init_deleted
     self.deleted = false if deleted.nil?
+  end
+
+  def handle_recovery_or_deletion
+    if deleted?
+      self.deleted = true
+      self.deleted_at = DateTime.now
+    else
+      # Do nothing for now
+    end
   end
 end
