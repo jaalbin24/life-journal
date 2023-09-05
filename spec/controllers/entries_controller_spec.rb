@@ -9,8 +9,8 @@ RSpec.describe EntriesController, type: :controller do
   let(:send_new_request)        { get :new }
   let(:send_show_request)       { get :show, params: { id: user.entries.sample.id } }
   let(:send_index_request)      { get :index }
-  let(:send_drafts_request)     { get :index, params: { status: "drafts" } }
-  let(:send_published_request)  { get :published }
+  let(:send_drafts_request)     { get :index, params: { tab: "drafts" } }
+  let(:send_published_request)  { get :index, params: { tab: "published" } }
   let(:send_update_request)     { put :update, params: { id: user.entries.sample.id, entry: valid_params } }
   let(:send_create_request)     { post :create, params: { entry: valid_params } }
 
@@ -56,7 +56,7 @@ RSpec.describe EntriesController, type: :controller do
         send_index_request
         expect(response).to redirect_to(sign_in_path)
       end
-      context "with draft as the status param" do
+      context "with draft as the tab param" do
         it "renders the index view" do
           send_drafts_request
           expect(response).to have_http_status(:success)
@@ -76,13 +76,13 @@ RSpec.describe EntriesController, type: :controller do
         context "with a page param" do
           it "shows the expected page" do
             create_list :entry, Entry.default_per_page + 1, :draft, user: user
-            get :index, params: { status: "drafts", page: 2 }
+            get :index, params: { tab: "drafts", page: 2 }
             expect(assigns(:entries)).to eq user.entries.not_deleted.drafts.order(created_at: :desc).page 2
           end
         end
       end
-      context "with anything else as the status param" do
-        before { get :index, params: { status: "yeet" } }
+      context "with anything else as the tab param" do
+        before { get :index, params: { tab: "yeet" } }
         it "renders the index view" do
           expect(response).to have_http_status(:success)
           expect(response).to render_template(:index)
@@ -100,7 +100,7 @@ RSpec.describe EntriesController, type: :controller do
         context "with a page param" do
           it "shows the expected page" do
             create_list :entry, Entry.default_per_page + 1, :published, user: user
-            get :index, params: { status: "scooby", page: 2 }
+            get :index, params: { tab: "scooby", page: 2 }
             expect(assigns(:entries)).to eq user.entries.not_deleted.published.order(created_at: :desc).page 2
           end
         end

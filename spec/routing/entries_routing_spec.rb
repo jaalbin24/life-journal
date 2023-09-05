@@ -58,19 +58,19 @@ RSpec.describe "EntryRoutes", type: :routing do
       )
     end
   end
-  describe "status" do
+  describe "tab" do
     it "routes GET /entries/published to entries#index" do
       expect(get "/entries/published").to route_to(
         controller: "entries",
         action: "index",
-        status: "published"
+        tab: "published"
       )
     end
     it "routes GET /entries/drafts to entries#index" do
       expect(get "/entries/drafts").to route_to(
         controller: "entries",
         action: "index",
-        status: "drafts"
+        tab: "drafts"
       )
     end
   end
