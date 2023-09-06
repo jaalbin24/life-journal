@@ -1,5 +1,0 @@
-
-/* Used in javascript fade in/out transitions, particularly in the Stimulus fader controller */
-.hiding {
-    display: none !important;
-}

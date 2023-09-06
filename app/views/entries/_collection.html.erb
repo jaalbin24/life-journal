@@ -2,10 +2,10 @@
   <div class="grid grid-cols-3 gap-3"> 
     <% entries.each_with_index do |e, i| %>
       <% if e.content.embeds_blobs.count != 0 %>
-        <div class="card relative h-64">
-          <%= image_tag e.content.embeds_blobs.sample, class: "h-full w-full object-cover rounded-t-lg" %>
-          <div class="z-10 flex">
-            <div class="m-2 bg-slate-800">
+        <div class="relative h-64 flex">
+          <%= image_tag e.content.embeds_blobs.sample.variant(resize_to_limit: [720, 720]), class: "absolute h-full w-full object-cover rounded-t-lg rounded-b-xl" %>
+          <div class="z-10 mt-auto grow">
+            <div class="bg-slate-800 p-2 rounded-b-lg">
               <a href="<%= entry_path(e) %>" class="shrink flex font-bold hover:underline h3">
                 <h3 class="shrink"><%= e.title.blank? ? "Untitled" : e.title %></h3>
               </a>

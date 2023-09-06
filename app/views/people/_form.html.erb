@@ -9,17 +9,17 @@
   <%= form_with model: @person, data: { turbo: false } do |f| %>
     <div class="gap-2 grid grid-cols-6">
       <div class="col-span-2">
-        <%= f.label :first, class: "form-label" %>
+        <%= f.label :first_name, class: "form-label" %>
         <%= f.text_field :first_name, class: "input-field #{"error" if @person.errors[:first_name].any?}", placeholder: "First name" %>
         <span class="error-message"><%=@person.errors[:first_name].first%></span>
       </div>
       <div class="col-span-2">
-        <%= f.label :middle, class: "form-label" %>
+        <%= f.label :middle_name, class: "form-label" %>
         <%= f.text_field :middle_name, class: "input-field #{"error" if @person.errors[:middle_name].any?}", placeholder: "Middle name" %>
         <span class="error-message"><%=@person.errors[:middle_name].first%></span>
       </div>
       <div class="col-span-2">
-        <%= f.label :last, class: "form-label" %>
+        <%= f.label :last_name, class: "form-label" %>
         <%= f.text_field :last_name, class: "input-field #{"error" if @person.errors[:last_name].any?}", placeholder: "Last name" %>
         <span class="error-message"><%=@person.errors[:last_name].first%></span>
       </div>

@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import 'actiontext.css';
 
 
 @layer base {
@@ -164,6 +163,9 @@
   }
   figure img {
     @apply rounded-lg
+  }
+  figure figcaption.attachment__caption {
+    @apply w-full text-center text-slate-500 !important
   }
   figure figcaption.attachment__caption--editing textarea {
     @apply bg-transparent !important
