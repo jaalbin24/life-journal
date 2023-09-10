@@ -21,8 +21,8 @@ COPY . .
 # Set environment variables for production
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=true
-ARG MASTER_KEY
-ENV MASTER_KEY=$MASTER_KEY
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 # Precompile assets
 RUN bundle exec rails assets:precompile
 
