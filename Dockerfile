@@ -1,5 +1,5 @@
 # Use an official Ruby runtime as a parent image
-FROM ruby:3.2.2
+FROM registry.home/ruby:3.2.2
 
 # Set the working directory in the container
 WORKDIR /app
@@ -21,7 +21,8 @@ COPY . .
 # Set environment variables for production
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=true
-
+ARG MASTER_KEY
+ENV MASTER_KEY=$MASTER_KEY
 # Precompile assets
 RUN bundle exec rails assets:precompile
 
