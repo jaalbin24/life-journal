@@ -1,5 +1,5 @@
 # Use an official Ruby runtime as a parent image
-FROM registry.home/ruby:3.2.2
+FROM registry.home:5000/ruby:3.2.2
 
 # Set the working directory in the container
 WORKDIR /app
