@@ -2,13 +2,19 @@ test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
 
-development:
+disk:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-production:
-  service: Disk
-  root: <%= ENV["LOCAL_STORAGE_PATH"] %>
+minio:
+  service: S3
+  access_key_id: <%= ENV["BUCKET_ACCESS_KEY"] %>
+  secret_access_key: <%= ENV["BUCKET_SECRET_ACCESS_KEY"] %>
+  region: 'us-east-1'
+  endpoint: 'https://bucket.home:9000'
+  bucket: life-journal-<%= Rails.env %>
+  force_path_style: true
+
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:

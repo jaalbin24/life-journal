@@ -7,7 +7,6 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    libsqlite3-dev \
     nodejs \
     && rm -rf /var/lib/apt/lists/*
 
@@ -21,10 +20,9 @@ COPY . .
 # Set environment variables for production
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=true
-ARG RAILS_MASTER_KEY
-ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+
 # Precompile assets
 RUN bundle exec rails assets:precompile
 
 # Start the Rails application server
-CMD ["bundle", "exec", "rails", "server", "-e", "production"]
+# CMD ["bundle", "exec", "rails", "server", "-p", "3000", "-e", "production"]

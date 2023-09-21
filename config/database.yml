@@ -82,6 +82,6 @@ test:
 production:
   <<: *default
   database: life_journal_production
-  username: <%= ENV["DATABASE_USERNAME"] %>
-  password: <%= ENV["DATABASE_PASSWORD"] %>
-  url:      <%= ENV["DATABASE_URL"] %>
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  url:      <%= ENV["DB_URL"] %>
