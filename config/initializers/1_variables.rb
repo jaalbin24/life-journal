@@ -20,7 +20,7 @@ if Rails.env.production?
   ENV["DB_USERNAME"]              ||= secret.data[:DB_USERNAME]
   ENV["DB_PASSWORD"]              ||= secret.data[:DB_PASSWORD]
 
-  ENV["RAILS_MASTER_KEY"]         ||= secret.data[:RAILS_MASTER_KEY]
+  ENV["RAILS_PRODUCTION_KEY"]     ||= secret.data[:RAILS_PRODUCTION_KEY]
   ENV["BUCKET_SECRET_ACCESS_KEY"] ||= secret.data[:BUCKET_SECRET_ACCESS_KEY]
   ENV["BUCKET_ACCESS_KEY"]        ||= secret.data[:BUCKET_ACCESS_KEY]
   ENV["ELASTICSEARCH_USERNAME"]   ||= secret.data[:ELASTICSEARCH_USERNAME]
