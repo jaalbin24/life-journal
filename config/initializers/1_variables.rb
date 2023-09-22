@@ -1,16 +1,17 @@
-Vault.configure do |config|
-  # The address of the Vault server, also read as ENV["VAULT_ADDR"]
-  config.address = "https://vault.home:8200"
-
-  # Use SSL verification, also read as ENV["VAULT_SSL_VERIFY"]
-  config.ssl_verify = false
-end
-
-response = Vault.auth.approle(ENV["VAULT_ROLE_ID"], ENV["VAULT_SECRET_ID"])
-Vault.token = response.auth.client_token
-
 if Rails.env.production?
+  Vault.configure do |config|
+    # The address of the Vault server, also read as ENV["VAULT_ADDR"]
+    config.address = "https://vault.home:8200"
+  
+    # Use SSL verification, also read as ENV["VAULT_SSL_VERIFY"]
+    config.ssl_verify = false
+  end
+  
+  response = Vault.auth.approle(ENV["VAULT_ROLE_ID"], ENV["VAULT_SECRET_ID"])
+  Vault.token = response.auth.client_token
+  
   secret = Vault.logical.read("kv/life-journal")
+
   ENV["DB_URL"]                   ||= secret.data[:DB_URL]
   ENV["ELASTICSEARCH_URL"]        ||= secret.data[:ELASTICSEARCH_URL]
   ENV["BUCKET_URL"]               ||= secret.data[:BUCKET_URL]

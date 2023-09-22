@@ -25,4 +25,4 @@ ENV RAILS_SERVE_STATIC_FILES=true
 RUN bundle exec rails assets:precompile
 
 # Start the Rails application server
-# CMD ["bundle", "exec", "rails", "server", "-p", "3000", "-e", "production"]
+CMD ["bundle", "exec", "rails", "server", "-p", "3000", "-e", "production"]
