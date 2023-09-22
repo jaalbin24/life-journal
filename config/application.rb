@@ -27,24 +27,24 @@ module LifeJournal
     config.active_storage.variant_processor = ImageProcessing::MiniMagick
 
     # Only show the ActionText format options that are wanted
-    config.after_initialize do
-      config.action_text = {
-        # Other options...
+    # config.after_initialize do
+    #   config.action_text = {
+    #     # Other options...
 
-        # Customize Trix toolbar options
-        trix: {
-          toolbar: {
-            # Keep the formatting options you want
-            bold: true,
-            italic: true,
-            link: true,
-            # Omit the ones you want to remove
-            bullet_list: false,
-            number_list: false,
-            quote: false,
-          }
-        }
-      }
-    end
+    #     # Customize Trix toolbar options
+    #     trix: {
+    #       toolbar: {
+    #         # Keep the formatting options you want
+    #         bold: true,
+    #         italic: true,
+    #         link: true,
+    #         # Omit the ones you want to remove
+    #         bullet_list: false,
+    #         number_list: false,
+    #         quote: false,
+    #       }
+    #     }
+    #   }
+    # end
   end
 end
