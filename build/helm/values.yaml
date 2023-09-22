@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: registry.home
+  repository: registry.home:5000
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "#!BUILD_NUMBER!#"
