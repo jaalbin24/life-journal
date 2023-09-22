@@ -80,3 +80,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+sidekiq:
+  replicas: 2
