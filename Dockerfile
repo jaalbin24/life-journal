@@ -24,5 +24,8 @@ RUN bundle exec rails assets:precompile
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=true
 
+# We'll need port 3000 to access the app
+EXPOSE 3000
+
 # Start the Rails application server
 CMD ["bundle", "exec", "rails", "server", "-p", "3000", "-e", "production"]
