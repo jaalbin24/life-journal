@@ -26,5 +26,17 @@ if Rails.env.production?
   ENV["ELASTICSEARCH_USERNAME"]   ||= secret.data[:ELASTICSEARCH_USERNAME]
   ENV["ELASTICSEARCH_PASSWORD"]   ||= secret.data[:ELASTICSEARCH_PASSWORD]
 else
-  
+  ENV["DB_URL"]                   ||= "SOMETHING"
+  ENV["ELASTICSEARCH_URL"]        ||= "SOMETHING"
+  ENV["BUCKET_URL"]               ||= "SOMETHING"
+  ENV["REDIS_URL"]                ||= "SOMETHING"
+
+  ENV["DB_USERNAME"]              ||= "SOMETHING"
+  ENV["DB_PASSWORD"]              ||= "SOMETHING"
+
+  ENV["RAILS_MASTER_KEY"]         ||= "SOMETHING"
+  ENV["BUCKET_SECRET_ACCESS_KEY"] ||= "SOMETHING"
+  ENV["BUCKET_ACCESS_KEY"]        ||= "SOMETHING"
+  ENV["ELASTICSEARCH_USERNAME"]   ||= "SOMETHING"
+  ENV["ELASTICSEARCH_PASSWORD"]   ||= "SOMETHING"
 end
