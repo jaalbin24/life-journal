@@ -24,6 +24,17 @@ spec:
           value: {{ $value | quote }}
         {{- end }}
         command: [ "bundle", "exec", "sidekiq", "-e", "production", "-C", "config/sidekiq.yml" ]
+        env:
+          - name: VAULT_SECRET_ID
+            valueFrom:
+              secretKeyRef:
+                name: life-journal
+                key: VAULT_SECRET_ID
+          - name: VAULT_ROLE_ID
+            valueFrom:
+              secretKeyRef:
+                name: life-journal
+                key: VAULT_ROLE_ID
         securityContext:
           {{- toYaml .Values.securityContext | nindent 12 }}
         ports:
