@@ -17,12 +17,12 @@ RUN gem install bundler && bundle install --jobs 20 --retry 5
 # Copy the rest of your Rails application code into the image
 COPY . .
 
+# Precompile assets
+RUN bundle exec rails assets:precompile
+
 # Set environment variables for production
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=true
-
-# Precompile assets
-RUN bundle exec rails assets:precompile
 
 # Start the Rails application server
 CMD ["bundle", "exec", "rails", "server", "-p", "3000", "-e", "production"]
