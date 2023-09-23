@@ -10,8 +10,8 @@ if Rails.env.production?
   ENV["BUCKET_SECRET_ACCESS_KEY"] = Rails.application.credentials.bucket.secret_access_key!
   ENV["BUCKET_ACCESS_KEY"]        = Rails.application.credentials.bucket.access_key!
   
-  # ENV["ELASTICSEARCH_USERNAME"]   = Rails.application.credentials.elasticsearch.username!
-  # ENV["ELASTICSEARCH_PASSWORD"]   = Rails.application.credentials.elasticsearch.password!
+  ENV["ELASTICSEARCH_USERNAME"]   = Rails.application.credentials.elasticsearch.username!
+  ENV["ELASTICSEARCH_PASSWORD"]   = Rails.application.credentials.elasticsearch.password!
 else
   ENV["ELASTICSEARCH_URL"]        = "SOMETHING"
   ENV["REDIS_URL"]                = "redis://localhost:6379/0"
