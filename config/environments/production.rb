@@ -93,8 +93,5 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-
-  # Remove if hosting remotely
-  Rails.application.routes.default_url_options = { host: 'localhost:3000' }
-
+  config.action_controller.default_url_options = { protocol: 'https' }
 end
