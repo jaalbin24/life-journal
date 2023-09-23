@@ -11,7 +11,7 @@ minio:
   access_key_id: <%= ENV["BUCKET_ACCESS_KEY"] %>
   secret_access_key: <%= ENV["BUCKET_SECRET_ACCESS_KEY"] %>
   region: 'us-east-1'
-  endpoint: 'https://bucket.home:9000'
+  endpoint: <%= ENV["BUCKET_URL"] %>
   bucket: life-journal-<%= Rails.env %>
   force_path_style: true
 
