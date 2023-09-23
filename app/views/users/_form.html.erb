@@ -14,7 +14,7 @@
     <%= f.password_field :password_confirmation, class: "input-field #{"error" if @user.errors[:password_confirmation].any?}", placeholder: "In case there's a typo" %>
     <span class="error-message"><%=@user.errors[:password_confirmation].first%></span>
   </div>
-  <div class="flex mt-8 w-full justify-between items-center">
+  <div class="flex mt-8 w-full gap-3 items-center">
     <% if @user.persisted? %>
       <%= f.submit class: "btn-primary" %>
     <% else %>
