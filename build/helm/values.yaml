@@ -50,7 +50,7 @@ ingress:
     - host: openear.net
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
