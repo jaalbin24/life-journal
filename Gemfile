@@ -100,11 +100,11 @@ gem "sentry-rails"
 # For email validation
 gem 'validates_email_format_of'
 
-# For retrieving sensitive data from the Hashicorp Vault server
-gem "vault"
-
 # For interacting with the S3 bucket
 gem 'aws-sdk-s3'
 
 # For generating made-up data. Used for seeding database.
 gem 'faker'
+
+# For configuring Cross Origin Resource Sharing
+gem 'rack-cors'
