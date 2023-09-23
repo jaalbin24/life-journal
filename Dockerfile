@@ -17,6 +17,12 @@ RUN gem install bundler && bundle install --jobs 20 --retry 5
 # Copy the rest of your Rails application code into the image
 COPY . .
 
+# Copy the CA certificate into the container
+COPY ./root_cert.crt /usr/local/share/ca-certificates/root_cert.crt
+
+# Update CA certificates in the container
+RUN update-ca-certificates
+
 # Precompile assets
 RUN bundle exec rails assets:precompile
 
