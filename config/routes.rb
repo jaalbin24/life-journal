@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     end
     resources :mentions, only: [:create, :new]
   end
+  # resource :email, only: [:edit, :update], controller: 'emails'
+  resource :password, only: [:edit, :update], controller: 'passwords'
   resources :users, except: [:index, :new] do
     member do
       get ':tab',               action: :show, constraints: { tab: /(account)/ }, as: :tab

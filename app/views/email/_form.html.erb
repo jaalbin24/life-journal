@@ -1,0 +1,18 @@
+<%= form_with model: @user, url: sign_in_path, data: { turbo: false } do |f|%>
+  <div class="my-5">
+    <%= f.label :new_email, class: "form-label" %>
+    <%= f.email_field :email, class: "input-field", placeholder: "Enter your new email", autofocus: true, autocomplete: false %>
+  </div>
+  <div class="my-5">
+    <%= f.label :password, class: "form-label" %>
+    <%= f.password_field :password, class: "input-field", placeholder: "Enter your password" %>
+  </div>
+  <div class="my-5 flex items-center gap-2">
+    <%= check_box_tag :stay_signed_in, 1, false, class: "input-field check-box" %>
+    <%= label_tag :stay_signed_in, "Stay signed in", class: "form-label" %>
+  </div>
+  <div class="flex mt-8 w-full gap-3 items-center">
+    <%= f.submit "Sign in", class: "btn-primary" %>
+    <%= link_to "Sign up", new_user_path, class: "text-blue-500 hover:underline" %>
+  </div>
+<%end%>
