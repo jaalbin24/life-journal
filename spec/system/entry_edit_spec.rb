@@ -4,8 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'Editing an entry', type: :system do
   describe "", :js do
-    # Used to test typing in the search field
-
     let(:user)            { create :user }
     let!(:entry)          { create :entry, user: user }
 

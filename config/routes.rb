@@ -34,13 +34,11 @@ Rails.application.routes.draw do
   end
   resources :mentions
   resources :notes, only: [:destroy]
-  # Define your application asroutes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  root 'pages#home'
+  root to: 'pages#home'
 
   get 'sign-up',                    to: 'users#new', as: :new_user
   get 'sign-in',                    to: 'session#new'
   post 'sign-in',                   to: 'session#create'
   delete 'sign-out',                to: 'session#delete'
-
 end

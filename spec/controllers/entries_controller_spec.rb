@@ -87,13 +87,13 @@ RSpec.describe EntriesController, type: :controller do
           expect(response).to have_http_status(:success)
           expect(response).to render_template(:index)
         end
-        it "shows the correct type of entries" do
-          # Shows only published entries
-          expect(assigns(:entries).count).to eq assigns(:entries).published.count
-          # Does not show deleted entries
-          expect(assigns(:entries).deleted.count).to eq 0
-          # Does not show draft entries
-          expect(assigns(:entries).drafts.count).to eq 0
+        it "shows all types of entries" do
+          # Shows published entries
+          expect(assigns(:entries).published.count).to_not eq 0
+          # Shows deleted entries
+          expect(assigns(:entries).deleted.count).to_not eq 0
+          # Shows draft entries
+          expect(assigns(:entries).drafts.count).to_not eq 0
           # Only shows entries belonging to the user
           expect(assigns(:entries).where.not(user_id: user.id).count).to eq 0
         end
@@ -101,7 +101,7 @@ RSpec.describe EntriesController, type: :controller do
           it "shows the expected page" do
             create_list :entry, Entry.default_per_page + 1, :published, user: user
             get :index, params: { tab: "scooby", page: 2 }
-            expect(assigns(:entries)).to eq user.entries.not_deleted.published.order(created_at: :desc).page 2
+            expect(assigns(:entries)).to eq user.entries.order(updated_at: :desc).page 2
           end
         end
       end
@@ -271,6 +271,7 @@ RSpec.describe EntriesController, type: :controller do
           :content,
           :title,
           :status,
+          :deleted
         )
 
         controller.send(:entry_params)
@@ -278,4 +279,3 @@ RSpec.describe EntriesController, type: :controller do
     end
   end
 end
-  

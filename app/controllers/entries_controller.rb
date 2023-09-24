@@ -27,7 +27,7 @@ class EntriesController < ApplicationController
       @entries = current_user.entries.deleted.order(deleted_at: :desc).page page
     else
       @tab = :all
-      @entries = current_user.entries.not_deleted.published.order(published_at: :desc).page page
+      @entries = current_user.entries.order(updated_at: :desc).page page
     end
     render :index
   end

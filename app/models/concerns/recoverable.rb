@@ -14,7 +14,7 @@ module Recoverable
     scope :not_deleted,     ->      {where(deleted: false)}
     scope :deleted_before,  ->  (i) {where('deleted_at < ?', i)}
     before_create :init_deleted
-    before_save :handle_recovery_or_deletion, if: :deleted_changed?
+    before_update :handle_recovery_or_deletion, if: :deleted_changed?
   end
 
   class_methods do
