@@ -79,6 +79,15 @@
   .btn-error {
     @apply py-1.5 px-3 rounded-lg bg-red-600 hover:bg-opacity-90 font-bold flex items-center gap-1 shrink-0 cursor-pointer justify-center
   }
+  .dropdown {
+    @apply inline-block relative text-left 
+  }
+  .dropdown-link {
+    @apply flex gap-1 items-center w-full hover:bg-slate-700 h-full py-1 group-first:pt-2 group-last:pb-2 px-2
+  }
+  .dropdown:focus-within .dropdown-menu {
+    @apply block
+  }
 }
 
 @layer components {

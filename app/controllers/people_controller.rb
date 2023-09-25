@@ -79,6 +79,11 @@ class PeopleController < ApplicationController
     end
   end
 
+  # GET /people/:id/edit
+  def edit
+    redirect_to tab_person_path(tab: :info)
+  end
+
   private
 
   def search_params

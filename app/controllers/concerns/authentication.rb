@@ -7,9 +7,9 @@ module Authentication
     helper_method :redirect_unauthenticated
   end
 
-  def sign_in(user, opts={stay_signed_in: false})
+  def sign_in(user, options={stay_signed_in: false})
     session[:user_id] = user.id
-    if opts[:stay_signed_in]
+    if options[:stay_signed_in]
       stay_signed_in_token = user.roll_stay_signed_in_token
       cookies.signed[:stay_signed_in] = {
         value: stay_signed_in_token,

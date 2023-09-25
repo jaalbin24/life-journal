@@ -1,0 +1,19 @@
+<div class="dropdown">
+  <button class="btn-secondary" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
+    <span>Actions</span>
+    <svg class="w-5 h-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+  </button>
+  <div class="hidden dropdown-menu">
+    <div class="card absolute overflow-hidden right-0 w-56 mt-2 origin-top-right" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
+      <% if model.deleted? %>
+        <%= recover_dropdown_item model %>
+        <span class="mx-2 border-t border-slate-700"></span>
+        <%= delete_dropdown_item model %>
+      <% else %>
+        <%= edit_dropdown_item model %>
+        <span class="mx-2 border-t border-slate-700"></span>
+        <%= mark_as_deleted_dropdown_item model %>
+      <% end %>
+    </div>
+  </div>
+</div>

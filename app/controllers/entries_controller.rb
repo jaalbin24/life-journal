@@ -57,7 +57,7 @@ class EntriesController < ApplicationController
           }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
         end
-        format.html { redirect_to @entry, status: :ok }
+        format.html { redirect_to @entry, status: :see_other }
       else
         format.turbo_stream do
           @save_bar_message = {

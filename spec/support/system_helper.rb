@@ -25,20 +25,20 @@ module SystemHelper
     end
   end
 
-  def fill_and_check(element, opts={ with: "TEST", present: [], absent: [] })
+  def fill_and_check(element, options={ with: "TEST", present: [], absent: [] })
     try_it_twice do
       aggregate_failures do
         # If the method was provided a capybara element, use it
         if element.is_a? Capybara::Node::Element
           within element do
-            fill_in with: opts[:with]
+            fill_in with: options[:with]
           end
         # And if the method was provided with a string, use that
         else
-          fill_in element, with: opts[:with]
+          fill_in element, with: options[:with]
         end
-        opts[:present]&.each { |content| expect(page).to have_content content }
-        opts[:absent]&.each { |content| expect(page).to_not have_content content }
+        options[:present]&.each { |content| expect(page).to have_content content }
+        options[:absent]&.each { |content| expect(page).to_not have_content content }
       end
     end
   end

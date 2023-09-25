@@ -13,16 +13,9 @@
           </div>
         </div>
       </div>
-      <% if @entry.deleted? %>
-        <div class="flex flex-col gap-2 shrink-0 justify-center">
-          <%= recover_button(@entry) %>
-        </div>
-      <% else %>
-        <div class="flex flex-col gap-2 shrink-0 justify-center">
-          <%= edit_button(@entry) %>
-          <%= mark_as_deleted_button(@entry) %>
-        </div>
-      <% end %>
+      <div class="my-auto">
+        <%= render "layouts/dropdown", model: @entry %>
+      </div>
     </div>
     <div class="card">
       <div class="card-body">

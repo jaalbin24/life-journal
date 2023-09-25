@@ -1,12 +1,19 @@
 <div class="flex flex-col">
-  <div class="p-3 flex gap-3 items-center">
-    <%= avatar(@person, size: 128) %>
-    <div class="my-auto flex flex-col gap-2 w-full">
-      <% if @person.persisted? %>
-        <h2 class="font-bold"><%= Person.new(@person.serializable_hash).reload.full_name %></h2>
-      <% else %>
-        <h2 class="font-bold">New Person</h2>
-      <% end %>
+  <div class="p-3 flex items-center justify-between">
+    <div class="flex gap-3 items-center">
+      <%= avatar(@person, size: 128) %>
+      <div class="my-auto flex flex-col gap-2 w-full">
+        <% if @person.persisted? %>
+          <h2 class="font-bold"><%= Person.new(@person.serializable_hash).reload.full_name %></h2>
+        <% else %>
+          <h2 class="font-bold">New Person</h2>
+        <% end %>
+      </div>
     </div>
+    <% if @person.persisted? %>
+      <div class="">
+        <%= render "layouts/dropdown", model: @person %>
+      </div>
+    <% end %>
   </div>
 </div>
