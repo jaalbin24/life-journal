@@ -16,7 +16,7 @@
       </div>
     <% elsif @keyword%>
       <div class="flex h-full">
-        <h5 class="m-auto text-center">Your search for <span class="font-bold">"<%=@keyword%>"</span> did not return anything. Try using another keyword.</h5>
+        <h5 class="m-auto text-center">Your search for <span class="font-bold">"<%= @keyword%>"</span> did not return anything. Try using another keyword.</h5>
       </div>
     <% else %>
       <h5>You do not have any people here. Click <%=link_to "here", new_person_path%> to add one.</h5>

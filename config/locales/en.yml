@@ -35,3 +35,16 @@ en:
     submit:
       create: "Save"
       update: "Save"
+  activerecord:
+    attributes:
+      user:
+        password: "Password"
+        password_confirmation: "Password confirmation"
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              blank: "Your password can't be blank"
+            password_confirmation:
+              confirmation: "The passwords don't match"

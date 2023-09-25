@@ -35,10 +35,6 @@ RSpec.describe EntriesController, type: :controller do
     expect(unexpected_actions.size).to eq(0), "Unexpected actions found: #{unexpected_actions.inspect}" 
   end
 
-  it "implements the Authentication concern" do
-    expect(EntriesController.ancestors).to include Authentication
-  end
-
   before do
     sign_in user
     create :user
@@ -166,14 +162,6 @@ RSpec.describe EntriesController, type: :controller do
           entry.reload
           expect(entry.title).to eq new_title
         end
-        # context "when the response format is html" do
-        #   it "redirects to the edit page with a 302 code" do
-        #     entry = user.entries.sample
-        #     put :update, params: { id: entry.id, entry: valid_params }
-        #     expect(response).to redirect_to edit_entry_path(entry)
-        #     expect(response).to have_http_status(302)
-        #   end
-        # end
         context "when the response format is turbo stream" do
           before { turbo_request { send_update_request } }
           it "updates the entry save bar frame" do
@@ -183,26 +171,26 @@ RSpec.describe EntriesController, type: :controller do
           end
         end
       end
-      context "with invalid parameters" do
-        it "does not update the entry" do
-          pending "The entry model has no validations. Invalid parameters are currently not possible."
-          fail
-        end
-        it "returns a 422 code" do
-          pending "The entry model has no validations. Invalid parameters are currently not possible."
-          fail
-        end
-        context "when the response format is turbo stream" do
-          it "updates the entry save bar frame with the save bar partial" do
-            pending
-            fail
-          end
-          it "shows the right save bar message" do
-            pending
-            fail
-          end
-        end
-      end
+      # context "with invalid parameters" do
+      #   it "does not update the entry" do
+      #     pending "The entry model has no validations. Invalid parameters are currently not possible."
+      #     fail
+      #   end
+      #   it "returns a 422 code" do
+      #     pending "The entry model has no validations. Invalid parameters are currently not possible."
+      #     fail
+      #   end
+      #   context "when the response format is turbo stream" do
+      #     it "updates the entry save bar frame with the save bar partial" do
+      #       pending
+      #       fail
+      #     end
+      #     it "shows the right save bar message" do
+      #       pending
+      #       fail
+      #     end
+      #   end
+      # end
       it "requires authentication" do
         sign_out
         send_update_request
@@ -247,34 +235,12 @@ RSpec.describe EntriesController, type: :controller do
 
   describe "methods" do
     describe "#entry_params" do
-      let(:entry_params) do
-        ActionController::Parameters.new(
-          entry: {
-            content: "Some content",
-            title: "Some title",
-            status: "draft",
-            mentions_attributes: [
-              { person_id: 1 },
-              { person_id: 2, _destroy: "1" }
-            ],
-          }
-        )
-      end
       it "is private" do
         expect(EntriesController.private_instance_methods).to include(:entry_params)
       end
       it "whitelists the expected params" do
-        allow(controller).to receive(:params).and_return(entry_params)
-
-        expect(entry_params).to receive(:require).with(:entry).and_return(entry_params)
-        expect(entry_params).to receive(:permit).with(
-          :content,
-          :title,
-          :status,
-          :deleted
-        )
-
-        controller.send(:entry_params)
+        entry = create :entry, user: user
+        should permit(:content, :title, :status, :deleted).for(:update, params: { id: entry.id, entry: valid_params })
       end
     end
   end

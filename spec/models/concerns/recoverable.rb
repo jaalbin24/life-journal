@@ -48,14 +48,10 @@ RSpec.shared_examples Recoverable do |model_class|
 
   describe "attributes" do
     describe "#deleted" do
-      it "is indexed in the database" do
-        expect(ActiveRecord::Migration.index_exists?(model.to_s.pluralize.to_sym, :deleted)).to be true
-      end
+      it { should have_db_index(:deleted) }
     end
     describe "#deleted_at" do
-      it "is indexed in the database" do
-        expect(ActiveRecord::Migration.index_exists?(model.to_s.pluralize.to_sym, :deleted_at)).to be true
-      end
+      it { should have_db_index(:deleted_at) }
     end 
   end
 

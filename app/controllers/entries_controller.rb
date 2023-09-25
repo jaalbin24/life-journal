@@ -57,7 +57,7 @@ class EntriesController < ApplicationController
           }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
         end
-        format.html { redirect_to @entry }
+        format.html { redirect_to @entry, status: :ok }
       else
         format.turbo_stream do
           @save_bar_message = {
@@ -66,7 +66,7 @@ class EntriesController < ApplicationController
           }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
         end
-        format.html { redirect_to @entry }
+        format.html { redirect_to @entry, status: :unprocessable_entity }
       end
     end
   end

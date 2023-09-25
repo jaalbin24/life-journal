@@ -37,8 +37,17 @@
   .form-label {
     @apply font-medium
   }
+  .form-label.floating.error {
+    @apply text-red-500 peer-placeholder-shown:text-slate-400 peer-focus:text-red-500 !important
+  }
+  .form-label.floating {
+    @apply absolute text-slate-400 duration-150 transform -translate-y-4 scale-75 top-1 z-10 origin-[0] px-1 mx-1 peer-focus:text-sky-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-4 left-1
+  }
   .input-field {
     @apply block bg-slate-700 bg-opacity-30 hover:bg-opacity-100 focus:bg-slate-700 focus:border-slate-700 focus:shadow hover:shadow rounded-lg border border-slate-700 placeholder-slate-600 px-3 py-2 w-full focus:ring-0 overflow-y-hidden
+  }
+  .input-field.floating {
+    @apply bg-transparent focus:bg-transparent focus:border-sky-600
   }
   .input-field.check-box {
     @apply w-4 h-4 p-0 rounded checked:bg-sky-600 focus:ring-0 focus:ring-offset-0 cursor-pointer bg-slate-700
@@ -128,10 +137,10 @@
     @apply visible delay-100 translate-x-1/2 right-1/2 bottom-10
   }
   .tab-bar {
-    @apply text-sm font-medium text-center text-gray-500 dark:text-gray-400 border-b border-slate-700 mx-2
+    @apply text-sm font-medium text-center text-gray-400 border-b border-slate-700 mx-2
   }
   .tab {
-    @apply inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 cursor-pointer
+    @apply inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300 hover:text-gray-300 cursor-pointer
   }
   .tab-active {
     @apply text-sky-500 border-sky-500 hover:text-sky-500 hover:border-sky-500

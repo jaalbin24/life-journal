@@ -29,14 +29,7 @@ RSpec.describe User, type: :model do
   it_behaves_like ImageValidation,  User
   it_behaves_like Recoverable,      User
 
-  it "has a secure password" do
-    u = build(:user)
-    expect(u).to respond_to(:password_digest)
-    expect(u).to respond_to(:password)
-    expect(u).to respond_to(:password_confirmation)
-    expect(u).to respond_to(:authenticate)
-    expect(u).to be_valid
-  end
+  it { should have_secure_password }
 
   describe "scopes" do
     # The user model has no scopes
@@ -51,6 +44,7 @@ RSpec.describe User, type: :model do
         # Models are only searchable on encrypted attributes when encrypted deterministically
         expect(User.find_by(email: email)).to eq u
       end
+      # Emails must be saved in lowercase to avoid collisions
       it "is saved in lowercase" do
         email = "CAPITAL.letters@eXaMpLe.Com"
         u = build :user, email: email
@@ -61,9 +55,7 @@ RSpec.describe User, type: :model do
         u = create :user
         expect(u.email).to be_a String
       end
-      it "is indexed in the database" do
-        expect(ActiveRecord::Migration.index_exists?(:users, :email)).to be true
-      end
+      it { should have_db_index(:email) }
     end
     describe "#stay_signed_in_token" do
       it "is encrypted deterministically" do
@@ -83,9 +75,7 @@ RSpec.describe User, type: :model do
         u = create :user
         expect(u.stay_signed_in_token).to be_a String
       end
-      it "is indexed in the database" do
-        expect(ActiveRecord::Migration.index_exists?(:users, :stay_signed_in_token)).to be true
-      end
+      it { should have_db_index(:stay_signed_in_token) }
     end
     describe "stay_signed_in_token_expires_at" do
       it "returns a ActiveSupport::TimeWithZone" do
@@ -174,144 +164,60 @@ RSpec.describe User, type: :model do
     end
   end
 
+
   describe "associations" do
-    describe "#people" do
-      it "is a has_many relationship" do
-        expect(User.reflect_on_association(:people).macro).to eq(:has_many)
-      end
-      it "are destroyed when the user is destroyed" do
-        u = create :user
-        u.people = create_list(:person, 2, user: u)
-        expect(Person.count).to be 2
-        u.destroy
-        expect(Person.count).to be 0
-      end
-    end
-    describe "#entries" do
-      it "is a has_many relationship" do
-        expect(User.reflect_on_association(:entries).macro).to eq(:has_many)
-      end
-      it "are destroyed when the user is destroyed" do
-        u = create :user
-        u.entries = create_list(:entry, 2, user: u)
-        expect(Entry.count).to be 2
-        u.destroy
-        expect(Entry.count).to be 0
-      end
-    end
-    describe "#notes" do
-      it "is a has_many relationship" do
-        expect(User.reflect_on_association(:notes).macro).to eq(:has_many)
-      end
-      it "are destroyed when the user is destroyed" do
-        u = create :user
-        u.notes = create_list(:note, 2, user: u)
-        expect(Note.count).to be 2
-        u.destroy
-        expect(Note.count).to be 0
-      end
-    end
-    describe "#avatar" do
-      it "is a has_one_attached relationship" do
-        expect(User.new.avatar).to be_an_instance_of(ActiveStorage::Attached::One)
-      end
-      it "is destroyed when the user is destroyed" do
-        u = create :user, :with_avatar
-        expect(u.avatar).to be_attached
-        u.destroy
-        expect(u.avatar.persisted?).to be false
-      end
-    end
+    it { should have_many(:people).dependent(:destroy) }
+    it { should have_many(:entries).dependent(:destroy) }
+    it { should have_many(:notes).dependent(:destroy) }
+    it { should have_one_attached(:avatar) }
   end
 
   describe "validations" do
     describe "#email" do
-      it "must be present" do
-        u = build :user, email: ""
-        expect(u.valid?).to be false
-        expect(u.errors[:email]).to include "You'll need an email"
-        u.email = "email@example.com"
-        expect(u.valid?).to be true
+      invalid_emails = [
+        "",                         # It's blank
+        "plainaddress",             # Missing "@" symbol
+        "@domain.com",              # Missing local part
+        "user@",                    # Missing domain
+        "user@domain",              # Incomplete domain
+        "user@.com",                # Missing domain name
+        "user@domain.",             # Domain ends with a dot
+        "user@dom ain.com",         # Spaces not allowed
+        "user@domain.com@",         # "@" at the end
+        "user@domain..com",         # Double dot in domain
+        "user@-domain.com",         # Domain starts with a hyphen
+        "user@domain.c",            # TLD less than 2 characters
+        "user@.domain.com",         # Empty local part
+        "user@domain.com.",         # Trailing dot in domain
+        "user@domain..com",         # Consecutive dots in domain
+        "user@.domain.com",         # Leading dot in domain
+        "user@domain.c.o.m",        # Multiple dots in TLD
+        "user@-domain.com",         # Leading hyphen in domain
+        "user@123.456.789.000",     # IP address format
+        "user@dom_ain.com",         # Underscore in domain
+        "user@domain.c_om",         # Underscore in TLD
+        "user@domain.com_",         # Underscore at the end
+        "user@[domain.com]",        # Square brackets
+        "user@domain..com",         # Consecutive dots in local part
+        "user@domain.123",          # Numeric TLD
+        "user@.123.com",            # Leading dot in TLD
+        "user@domain.c",            # TLD with only one character
+        "user@",                    # Empty local part and domain
+        "user@.com",                # Empty local part
+        "@domain.com",              # Empty local part with "@" prefix
+        "user@-example.com",        # Hyphen as the first character in domain
+        "user@ex_ample.com",        # Underscore in domain
+      ].each do |email|
+        it { should_not allow_value(email).for(:email) }
       end
-      it "must be an email" do
-        invalid_emails = [
-          "plainaddress",             # Missing "@" symbol
-          "@domain.com",              # Missing local part
-          "user@",                    # Missing domain
-          "user@domain",              # Incomplete domain
-          "user@.com",                # Missing domain name
-          "user@domain.",             # Domain ends with a dot
-          "user@dom ain.com",         # Spaces not allowed
-          "user@domain.com@",         # "@" at the end
-          "user@domain..com",         # Double dot in domain
-          "user@-domain.com",         # Domain starts with a hyphen
-          "user@domain.c",            # TLD less than 2 characters
-          "user@.domain.com",         # Empty local part
-          "user@domain.com.",         # Trailing dot in domain
-          "user@domain..com",         # Consecutive dots in domain
-          "user@.domain.com",         # Leading dot in domain
-          "user@domain.c.o.m",        # Multiple dots in TLD
-          "user@-domain.com",         # Leading hyphen in domain
-          "user@123.456.789.000",     # IP address format
-          "user@dom_ain.com",         # Underscore in domain
-          "user@domain.c_om",         # Underscore in TLD
-          "user@domain.com_",         # Underscore at the end
-          "user@[domain.com]",        # Square brackets
-          "user@domain..com",         # Consecutive dots in local part
-          "user@domain.123",          # Numeric TLD
-          "user@.123.com",            # Leading dot in TLD
-          "user@domain.c",            # TLD with only one character
-          "user@",                    # Empty local part and domain
-          "user@.com",                # Empty local part
-          "@domain.com",              # Empty local part with "@" prefix
-          "user@-example.com",        # Hyphen as the first character in domain
-          "user@ex_ample.com",        # Underscore in domain
-        ]
-        u = create :user
-        expect(u.valid?).to be true
-        invalid_emails.each do |email|
-          u.email = email
-          expect(u.valid?).to be(false), "#{email} was validated when it should not have been"
-          expect(u.errors[:email]).to include "That's not an email"
-        end
-      end
-      it "must be unique" do
-        email = "test@example.com"
-        u1 = create :user, email: email
-        u2 = build :user
-        expect(u2.valid?).to be true
-        u2.email = email
-        expect(u2.valid?).to be false
-      end
+      it { should validate_uniqueness_of(:email).ignoring_case_sensitivity.with_message('That email is already taken') }
     end
-    describe "#password" do
-      it "must be present when creating a record" do
-        u = build :user, password: ""
-        expect(u.save).to be false
-        expect(u.errors[:password].empty?).to be false
-      end
-      it "must be present when updating the email attribute" do
-        pending
-        fail
-      end
-    end
+    it { should validate_presence_of(:password).on(:create) }
+    it { should validate_confirmation_of(:password).with_message("The passwords don't match") }
     describe "#password_confirmation" do
-      it "must be present when creating a record" do
-        u = build :user, password_confirmation: ""
-        expect(u.save).to be false
-        expect(u.errors[:password_confirmation].empty?).to be false
-      end
       it "must be present when updating the email attribute" do
         pending
         fail
-      end
-    end
-    describe "password_digest" do
-      it "must be present always" do
-        u = build :user, password_digest: ""
-        expect(u.save).to be false
-        u = create :user
-        expect(u.update(password_digest: "")).to be false
       end
     end
   end

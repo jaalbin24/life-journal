@@ -78,6 +78,8 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  gem 'shoulda-matchers', require: false
 end
 
 # Foreman for executing complicated start up process. Allows execution of multiple startup processes from a single command.

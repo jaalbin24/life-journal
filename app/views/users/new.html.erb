@@ -1,8 +1,4 @@
-<div class="flex w-full h-full">
-  <div class="card m-auto w-1/4">
-    <div class="card-body">
-      <h2 class="text-center font-bold my-5">Sign up</h2>
-      <%= render "form" %>
-    </div>
-  </div>
-</div>
+<%= render "layouts/solo_card" do %>
+  <h2 class="text-center font-bold my-5">Sign up</h2>
+  <%= render "form" %>
+<% end %>

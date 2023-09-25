@@ -1,0 +1,27 @@
+<%= render "layouts/solo_card" do %>
+  <h2 class="text-center font-bold my-5">Change your email</h2>
+  <p class="text-center opacity-50">Your current email is <%= @persisted_email %></p>
+  <%= form_with model: @user, url: email_path, method: :patch, data: { turbo: false } do |f| %>
+    <div class="my-5">
+      <div class="relative">
+        <%= f.text_field :email, class: "input-field floating peer #{"error" if @user.errors[:email].any?}", placeholder: "", autocomplete: false, autofocus: true %>
+        <%= f.label :new_email, class: "form-label floating bg-slate-800 #{"error" if @user.errors[:email].any?}", for: :user_email %>
+      </div>
+      <span class="error-message"><%= @user.errors[:email].first %></span>
+    </div>
+    <div class="my-5">
+      <div class="relative">
+        <%= f.password_field :password_challenge, class: "input-field floating peer #{"error" if @user.errors[:password_challenge].any?}", placeholder: "" %>
+        <%= f.label :password, class: "form-label floating bg-slate-800 #{"error" if @user.errors[:password_challenge].any?}", for: :user_password_challenge %>
+      </div>
+      <span class="error-message"><%= @user.errors[:password_challenge].first %></span>
+    </div>
+    <div class="flex gap-2 w-full">
+      <%= f.submit "Save", class: "btn-primary grow my-3" %>
+      <%= link_to "Cancel", @user, class: "btn-secondary grow my-3" %>
+    </div>
+    <div class="text-center">
+      You will recieve a confirmation email at <%= @persisted_email %>
+    </div>
+  <% end %>
+<% end %>

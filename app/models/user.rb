@@ -27,11 +27,12 @@ class User < ApplicationRecord
   include Recoverable
   encrypts :email, deterministic: true, downcase: true
   encrypts :stay_signed_in_token, deterministic: true
-  validates :email, presence:         { message: "You'll need an email" }
-  validates :email, email_format:     { message: "That's not an email" }
-  validates :email, uniqueness:       { message: "That email is already taken" }
-  validates :password, presence:      { message: "Your password can't be blank" }, on: :create
-  validates :password, confirmation:  { message: "The passwords don't match" }
+  validates :email, presence:         { message: "You'll need an email" },
+                    email_format:     { message: "That's not an email" },
+                    uniqueness:       {
+                      message: "That email is already taken",
+                      case_sensitive: true
+                    }
   validate :password_challenge_provided, on: :update
   has_many :entries,  dependent: :destroy
   has_many :people,   dependent: :destroy
@@ -76,7 +77,11 @@ class User < ApplicationRecord
     # Changing the email or password requires the password
     if email_changed? || password_digest_changed?
       unless password_digest_was.present? && BCrypt::Password.new(password_digest_was).is_password?(password_challenge)
-        errors.add(:password_challenge, "Please provide your password to make this change")
+        if password_challenge.blank?
+          errors.add(:password_challenge, "Your password is required")
+        else
+          errors.add(:password_challenge, "Incorrect password")
+        end
       end
     end
   end

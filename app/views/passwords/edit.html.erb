@@ -1,0 +1,30 @@
+<%= render "layouts/solo_card" do %>
+  <h2 class="text-center font-bold my-5">Change your password</h2>
+  <%= form_with model: @user, url: password_path, method: :patch, data: { turbo: false } do |f| %>
+    <div class="my-5">
+      <div class="relative">
+        <%= f.password_field :password_challenge, class: "input-field floating peer #{"error" if @user.errors[:password_challenge].any?}", placeholder: "", autocomplete: false, autofocus: true %>
+        <%= f.label :current_password, class: "form-label floating bg-slate-800 #{"error" if @user.errors[:password_challenge].any?}", for: :user_password_challenge %>
+      </div>
+      <span class="error-message"><%= @user.errors[:password_challenge].first %></span>
+    </div>
+    <div class="my-5">
+      <div class="relative">
+        <%= f.password_field :password, class: "input-field floating peer #{"error" if @user.errors[:password].any?}", placeholder: "" %>
+        <%= f.label :new_password, class: "form-label floating bg-slate-800 #{"error" if @user.errors[:password].any?}", for: :user_password %>
+      </div>
+      <span class="error-message"><%= @user.errors[:password].first %></span>
+    </div>
+    <div class="my-5">
+      <div class="relative">
+        <%= f.password_field :password_confirmation, class: "input-field floating peer #{"error" if @user.errors[:password_confirmation].any?}", placeholder: "" %>
+        <%= f.label :new_password_again, class: "form-label floating bg-slate-800 #{"error" if @user.errors[:password_confirmation].any?}", for: :user_password_confirmation %>
+      </div>
+      <span class="error-message"><%= @user.errors[:password_confirmation].first %></span>
+    </div>
+    <div class="flex gap-2 w-full">
+      <%= f.submit "Save", class: "btn-primary grow my-3" %>
+      <%= link_to "Cancel", @user, class: "btn-secondary grow my-3" %>
+    </div>
+  <% end %>
+<% end %>
