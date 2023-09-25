@@ -76,7 +76,7 @@ class Entry < ApplicationRecord
 
   def update_published_at
     if status_changed? && published?
-      self.published_at = DateTime.now if published_at.blank?
+      self.published_at = DateTime.current if published_at.blank?
     end
   end
 

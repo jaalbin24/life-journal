@@ -38,7 +38,7 @@ module Recoverable
 
   def mark_as_deleted
     self.deleted = true
-    self.deleted_at = DateTime.now
+    self.deleted_at = DateTime.current
   end
 
   def recover
@@ -60,7 +60,7 @@ module Recoverable
   def handle_recovery_or_deletion
     if deleted?
       self.deleted = true
-      self.deleted_at = DateTime.now
+      self.deleted_at = DateTime.current
     else
       # Do nothing for now
     end

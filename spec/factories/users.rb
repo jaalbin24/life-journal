@@ -7,6 +7,7 @@
 #  deleted_at                      :datetime
 #  email                           :string
 #  password_digest                 :string
+#  signed_in_at                    :datetime
 #  status                          :string
 #  stay_signed_in_token            :string
 #  stay_signed_in_token_expires_at :datetime

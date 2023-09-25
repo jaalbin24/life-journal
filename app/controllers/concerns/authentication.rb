@@ -9,6 +9,7 @@ module Authentication
 
   def sign_in(user, options={stay_signed_in: false})
     session[:user_id] = user.id
+    user.update(signed_in_at: DateTime.current)
     if options[:stay_signed_in]
       stay_signed_in_token = user.roll_stay_signed_in_token
       cookies.signed[:stay_signed_in] = {

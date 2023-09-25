@@ -154,6 +154,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.datetime "stay_signed_in_token_expires_at"
     t.boolean "deleted"
     t.datetime "deleted_at"
+    t.datetime "signed_in_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["deleted"], name: "index_users_on_deleted"

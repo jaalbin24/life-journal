@@ -7,6 +7,7 @@
 #  deleted_at                      :datetime
 #  email                           :string
 #  password_digest                 :string
+#  signed_in_at                    :datetime
 #  status                          :string
 #  stay_signed_in_token            :string
 #  stay_signed_in_token_expires_at :datetime
@@ -94,6 +95,7 @@ RSpec.describe User, type: :model do
         :deleted_at,
         :stay_signed_in_token,
         :stay_signed_in_token_expires_at,
+        :signed_in_at,
         :created_at,
         :updated_at
       ]

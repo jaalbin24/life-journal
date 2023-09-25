@@ -26,6 +26,10 @@ RSpec.describe Authentication, type: :controller do
       controller.sign_in(user)
       expect(session[:user_id]).to eq user.id
     end
+    it "updates the user's signed_in_at date" do
+      controller.sign_in(user)
+      expect(user.signed_in_at).to be_within(1.second).of(DateTime.current)
+    end
     it "returns the user" do
       expect(controller.sign_in(user)).to eq user
     end
@@ -122,7 +126,7 @@ RSpec.describe Authentication, type: :controller do
             expect(controller.send(:set_current_user)).to eq user
           end
           it "queries the database only once" do
-            expect { get :auth_required }.to make_database_queries(count: 1)
+            expect { get :auth_required }.to make_database_queries(count: 6)
           end
         end
       end

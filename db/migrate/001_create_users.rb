@@ -12,6 +12,8 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.boolean     :deleted,                       index: true
       t.datetime    :deleted_at,                    index: true
 
+      t.datetime    :signed_in_at
+
       t.timestamps
     end
   end
