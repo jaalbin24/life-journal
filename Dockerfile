@@ -17,15 +17,18 @@ RUN gem install bundler && bundle install --jobs 20 --retry 5
 # Copy the rest of your Rails application code into the image
 COPY . .
 
-# Precompile assets
-RUN bundle exec rails assets:precompile
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
 # Set environment variables for production
-ENV RAILS_ENV=production
+ENV RAILS_ENV=staging
 ENV RAILS_SERVE_STATIC_FILES=true
+
+# Precompile assets
+RUN bundle exec rails assets:precompile
 
 # We'll need port 3000 to access the app
 EXPOSE 3000
 
 # Start the Rails application server
-CMD ["bundle", "exec", "rails", "server", "-p", "3000", "-e", "production"]
+CMD [ "bundle", "exec", "rails", "server", "-p", "3000", "-e", "staging" ]

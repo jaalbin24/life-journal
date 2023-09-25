@@ -33,12 +33,15 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}/life-journal:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "bundle", "exec", "rails", "server", "-p", "3000", "-e", "production" ]
           env:
           - name: RAILS_MASTER_KEY
             valueFrom:
               secretKeyRef:
                 name: life-journal
                 key: RAILS_MASTER_KEY
+          - name: RAILS_ENV
+            value: production
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

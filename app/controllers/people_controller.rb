@@ -81,6 +81,8 @@ class PeopleController < ApplicationController
 
   # GET /people/:id/edit
   def edit
+    # This redirect is here so that the edit_person_path method can be used
+    # in polymorphic helper methods such as those in dropdown_helper.rb
     redirect_to tab_person_path(tab: :info)
   end
 

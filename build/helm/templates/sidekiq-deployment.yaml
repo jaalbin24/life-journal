@@ -30,6 +30,8 @@ spec:
               secretKeyRef:
                 name: life-journal
                 key: RAILS_MASTER_KEY
+          - name: RAILS_ENV
+            value: production
         securityContext:
           {{- toYaml .Values.securityContext | nindent 12 }}
         ports:
