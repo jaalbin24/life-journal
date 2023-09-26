@@ -1,47 +1,55 @@
 class NotesController < ApplicationController
-  before_action :set_notable
-  # POST /[notable]/:notable_id/notes
+  before_action :set_person,  only: %i[ create ]
+  before_action :set_note,    only: %i[ destroy ]
+  before_action :set_notes,   only: %i[ create ]
+  # POST /person/:person_id/notes
   def create
-    note = @notable.notes.build notable_params
-    note.user = current_user
-    if note.save
-      flash[:success] = "Your note was created: \"#{note.content}\""
-    else
-      flash[:alert] = "There was an error creating this note."
+    respond_to do |format|
+      @note = @person.notes.build note_params
+      @note.user = current_user
+      if @note.save
+        @note = Note.new
+        format.turbo_stream { 
+          render turbo_stream: 
+            turbo_stream.replace(:notes_collection, partial: 'collection') +
+            turbo_stream.replace(:notes_form, partial: 'form')
+        }
+      else
+        format.turbo_stream { 
+          render turbo_stream: 
+            turbo_stream.replace(:notes_collection, partial: 'collection') +
+            turbo_stream.replace(:notes_form, partial: 'form')
+        }
+      end
     end
-    redirect_to notable_path
   end
 
   # DELETE notes/:id
   def destroy
-    note = current_user.notes.find(params[:id])
-    if note.destroy
-      flash[:notice] = "Your note was deleted: \"#{note.content}\""
-    else
-      flash[:alert] = "There was an error deleting this note."
+    respond_to do |format|
+      if @note.destroy
+        format.html { redirect_to tab_person_path(@person, :notes) }
+      else
+        format.html { redirect_to tab_person_path(@person, :notes) }
+      end
     end
-    redirect_to notable_path
   end
 
   private
 
-  def set_notable
-    @notable = current_user.people.find(params[:person_id]) if params[:person_id]
-    @notable = current_user.notes.find(params[:id]).notable if params[:id]
+  def set_person
+    @person = current_user.people.find(params[:person_id])
+  end
+  def set_note
+    @note = current_user.notes.find(params[:id])
+  end
+  def set_notes
+    @notes = @person.notes.order(created_at: :desc).page(page)
   end
 
-  def notable_params
+  def note_params
     params.require(:note).permit(
       :content
     )
-  end
-
-  def notable_path
-    case @notable.class.to_s.downcase.to_sym
-    when :person
-      edit_person_path(@notable)
-    else
-      raise StandardError.new "Unhandled notable type: #{@notable.class.to_s.downcase.to_sym}"
-    end
   end
 end

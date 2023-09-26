@@ -1,15 +1,6 @@
-<ul class="flex flex-col gap-1">
-  <% if @notes.count != 0 %>
-    <% @notes.each do |n| %>
-      <li class="flex justify-between items-center bg-slate-800 bg-opacity-40 p-2 rounded-lg shadow">
-        <span><%= n.content %></span>
-        <span class="shrink-0"><%= n.created_at.strftime("%b %d, %Y") %></span>            
-      </li>
-    <%end%>
-    <div class="flex justify-center">
-      <%= paginate @notes %>
-    </div>
-  <% else %>
-    <span class="mx-auto mt-10"><%= @person.name %> has no notes</span>
-  <% end %>
-</ul>
+<p class="text-center opacity-50">
+  This is where you can write notes about <%= @person.name %>. Anything you write here will be used to build their biography.
+</p>
+
+<%= render "notes/form" %>
+<%= render "notes/collection" %>

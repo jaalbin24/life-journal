@@ -118,8 +118,4 @@ class EntriesController < ApplicationController
   def tab
     params[:tab]&.to_sym || :all
   end
-
-  def page
-    params[:page] || 1
-  end
 end

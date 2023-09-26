@@ -1,0 +1,17 @@
+<%= turbo_frame_tag :person_body do %>
+  <div class="grow">
+    <%= render "layouts/tab_bar_member", model: @person, tabs: [:info, :biography, :notes, :mentions], active_tab: @tab %>
+    <div class="p-3 h-full">
+      <% case @tab %>
+      <% when :notes %>
+        <%= render "notes" %>
+      <% when :mentions %>
+        <%= render "mentions" %>
+      <% when :biography %>
+        <%= render "biography" %>
+      <% else %>
+        <%= render "form" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

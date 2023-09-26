@@ -38,16 +38,10 @@ class Person < ApplicationRecord
   encrypts :first_name, :last_name, :middle_name, :nickname, :gender, :title, deterministic: true
   encrypts :biography
   has_one_attached :avatar
-  has_many(
-    :mentions,
-    class_name: "Mention",
-    foreign_key: :person_id,
-    inverse_of: :person,
-    dependent: :destroy
-  )
+  has_many :mentions, dependent: :destroy
   has_many :entries, through: :mentions
   has_many :personality, dependent: :destroy
-  has_many :notes, as: :notable
+  has_many :notes
   has_many :traits, through: :personality
 
   belongs_to :user
@@ -62,7 +56,11 @@ class Person < ApplicationRecord
     # This strange formatting of title in the first element keeps the starting character in the
     # Person's title capitalized while leaving the rest of the characters well alone. This is done
     # to prevent words like "CEO" becoming "Ceo when using a simple title.titleize"
-    ([("#{title[0].capitalize}#{title[1..-1]}" unless title.blank?)].reject(&:blank?) + [first_name, middle_name, last_name].reject(&:blank?).map { |s| s.downcase.titleize }).join(" ")
+    ([("#{title[0].capitalize}#{title[1..-1]}" unless title.blank?)].reject(&:blank?) + [first_name, middle_name, ("\"#{nickname}\"" unless nickname.blank?), last_name].reject(&:blank?).map { |s| s.downcase.titleize }).join(" ")
+  end
+
+  def casual_name
+    [nickname, first_name, middle_name, last_name].reject(&:blank?).first
   end
 
   def show_path

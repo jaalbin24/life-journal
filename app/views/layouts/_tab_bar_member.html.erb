@@ -3,7 +3,7 @@
     <% if model.persisted? || model.nil?%>
       <% tabs.each do |tab| %>
         <li class="mr-2">
-          <%= link_to tab.to_s.titleize, send("tab_#{model.class.to_s.downcase}_path", model, tab), class: (tab == active_tab ? "tab tab-active" : "tab") %>
+          <%= link_to tab.to_s.titleize, send("tab_#{model.class.to_s.downcase}_path", model, tab), class: (tab == active_tab ? "tab tab-active" : "tab"), data: { turbo_action: 'replace' } %>
         </li>
       <% end %>
     <% else %>

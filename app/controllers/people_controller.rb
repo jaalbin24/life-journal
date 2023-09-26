@@ -33,12 +33,23 @@ class PeopleController < ApplicationController
 
   # PATCH/PUT /people/:id
   def update
-    if @person.update(person_params)
-      redirect_to tab_person_path(@person, :info)
-    else
-      @tab = :info
-      respond_to do |format|
-        format.html { render :show }
+    respond_to do |format|
+      if @person.update(person_params)
+        format.turbo_stream { 
+          render turbo_stream: 
+            turbo_stream.replace(:person_form, partial: 'form') +
+            turbo_stream.replace(:person_header, partial: 'header_member')
+        }
+        format.html do
+          @tab = :info
+          render :show
+        end
+      else
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(:person_form, partial: 'form') }
+        format.html do
+          @tab = :info
+          render :show
+        end
       end
     end
   end
@@ -67,7 +78,8 @@ class PeopleController < ApplicationController
   def show
     case tab
     when :notes
-      @notes = @person.notes.page(page)
+      @note = @person.notes.build
+      @notes = @person.notes.order(created_at: :desc).page(page)
       @tab = :notes
     when :mentions
       @entries = @person.entries.page(page)
@@ -76,6 +88,10 @@ class PeopleController < ApplicationController
       @tab = :biography
     else
       @tab = :info
+    end
+    respond_to do |format|
+      format.html { render :show }
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(:person_body, 'body') }
     end
   end
 
@@ -117,9 +133,5 @@ class PeopleController < ApplicationController
 
   def tab
     params[:tab]&.to_sym
-  end
-
-  def page
-    params[:page] || 1
   end
 end

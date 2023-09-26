@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "person-form" do%>
+<%= turbo_frame_tag :person_form do%>
   <% unless @person.errors[:base].empty? %>
     <div class="my-3 flex justify-center">
       <p class="form-error-message">
@@ -6,7 +6,7 @@
       </p>
     </div>
   <% end %>
-  <%= form_with model: @person, data: { turbo: false } do |f| %>
+  <%= form_with model: @person do |f| %>
     <div class="gap-2 grid grid-cols-6">
       <div class="col-span-2">
         <div class="relative">
