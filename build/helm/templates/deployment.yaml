@@ -27,6 +27,18 @@ spec:
       serviceAccountName: {{ include "life-journal.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: migrate
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          command: ["bundle", "exec", "rake", "db:migrate"]
+          env:
+          - name: RAILS_MASTER_KEY
+            valueFrom:
+              secretKeyRef:
+                name: life-journal
+                key: RAILS_MASTER_KEY
+          - name: RAILS_ENV
+            value: production
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
