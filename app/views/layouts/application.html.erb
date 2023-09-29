@@ -13,8 +13,8 @@
   <body>
     <%=render "layouts/navbar" %>
     <main class="relative">
+      <%= render "layouts/alerts" %>
       <div class="w-full h-full flex flex-col overflow-auto">
-        <%= render "layouts/flash" %>
         <%= yield %>
       </div>
     </main>

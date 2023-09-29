@@ -1,0 +1,15 @@
+<% alert = flash[:alert].transform_keys(&:to_sym) %>
+<%= link_or_div nil, class: "alert-box #{alert[:style]}", data: {  autodismiss: true, controller: "dismissable", turbo_frame: "_top" } do %>
+  <div class="card-body flex items-center justify-between gap-6 w-full">
+    <div class="flex items-center gap-3">
+      <%= alert_icon(alert[:style]) %>
+      <div>
+        <%= alert_title(alert[:title]) %>
+        <%= alert_body(alert[:body]) %>
+      </div>
+    </div>
+    <button type="button" data-action="click->dismissable#dismiss" class="hover:opacity-50">
+      <%= embedded_svg 'x_icon.svg', class: "w-4 h-4" %>
+    </button>
+  </div>
+<% end %>

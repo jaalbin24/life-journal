@@ -6,9 +6,9 @@
           <%= image_tag e.content.embeds_blobs.sample.variant(resize_to_limit: [720, 720]), class: "absolute h-full w-full object-cover rounded-t-lg rounded-b-xl" %>
           <div class="z-10 mt-auto grow">
             <div class="bg-slate-800 p-2 rounded-b-lg">
-              <a href="<%= entry_path(e) %>" class="shrink flex font-bold hover:underline h3">
+              <%= link_to entry_path(e), class: "shrink flex font-bold hover:underline h3", data: { turbo_frame: "_top" } do %>
                 <h3 class="shrink"><%= e.title.blank? ? "Untitled" : e.title %></h3>
-              </a>
+              <% end %>
               <div class="flex flex-row align-center gap-2">
                 <h6 class="my-auto"><%= entry_last_updated(e) %></h6>
                 <div class="flex flex-row">

@@ -5,7 +5,7 @@
       <p class="form-error-message"><%= @user.errors[:base].first %></p>
     <% end %>
   </div>
-  <%= form_with model: @user, url: sign_in_path, data: { turbo: false } do |f| %>
+  <%= form_with model: @user, url: sign_in_path, data: { turbo: true } do |f| %>
     <div class="my-5 relative">
       <%= f.text_field :email, class: "input-field floating peer", placeholder: "", autofocus: true, autocomplete: false %>
       <%= f.label :email, class: "form-label floating bg-slate-800" %>

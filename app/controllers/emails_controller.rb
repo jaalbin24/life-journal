@@ -7,8 +7,14 @@ class EmailsController < ApplicationController
   
   def update
     if @user.update(email_params)
+      if @persisted_email == @user.email
+        flash[:alert] = Alert::Warning.new(title: "Your email was not updated", body: "Your email is still #{@user.email}").flash
+      else
+        flash[:alert] = Alert::Success.new(title: "Your email was updated", body: "Your new email is #{@user.email}").flash
+      end
       redirect_to @user, status: :see_other
     else
+      flash.now[:alert] = Alert::Error.new(title: "Your email was not updated").flash
       render :edit, status: :unprocessable_entity
     end
   end

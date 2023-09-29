@@ -11,16 +11,26 @@ class SessionController < ApplicationController
 
   # POST /sign_in
   def create
-    user = User.find_by(email: user_params[:email])
-    if user&.authenticate(user_params[:password])
-      reset_session
-      sign_in user, stay_signed_in: (params[:stay_signed_in] == '1')
-      redirect_to after_sign_in_path
-      cookies.delete(:after_sign_in_path)
-    else
-      @user = User.new(user_params)
-      @user.errors.add(:base, "Username or password incorrect")
-      render :sign_in
+    respond_to do |format|
+      user = User.find_by(email: user_params[:email])
+      if user&.authenticate(user_params[:password])
+        reset_session
+        sign_in user, stay_signed_in: (params[:stay_signed_in] == '1')
+        format.turbo_stream do
+          redirect_to after_sign_in_path
+        end
+        cookies.delete(:after_sign_in_path)
+      else
+        @user = User.new(user_params)
+        format.turbo_stream do
+          flash.now[:alert] = Alert::Error.new(
+            title: "Username or password incorrect",
+            #body: "The username and password pair you provided do not match any users in our records."
+          ).flash
+          render turbo_stream: 
+            turbo_stream.append(:alerts, partial: "layouts/alert")
+        end
+      end
     end
   end
 

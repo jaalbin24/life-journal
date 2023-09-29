@@ -6,7 +6,7 @@
       </p>
     </div>
   <% end %>
-  <%= form_with model: @person do |f| %>
+  <%= form_with model: @person, data: { turbo: false } do |f| %>
     <div class="gap-2 grid grid-cols-6">
       <div class="col-span-2">
         <div class="relative">

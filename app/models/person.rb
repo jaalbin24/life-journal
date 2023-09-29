@@ -41,11 +41,11 @@ class Person < ApplicationRecord
   has_many :mentions, dependent: :destroy
   has_many :entries, through: :mentions
   has_many :personality, dependent: :destroy
-  has_many :notes
+  has_many :notes, dependent: :destroy
   has_many :traits, through: :personality
 
   belongs_to :user
-  validate :name_is_present
+  validate :casual_name_is_present
   validate_images :avatar
 
   def name
@@ -81,8 +81,8 @@ class Person < ApplicationRecord
 
   private
 
-  def name_is_present
-    if name.blank?
+  def casual_name_is_present
+    if casual_name.blank?
       errors.add(:first_name, "This person needs some kind of name")
       errors.add(:middle_name, "This person needs some kind of name")
       errors.add(:last_name, "This person needs some kind of name")

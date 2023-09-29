@@ -9,17 +9,17 @@ class NotesController < ApplicationController
       @note.user = current_user
       if @note.save
         @note = Note.new
-        format.turbo_stream { 
+        format.turbo_stream do
           render turbo_stream: 
             turbo_stream.replace(:notes_collection, partial: 'collection') +
             turbo_stream.replace(:notes_form, partial: 'form')
-        }
+        end
       else
-        format.turbo_stream { 
+        format.turbo_stream do
           render turbo_stream: 
             turbo_stream.replace(:notes_collection, partial: 'collection') +
             turbo_stream.replace(:notes_form, partial: 'form')
-        }
+        end
       end
     end
   end

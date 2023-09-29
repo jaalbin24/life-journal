@@ -35,17 +35,21 @@ class PeopleController < ApplicationController
   def update
     respond_to do |format|
       if @person.update(person_params)
-        format.turbo_stream { 
+        format.turbo_stream do
+          flash.now[:alert] = Alert::Success.new(model: @person).flash
           render turbo_stream: 
             turbo_stream.replace(:person_form, partial: 'form') +
-            turbo_stream.replace(:person_header, partial: 'header_member')
-        }
+            turbo_stream.replace(:person_header, partial: 'header_member') +
+            turbo_stream.append(:alerts, partial: "layouts/alert")
+        end
         format.html do
-          @tab = :info
-          render :show
+          flash[:alert] = Alert::Success.new(model: @person).flash
+          redirect_to tab_person_path(@person, :info)
         end
       else
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(:person_form, partial: 'form') }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(:person_form, partial: 'form')
+        end
         format.html do
           @tab = :info
           render :show
@@ -56,12 +60,24 @@ class PeopleController < ApplicationController
 
   # POST /people
   def create
-    @person = current_user.people.build(person_params)
-    if @person.save
-      redirect_to tab_person_path(@person, :info)
-    else
-      @person.avatar.detach
-      render :new
+    respond_to do |format|
+      @person = current_user.people.build(person_params)
+      if @person.save
+        # format.turbo_stream { 
+        #   render turbo_stream: 
+        #     turbo_stream.replace(:person_form, partial: 'form') +
+        #     turbo_stream.replace(:person_header, partial: 'header_member') +
+        #     turbo_stream.replace(:person_body, partial: 'body') +
+        #     turbo_stream.append(:alerts, partial: "layouts/alert")
+        # }
+        format.html do
+          flash[:alert] = Alert::Success.new(model: @person).flash
+          redirect_to tab_person_path(@person, :info)
+        end
+      else
+        @person.avatar.detach
+        render :new
+      end
     end
   end
 
@@ -91,7 +107,9 @@ class PeopleController < ApplicationController
     end
     respond_to do |format|
       format.html { render :show }
-      format.turbo_stream { render turbo_stream: turbo_stream.replace(:person_body, 'body') }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(:person_body, 'body')
+      end
     end
   end
 
