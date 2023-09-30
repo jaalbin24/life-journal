@@ -10,7 +10,6 @@ class UsersController < ApplicationController
   def show
     case tab
     when 0
-
     else
       @tab = :account
     end

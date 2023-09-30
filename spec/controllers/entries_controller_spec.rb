@@ -26,8 +26,8 @@ RSpec.describe EntriesController, type: :controller do
       :edit,
       :show,
       :not_found,
-      :configure_continue_path,
-      :continue_path,
+      :page,
+      :init_alerts,
       :sign_out,
       :sign_in
     ]

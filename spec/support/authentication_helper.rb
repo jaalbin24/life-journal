@@ -2,9 +2,10 @@ module AuthenticationHelper
   def sign_in(user = create(:user))
     if defined?(visit) # If this is a system test...
       visit root_path
-      fill_in "user_email", with: user.email
-      fill_in "user_password", with: "password123"
-      click_on "Sign in"
+      find("input#user_email").set user.email
+      find("input#user_password").set "password123"
+      find("input[value='Sign in']").click
+      wait_until { page.has_content?("Sign out") }
     else # Else this must be a controller test...
       session[:user_id] = user.id
     end
@@ -18,5 +19,5 @@ module AuthenticationHelper
       session.clear
       Current.user = nil
     end
-  end  
+  end
 end

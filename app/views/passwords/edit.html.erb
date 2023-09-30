@@ -24,7 +24,7 @@
     </div>
     <div class="flex gap-2 w-full">
       <%= f.submit "Save", class: "btn-primary grow my-3" %>
-      <%= link_to "Cancel", @user, class: "btn-secondary grow my-3" %>
+      <%= link_to "Cancel", user_path(@user, alert: "Your password was not changed"), class: "btn-secondary grow my-3" %>
     </div>
   <% end %>
 <% end %>

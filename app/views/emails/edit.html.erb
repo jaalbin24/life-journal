@@ -18,7 +18,7 @@
     </div>
     <div class="flex gap-2 w-full">
       <%= f.submit "Save", class: "btn-primary grow my-3" %>
-      <%= link_to "Cancel", @user, class: "btn-secondary grow my-3" %>
+      <%= link_to "Cancel", user_path(@user, alert: "Your email was not changed"), class: "btn-secondary grow my-3" %>
     </div>
     <div class="text-center">
       You will recieve a confirmation email at <%= @persisted_email %>

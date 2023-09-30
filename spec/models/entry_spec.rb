@@ -81,6 +81,7 @@ RSpec.describe Entry, type: :model do
       end
     end
     describe "#content" do
+      # it { should have_encrypted_rich_text :content }
       it "is encrypted" do
         e = create :entry
         expect(e.content.encrypted_attribute? :body).to be true

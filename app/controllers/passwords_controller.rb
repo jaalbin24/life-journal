@@ -9,13 +9,13 @@ class PasswordsController < ApplicationController
     @old_digest = @user.password_digest
     if @user.update(password_params)
       if @old_digest == @user.password_digest
-        flash[:alert] = Alert::Warning.new(title: "Your password was not changed").flash
+        flash[:alerts].append Alert::Warning.new(title: "Your password was not changed").flash
       else
-        flash[:alert] = Alert::Success.new(title: "Your password was changed").flash
+        flash[:alerts].append Alert::Success.new(title: "Your password was changed").flash
       end
       redirect_to @user
     else
-      flash.now[:alert] = Alert::Error.new(title: "Your password was not changed").flash
+      flash.now[:alerts].append Alert::Error.new(title: "Your password was not changed").flash
       render :edit
     end
   end

@@ -2,15 +2,11 @@ class ApplicationController < ActionController::Base
   include Authentication
 
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  before_action :init_alerts
 
-  before_action :configure_continue_path
-
-  def configure_continue_path
-    @continue_path ||= params[:continue_path]
-  end
-
-  def continue_path(args={fallback_location: fbl_path})
-    @continue_path ? @continue_path : fbl_path
+  def init_alerts
+    flash[:alerts] ||= []
+    flash[:alerts].append Alert::Info.new(title: params[:alert]).flash if params[:alert]
   end
 
   def not_found

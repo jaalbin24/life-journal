@@ -23,7 +23,7 @@ class SessionController < ApplicationController
       else
         @user = User.new(user_params)
         format.turbo_stream do
-          flash.now[:alert] = Alert::Error.new(
+          flash.now[:alerts].append Alert::Error.new(
             title: "Username or password incorrect",
             #body: "The username and password pair you provided do not match any users in our records."
           ).flash

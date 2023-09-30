@@ -21,10 +21,10 @@ RSpec.describe "Changing a user's password", type: :system do
       end
     end
     describe "the cancel button" do
-      it "links to the user show page" do
+      it "links to the user show page with an alert" do
         visit edit_password_path
         click_on "Cancel"
-        expect(page).to have_current_path(user_path(user))
+        expect(page).to have_current_path(user_path(user, alert: "Your password was not changed"))
       end
     end
     context "with no password challenge" do

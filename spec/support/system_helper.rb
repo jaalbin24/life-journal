@@ -47,4 +47,18 @@ module SystemHelper
     request.headers['Accept'] = 'text/vnd.turbo-stream.html'
     yield if block_given?
   end
+
+  # Accepts a block and waits until that block evaluates to true or until a specified number of loops have passed
+  # This method is used to solve timing problems and race conditions in the test suite.
+  # USE CASE: If car.start requires car.gas >= 1, you can write...
+  #   car.fill_up_with_gas
+  #   wait_until { car.gas >= 1 }
+  #   car.start
+  def wait_until
+    num_loops = 0
+    while !yield && num_loops < 50 # <-- Adjust this value as needed
+      num_loops += 1
+      sleep 0.1
+    end
+  end
 end

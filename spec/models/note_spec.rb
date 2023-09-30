@@ -61,6 +61,6 @@ RSpec.describe Note, type: :model do
   end
 
   describe "validations" do
-    it { should validate_presence_of :content }
+    it { should validate_presence_of(:content).with_message("The note has to say something") }
   end
 end
