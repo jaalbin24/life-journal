@@ -25,6 +25,7 @@ RSpec.describe "Changing a user's password", type: :system do
         visit edit_password_path
         click_on "Cancel"
         expect(page).to have_current_path(user_path(user, alert: "Your password was not changed"))
+        expect(page).to have_content("Your password was not changed")
       end
     end
     context "with no password challenge" do

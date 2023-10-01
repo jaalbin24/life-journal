@@ -1,6 +1,6 @@
 <% alert ||= flash[:alerts].first %>
 <% alert = alert.transform_keys(&:to_sym) %>
-<%= link_or_div nil, class: "alert-box #{alert[:style]}", data: {  autodismiss: true, controller: "dismissable", turbo_frame: "_top" } do %>
+<%= link_or_div nil, class: "alert #{alert[:style]}", data: {  autodismiss: true, controller: "dismissable", turbo_frame: "_top" } do %>
   <div class="card-body flex items-center justify-between gap-6 w-full">
     <div class="flex items-center gap-3">
       <%= alert_icon(alert[:style]) %>

@@ -43,10 +43,8 @@ class PeopleController < ApplicationController
         #     turbo_stream.append(:alerts, partial: "layouts/alert")
         # end
         format.html do
-          puts "🔥 before flash[:alerts]=#{flash[:alerts]}"
-          flash[:alerts].append Alert::Success.new(model: @person).flash
+          alerts.append Alert::Success.new(model: @person).flash
           redirect_to tab_person_path(@person, :info)
-          puts "🔥 after flash[:alerts]=#{flash[:alerts]}"
         end
       else
         format.turbo_stream do
@@ -73,13 +71,13 @@ class PeopleController < ApplicationController
         #     turbo_stream.append(:alerts, partial: "layouts/alert")
         # }
         format.html do
-          flash[:alerts].append Alert::Success.new(model: @person).flash
+          alerts.append Alert::Success.new(model: @person).flash
           redirect_to tab_person_path(@person, :info)
         end
       else
         @person.avatar.detach
         format.html do
-          flash[:alerts].append Alert::Error.new(title: "Not saved").flash
+          alerts.append Alert::Error.new(title: "Not saved").flash
           render :new
         end
       end

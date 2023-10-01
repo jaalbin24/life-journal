@@ -31,6 +31,7 @@ RSpec.describe "Changing a user's email", type: :system do
         visit edit_email_path
         click_on "Cancel"
         expect(page).to have_current_path(user_path(user, alert: "Your email was not changed"))
+        expect(page).to have_content("Your email was not changed")
       end
     end
     context "after a failed submission" do

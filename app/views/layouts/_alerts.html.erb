@@ -1,4 +1,4 @@
-<%= turbo_frame_tag :alerts, class: "flex flex-col gap-2 absolute bottom-6 right-0 w-1/3 overflow-hidden" do %>
+<%= turbo_frame_tag :alerts, class: "z-50 flex flex-col gap-2 absolute bottom-6 right-0 w-1/3 overflow-hidden" do %>
   <% flash[:alerts]&.each do |alert| %>
     <%= render "layouts/alert", alert: alert %>
   <% end %>

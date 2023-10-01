@@ -17,7 +17,8 @@ RSpec.describe EmailsController, type: :controller do
       :email_params,
       :not_found,
       :page,
-      :init_alerts,
+      :alerts,
+      :alerts_now,
       :sign_out,
       :sign_in
     ]
