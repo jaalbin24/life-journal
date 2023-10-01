@@ -1,6 +1,6 @@
 <div class="text-center flex flex-col gap-3">
   <div class="flex gap-2">
-    <%= paginate collection %>
+    <%= paginate collection, window: 2 %>
   </div>
   <h6><%= page_entries_info collection, entry_name: '' %></h6>
 </div>

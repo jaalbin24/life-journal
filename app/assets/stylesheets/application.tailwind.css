@@ -167,7 +167,7 @@
     @apply flex
   }
   .pagination .page {
-    @apply hover:bg-slate-700 flex justify-center items-center rounded-full border border-slate-700 mx-2 h-10 w-10
+    @apply hover:bg-slate-700 flex justify-center items-center rounded-full border border-slate-700 mx-1 h-10 w-10
   }
   .pagination .page.current {
     @apply bg-sky-600 border-none
