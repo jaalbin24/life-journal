@@ -22,8 +22,9 @@
         </div>
         <span class="error-message"><%= @person.errors[:nickname].first%></span>
       </div>
-      <div class="col-span-2 row-span-3">
-        <%= f.label :avatar, class: "file-dropzone h-full" do %>
+      <div class="col-span-2 row-span-3 flex flex-col">
+        <span class="form-label text-center">Upload an avatar</span>
+        <%= f.label :avatar, class: "file-dropzone grow" do %>
           <div class="flex flex-col items-center justify-center">
             <%= embedded_svg "upload.svg", class: "w-10 h-10"%>
             <p class="text-sm mb-2"><span class="font-semibold">Click to upload</span></p>
