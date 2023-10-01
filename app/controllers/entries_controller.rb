@@ -29,7 +29,15 @@ class EntriesController < ApplicationController
       @tab = :all
       @entries = current_user.entries.order(updated_at: :desc).page page
     end
-    render :index
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(:entries, partial: "collection") +
+          turbo_stream.replace(:entries_page_bar, partial: "page_bar")
+      end
+      format.html do
+        render :index
+      end
+    end
   end
 
   # GET /entries/:id

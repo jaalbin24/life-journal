@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       get ':tab',               action: :index, constraints: { tab: /(all|trash)/ }, as: :tab
       get ':tab/page/:page',    action: :index, constraints: { tab: /(all|trash)/ }
     end
-    resources :notes, only: [:create]
+    resources :notes, only: [:create, :index]
     member do
       get ':tab',               action: :show, constraints: { tab: /(biography|notes|mentions|info)/ }, as: :tab
       get ':tab/page/:page',    action: :show, constraints: { tab: /(biography|notes|mentions|info)/ }

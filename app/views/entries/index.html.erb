@@ -1,14 +1,9 @@
 <div class="w-full h-full flex flex-col">
   <%= render 'header' %>
-  <div class="p-4 w-full grow">
-    <% if !@entries.empty?%>
-      <%=render "collection", entries: @entries%>
-    <% elsif @keyword%>
-      <div class="flex h-full">
-        <h5 class="m-auto text-center">Your search for <span class="font-bold">"<%= @keyword%>"</span> did not return anything. Try using another keyword.</h5>
-      </div>
-    <% else %>
-      <h5>You do not have any entries here. Click <%=link_to "here", new_entry_path%> to write one.</h5>
-    <% end %>
+  <div class="p-4 w-full basis-4/5 shrink-0 grow-0">
+    <%= render "collection" %>
+  </div>
+  <div class="grow-0 mx-auto py-4">
+    <%= render "page_bar" %>
   </div>
 </div>

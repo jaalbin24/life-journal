@@ -1,0 +1,24 @@
+<%= turbo_frame_tag :people do %>
+  <% if !@people.empty? %>
+    <div class="grid grid-cols-8 gap-3">
+      <%@people.each do |p|%>
+        <%= link_to person_path(p), class: "card hover:bg-slate-700 transition-all hover:shadow hover:shadow-black/50", data: { turbo_frame: "_top" } do %>
+          <div class="card-body flex flex-col justify-center items-center gap-2">
+            <%= avatar(p, size: 164) %>
+            <h5 class="truncate max-w-full font-bold">
+              <%= p.name %>
+            </h5>
+          </div>
+        <%end%>
+      <%end%>
+    </div>
+  <% elsif @keyword%>
+    <div class="flex h-full">
+      <h5 class="m-auto text-center">Your search for <span class="font-bold">"<%= @keyword%>"</span> did not return anything. Try using another keyword.</h5>
+    </div>
+  <% else %>
+    <div class="flex h-full">
+      <h5 class="m-auto text-center">You don't have any people here. Click <%=link_to "here", new_person_path, class: "hyperlink", data: { turbo_frame: "_top" } %> to add one.</h5>
+    </div>
+  <% end %>
+<% end %>

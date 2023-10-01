@@ -1,4 +1,4 @@
-<%= turbo_frame_tag :notes_collection do %>
+<%= turbo_frame_tag :notes do %>
   <ul class="flex flex-col gap-1">
     <% if @notes.count != 0 %>
       <% @notes.each do |n| %>
@@ -8,7 +8,7 @@
         </li>
       <%end%>
       <div class="flex justify-center">
-        <%= paginate @notes %>
+        <%= render "layouts/page_bar", collection: @notes %>
       </div>
     <% else %>
       <span class="mx-auto mt-10"><%= @person.name %> has no notes</span>

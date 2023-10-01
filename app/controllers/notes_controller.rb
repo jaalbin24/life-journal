@@ -1,7 +1,7 @@
 class NotesController < ApplicationController
-  before_action :set_person,  only: %i[ create ]
+  before_action :set_person,  only: %i[ create index ]
   before_action :set_note,    only: %i[ destroy ]
-  before_action :set_notes,   only: %i[ create ]
+  before_action :set_notes,   only: %i[ create index ]
   # POST /person/:person_id/notes
   def create
     respond_to do |format|
@@ -11,13 +11,13 @@ class NotesController < ApplicationController
         @note = Note.new
         format.turbo_stream do
           render turbo_stream: 
-            turbo_stream.replace(:notes_collection, partial: 'collection') +
+            turbo_stream.replace(:notes, partial: 'collection') +
             turbo_stream.replace(:notes_form, partial: 'form')
         end
       else
         format.turbo_stream do
           render turbo_stream: 
-            turbo_stream.replace(:notes_collection, partial: 'collection') +
+            turbo_stream.replace(:notes, partial: 'collection') +
             turbo_stream.replace(:notes_form, partial: 'form')
         end
       end
@@ -35,6 +35,20 @@ class NotesController < ApplicationController
     end
   end
 
+  # GET people/:person_id/notes/page/:page
+  def index
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(:notes, partial: "collection")
+      end
+      format.html do
+        @tab = :notes
+        @note = Note.new
+        render "people/show"
+      end
+    end
+  end
+
   private
 
   def set_person
@@ -44,7 +58,7 @@ class NotesController < ApplicationController
     @note = current_user.notes.find(params[:id])
   end
   def set_notes
-    @notes = @person.notes.order(created_at: :desc).page(page)
+    @notes = @person.notes.order(created_at: :desc).page page
   end
 
   def note_params

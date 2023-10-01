@@ -7,13 +7,30 @@
     </div>
   <% end %>
   <%= form_with model: @person, data: { turbo: false } do |f| %>
-    <div class="gap-2 grid grid-cols-6">
+    <div class="gap-3 grid grid-cols-6 grid-rows-3">
       <div class="col-span-2">
         <div class="relative">
           <%= f.text_field :first_name, class: "input-field floating peer #{"error" if @person.errors[:first_name].any?}", placeholder: "" %>
           <%= f.label :first_name, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:first_name].any?}" %>
         </div>
         <span class="error-message"><%= @person.errors[:first_name].first%></span>
+      </div>
+      <div class="col-span-2">
+        <div class="relative">
+          <%= f.text_field :nickname, class: "input-field floating peer #{"error" if @person.errors[:nickname].any?}", placeholder: "" %>
+          <%= f.label :nickname, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:nickname].any?}" %>
+        </div>
+        <span class="error-message"><%= @person.errors[:nickname].first%></span>
+      </div>
+      <div class="col-span-2 row-span-3">
+        <%= f.label :avatar, class: "file-dropzone h-full" do %>
+          <div class="flex flex-col items-center justify-center">
+            <%= embedded_svg "upload.svg", class: "w-10 h-10"%>
+            <p class="text-sm mb-2"><span class="font-semibold">Click to upload</span></p>
+            <p class="text-xs">PNG or JPG (MAX. 800x400px)</p>
+          </div>
+          <%= f.file_field :avatar, class: "hidden" %>
+        <% end %>
       </div>
       <div class="col-span-2">
         <div class="relative">
@@ -24,53 +41,30 @@
       </div>
       <div class="col-span-2">
         <div class="relative">
+          <%= f.text_field :title, class: "input-field floating peer #{"error" if @person.errors[:title].any?}", placeholder: "" %>
+          <%= f.label :title, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:title].any?}" %>
+        </div>
+        <span class="error-message"><%= @person.errors[:title].first%></span>
+      </div>
+      <div class="col-span-2">
+        <div class="relative">
           <%= f.text_field :last_name, class: "input-field floating peer #{"error" if @person.errors[:last_name].any?}", placeholder: "" %>
           <%= f.label :last_name, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:last_name].any?}" %>
         </div>
         <span class="error-message"><%= @person.errors[:last_name].first%></span>
-      </div>
-    </div>
-    <div class="flex gap-2 mt-3">
-      <div class="basis-2/3 flex flex-col">
+      </div>      
+      <div class="col-span-2">
         <div class="relative">
-          <%= f.text_field :nickname, class: "input-field floating peer #{"error" if @person.errors[:nickname].any?}", placeholder: "" %>
-          <%= f.label :nickname, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:nickname].any?}" %>
+          <%= f.text_field :gender, class: "input-field floating peer #{"error" if @person.errors[:gender].any?}", placeholder: "" %>
+          <%= f.label :gender, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:gender].any?}" %>
         </div>
-        <span class="error-message"><%= @person.errors[:nickname].first%></span>
-        <div class="flex gap-2 mt-3">
-          <div class="grow">
-            <div class="relative">
-              <%= f.text_field :title, class: "input-field floating peer #{"error" if @person.errors[:title].any?}", placeholder: "" %>
-              <%= f.label :title, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:title].any?}" %>
-            </div>
-            <span class="error-message"><%= @person.errors[:title].first%></span>
-          </div>
-          <div class="grow">
-            <div class="relative">
-              <%= f.text_field :gender, class: "input-field floating peer #{"error" if @person.errors[:gender].any?}", placeholder: "" %>
-              <%= f.label :gender, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:gender].any?}" %>
-            </div>
-            <span class="error-message"><%= @person.errors[:gender].first%></span>
-          </div>
-        </div>
+        <span class="error-message"><%= @person.errors[:gender].first%></span>
       </div>
-      <div class="flex flex-col grow justify-between">
-        <div class="flex items-center justify-center my-auto">
-          <%= avatar(@person, size: 64) %>
-          <div>
-            <%= f.label :avatar, class: "form-label" %>
-            <label for="person_avatar" class="flex gap-3 rounded-lg w-56">  
-              <%= f.file_field :avatar, class: "file-field" %>
-            </label>
-            <% if @person.errors[:avatar].any? %>
-              <span class="text-red-500"><%= @person.errors[:avatar].first %></span>
-            <% end %>
-          </div>
-        </div>
-        <div class="flex justify-end">
-          <%= f.submit class: "btn-primary", "data-test-id": "save_person_button" %>
-        </div>
-      </div>
+
+    </div>
+    <hr class="my-3 border-slate-700">
+    <div class="flex justify-end">
+      <%= f.submit class: "btn-primary", "data-test-id": "save_person_button" %>
     </div>
   <% end %>
   

@@ -86,7 +86,7 @@ me.people.create(
   last_name: "Smith"
 )
 
-24.times do
+100.times do
   # Create the entry
   entry = me.entries.create!(
     status: (rand(0..9) == 0 ? 'draft' : 'published'),

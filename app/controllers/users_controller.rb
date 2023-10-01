@@ -66,7 +66,7 @@ class UsersController < ApplicationController
   end
 
   def after_sign_up_path
-    root_path
+    root_path(modal: :welcome)
   end
 
   def user_params

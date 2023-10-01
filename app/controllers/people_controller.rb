@@ -24,6 +24,15 @@ class PeopleController < ApplicationController
       @tab = :all
       @people = current_user.people.not_deleted.order(updated_at: :desc).page page
     end
+    respond_to do |format|
+      format.html do
+        render :index
+      end
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(:people, partial: "collection") +
+          turbo_stream.replace(:people_page_bar, partial: "page_bar")
+      end
+    end
   end
 
   # GET /people/new
@@ -77,7 +86,7 @@ class PeopleController < ApplicationController
       else
         @person.avatar.detach
         format.html do
-          alerts.append Alert::Error.new(title: "Not saved").flash
+          alerts_now.append Alert::Error.new(title: "Not saved").flash
           render :new
         end
       end

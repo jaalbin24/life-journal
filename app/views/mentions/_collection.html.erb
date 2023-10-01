@@ -24,7 +24,7 @@
           url="<%= mention_path(m) %>"
           data-action="click->mentions#delete"
           data-test-id="destroy-mention-<%=m.id%>">
-          <%= embedded_svg "x_icon.svg", class: "w-4 h-4 pointer-events-none" %>
+          <%= embedded_svg "x.svg", class: "w-4 h-4 pointer-events-none" %>
         </button>
       </li>
     <% end %>
