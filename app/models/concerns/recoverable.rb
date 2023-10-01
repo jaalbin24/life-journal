@@ -36,6 +36,10 @@ module Recoverable
     deleted
   end
 
+  def was_deleted?
+    deleted_previously_was
+  end
+
   def mark_as_deleted
     self.deleted = true
     self.deleted_at = DateTime.current

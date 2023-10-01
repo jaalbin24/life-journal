@@ -52,7 +52,13 @@ class PeopleController < ApplicationController
         #     turbo_stream.append(:alerts, partial: "layouts/alert")
         # end
         format.html do
-          alerts.append Alert::Success.new(model: @person).flash
+          if @person.deleted? && !@person.was_deleted?
+            alerts.append Alert::Warning.new(title: "#{@person.name} was moved to the trash.").flash
+          elsif !@person.deleted? && @person.was_deleted?
+            alerts.append Alert::Success.new(title: "#{@person.name} was recovered.").flash
+          else
+            alerts.append Alert::Success.new(model: @person).flash
+          end
           redirect_to tab_person_path(@person, :info)
         end
       else

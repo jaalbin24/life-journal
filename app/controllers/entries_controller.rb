@@ -65,7 +65,11 @@ class EntriesController < ApplicationController
           }
           render turbo_stream: turbo_stream.update('entry-save-bar', partial: 'save_bar')
         end
-        format.html { redirect_to @entry, status: :see_other }
+        format.html do
+          alerts.append Alert::Warning.new(title: "This entry was moved to the trash.").flash if @entry.deleted? && !@entry.was_deleted?
+          alerts.append Alert::Success.new(title: "This entry was recovered.").flash if !@entry.deleted? && @entry.was_deleted?
+          redirect_to @entry, status: :see_other
+        end
       else
         format.turbo_stream do
           @save_bar_message = {
