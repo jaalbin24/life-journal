@@ -85,12 +85,11 @@ me.people.create(
   first_name: "John",
   last_name: "Smith"
 )
-
-100.times do
+200.times do
   # Create the entry
   entry = me.entries.create!(
     status: (rand(0..9) == 0 ? 'draft' : 'published'),
-    published_at: rand(5..1000).days.ago,
+    published_at: rand(0..365).days.ago,
     title: Faker::Lorem.sentence(word_count: 1, supplemental: true, random_words_to_add: 5)
   )
   generate_content_for(entry)
