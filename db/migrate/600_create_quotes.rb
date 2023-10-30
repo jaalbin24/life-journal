@@ -4,6 +4,7 @@ class CreateQuotes < ActiveRecord::Migration[7.0]
       t.string      :content
       t.string      :author
       t.string      :source
+      t.string      :description
       t.boolean     :deleted,                       index: true
       t.datetime    :deleted_at,                    index: true
       t.timestamps

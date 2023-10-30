@@ -1,4 +1,23 @@
-<div class="w-full min-h-full flex flex-col">
-  <%= render "entries_chart" %>
-  <%= render "days/show" %>
+<div class="w-full min-h-full flex">
+  <div class="w-2/3 mx-auto flex flex-col items-center justify-center gap-3">
+    <h1 class="font-semibold">Good morning, Jeremy</h1>
+    <h3 class="opacity-50">Today is <%= DateTime.current.strftime("%A %B %d, %Y") %></h3>
+    <%= link_to new_entry_path, class: "btn-primary w-48 text-2xl my-8" do %>
+      <%= embedded_svg "plus.svg", class: "w-6 h-6" %>
+      New Entry
+    <% end %>
+    <div class="flex gap-2 w-full">
+      <div class="card w-full">
+        <div class="card-body">
+          <h6>Person of the day</h6>
+        </div>
+      </div>
+      <div class="card w-full">
+        <div class="card-body">
+          <h6>Quote of the day</h6>
+          <%= Quote.all.sample.content %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

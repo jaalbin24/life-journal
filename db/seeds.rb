@@ -22,7 +22,7 @@ def generate_content_for(entry)
 end
 
 # traits    = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
-# quotes    = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
+quotes    = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
 notes     = JSON.parse(File.read(Rails.root.join('db/seed_data/notes.json')))
 
 # Sort traits.json by positivity rating
@@ -39,13 +39,13 @@ me = User.create(
   password: "123"
 )
 
-# quotes.each do |q|
-#   Quote.create(
-#     content: q['body'],
-#     author: (q['author'] unless q['author'].blank?),
-#     source: (q['source'] unless q['source'].blank?)
-#   )
-# end
+quotes.each do |q|
+  Quote.create(
+    content: q['body'],
+    author: (q['author'] unless q['author'].blank?),
+    source: (q['source'] unless q['source'].blank?)
+  )
+end
 
 # traits.each do |k, v|
 #   Trait.create!(
@@ -61,7 +61,8 @@ me = User.create(
     first_name: Faker::Name.first_name,
     last_name:  Faker::Name.last_name,
     middle_name: (rand(0..9) <= 2 ? Faker::Name.first_name : nil),
-    biography: biography
+    biography: biography,
+    created_at: rand(0..372).days.ago
   )
   # rand(2..5).times do 
   #   person.personality.create!(

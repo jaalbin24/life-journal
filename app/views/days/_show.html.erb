@@ -1,17 +1,9 @@
 <%= turbo_frame_tag :day, data: { controller: "lazy-loadable", url: day_path(day: Date.today.day, month: Date.today.month, year: Date.today.year) } do %>
   <% if @day %>
-    <h4 class="font-semibold"><%= @day.strftime("%b %d, %Y") %></h4>
-    <div class="border-l-2 border-slate-600 pl-2">
-      <h6>You published <%= pluralize(@entries.count, "entry") %>.</h6>
-      <%= render "entries/collection" if @entries.any? %>
-      <% @entries.each do |entry| %>
-        <%= entry.title %>
-      <% end %>
+    <%= render "entries/collection" if @entries.any? %>
 
-      <h6>You added <%= pluralize(@people.count, "person") %>.</h6>
-      <% @people.each do |person| %>
-        <%= person.name %>
-      <% end %>
-    </div>
+    <% @people.each do |person| %>
+      <%= person.name %>
+    <% end %>
   <% end %>
 <% end %>
