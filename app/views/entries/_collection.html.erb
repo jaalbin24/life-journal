@@ -14,7 +14,7 @@
                   <h6 class="my-auto"><%= entry_last_updated(e) %></h6>
                   <div class="flex flex-row">
                     <% e.people.each_with_index do |p, i| %>
-                      <%= render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32} %>
+                      <%= render partial: 'people/avatar', locals: { person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32 } %>
                     <% end %>
                   </div>
                 </div>
@@ -24,9 +24,9 @@
         <% else %>
           <div class="card h-64">
             <div class="card-body flex flex-col justify-center items-center gap-2">
-              <a href="<%= entry_path(e) %>" class="shrink flex font-bold hover:underline h3">
-                <h3 class="shrink text-center"><%= e.title.blank? ? "Untitled" : e.title %></h3>
-              </a>
+              <%= link_to entry_path(e), class: "shrink flex font-bold hover:underline h3", data: { turbo_frame: "_top" } do %>
+                <h3 class="shrink"><%= e.title.blank? ? "Untitled" : e.title %></h3>
+              <% end %>
               <h6><%= entry_last_updated(e) %></h6>
               <div class="flex flex-row">
                 <% e.people.each_with_index do |p, i| %>
