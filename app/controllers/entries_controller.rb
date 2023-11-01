@@ -42,6 +42,11 @@ class EntriesController < ApplicationController
 
   # GET /entries/:id
   def show
+    respond_to do |format|
+      format.html do
+        render :show
+      end
+    end
   end
 
   # GET /entries/new

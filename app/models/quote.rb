@@ -2,14 +2,15 @@
 #
 # Table name: quotes
 #
-#  id         :uuid             not null, primary key
-#  author     :string
-#  content    :string
-#  deleted    :boolean
-#  deleted_at :datetime
-#  source     :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :uuid             not null, primary key
+#  author      :string
+#  content     :string
+#  deleted     :boolean
+#  deleted_at  :datetime
+#  description :string
+#  source      :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 # Indexes
 #
