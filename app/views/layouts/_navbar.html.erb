@@ -1,31 +1,28 @@
 <%if user_signed_in?%>
   <nav class="nav-bar flex-shrink-0">
     <div class="nav-item">
-      <a class="nav-link gap-2" href="<%=user_path current_user%>">
-        <%= avatar current_user%>
-        <div>
-          <span class="opacity-50 text-sm">Hello,</span>
-          <h3 class="font-bold">Jeremy</h3>
-        </div>
-      </a>
+      <%= link_to root_path, class: "nav-link gap-2" do %>
+        <%= image_tag 'favicon.ico', class: "w-8 h-8" %>
+        <h4 class="font-semibold">Open Ear</h4>
+      <% end %>
     </div>
-    <hr class="my-2">
+    <hr class="my-2 border-slate-500">
     <div class="nav-list grow">
       <div class="nav-item">
         <a class="nav-link" href="<%=root_path%>">
-          <%=image_tag 'dashboard_icon.svg', width: 32%>
+          <%= embedded_svg "dashboard.svg", class: "w-7 h-7" %>
           Dashboard
         </a>
       </div>
       <div class="nav-item">
         <a class="nav-link" href="<%=entries_path%>">
-          <%=image_tag 'journal_icon.svg', width: 32%>
+          <%= embedded_svg "entries.svg", class: "w-7 h-7" %>
           Entries
         </a>
       </div>
       <div class="nav-item">
         <a class="nav-link" href="<%=people_path%>">
-          <%=image_tag 'people_icon.svg', width: 32%>
+          <%= embedded_svg "people.svg", class: "w-7 h-7" %>
           People
         </a>
       </div>
@@ -44,8 +41,18 @@
       -->
     </div>
     <div class="nav-list">
-      <%=button_to "Sign out", sign_out_path, method: :delete, class: "nav-item" %>
-      <div class="mt-5">Jeremy A.</div>
+      <div class="nav-item">
+        <%= link_to user_path(current_user), class: "nav-link" do %>
+          <%= avatar current_user, size: 28 %>
+          Account
+        <% end %>
+      </div>
+      <div class="nav-item">
+        <%= button_to sign_out_path, class: "nav-link", method: :delete do %>
+          <%= embedded_svg "sign_out.svg", class: "w-7 h-7" %>
+          Sign out
+        <% end %>
+      </div>
     </div>
   </nav>
 <%end%>

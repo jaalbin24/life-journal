@@ -113,10 +113,13 @@
     @apply flex flex-col
   }
   .nav-item {
-    @apply flex
+    @apply flex w-full
+  }
+  .nav-item form {
+    @apply w-full
   }
   .nav-link {
-    @apply hover:bg-slate-700 p-2 rounded transition-all hover:shadow hover:shadow-black/50 grow flex items-center gap-1
+    @apply hover:bg-slate-700 p-2 rounded transition-all hover:shadow hover:shadow-black/50 grow flex items-center gap-2 w-full
   }
   .search-result-item {
     @apply flex gap-1 px-4 py-1 w-full

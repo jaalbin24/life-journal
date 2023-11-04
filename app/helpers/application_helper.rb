@@ -1,12 +1,12 @@
 module ApplicationHelper
   def avatar(model, opt={size: 48, class: ""})
-    "<div class='avatar-container' style='width: #{opt[:size]}px; padding-bottom: #{opt[:size]}px;'>#{
+    content_tag :div, class: "avatar-container", style: "width: #{opt[:size]}px; padding-bottom: #{opt[:size]}px;" do
       if model.avatar.attached?
         image_tag model.avatar.variant(resize_to_limit: [240, 240]), class: "avatar #{opt[:class]}", size: opt[:size]
       else
         image_tag 'default_profile_picture.png', class: "avatar #{opt[:class]}", size: opt[:size]
       end
-    }</div>".html_safe
+    end
   end
 
   def embedded_svg(filename, opt = {})
