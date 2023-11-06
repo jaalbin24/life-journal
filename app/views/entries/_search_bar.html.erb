@@ -6,7 +6,7 @@
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
       </svg>
     </button>
-    <%= text_area_tag :keyword, nil, class: "peer group-hover:bg-slate-700 group-hover:border-slate-700 group-hover:shadow group-hover:rounded-b-none group-hover:rounded-t-3xl focus:rounded-b-none focus:rounded-t-3xl resize-none w-full pl-10 input-field", placeholder: "Search for someone to mention...", rows: 1, wrap: "off", id: "mentions-search", type: "search", data: { controller: "mentions", action: "input->mentions#new", url: new_entry_mention_path(@entry)} %>
+    <%= text_area_tag :keyword, nil, class: "peer group-hover:bg-slate-700 group-hover:border-slate-700 group-hover:shadow group-hover:rounded-b-none group-hover:rounded-t-3xl focus:rounded-b-none focus:rounded-t-3xl resize-none w-full pl-10 form-field", placeholder: "Search for someone to mention...", rows: 1, wrap: "off", id: "mentions-search", type: "search", data: { controller: "mentions", action: "input->mentions#new", url: new_entry_mention_path(@entry)} %>
     <div class="bg-slate-700 peer-focus:visible group-hover:visible invisible">
       <div class="mx-3 border border-x-0 border-b-0 border-slate-600"></div>
     </div>

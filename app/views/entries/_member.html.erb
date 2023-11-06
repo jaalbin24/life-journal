@@ -1,0 +1,22 @@
+<%= render "layouts/recoverable_alert", model: @entry %>
+<div class="flex mb-5">
+  <div class="grow">
+    <h2 class="font-bold"><%= @entry.title %></h2>
+    <div class="flex flex-row align-center gap-3 mt-1">
+      <h5 class="my-auto text-gray-400"><%= entry_last_updated(@entry) %></h5>
+      <div class="flex flex-row">
+        <% @entry.people.each_with_index do |p, i| %>
+          <%= render partial: 'people/avatar', locals: { person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32 } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="my-auto">
+    <%= render "layouts/dropdown", model: @entry %>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <%= @entry.content %>
+  </div>
+</div>

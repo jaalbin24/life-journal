@@ -1,0 +1,43 @@
+<%= turbo_frame_tag :message_index, class: "flex flex-col gap-2" do %>
+  <%= turbo_frame_tag :message_reccomendations do %>
+    <div class="grid grid-cols-2 gap-3">
+      <%= form_with model: Message.new, url: chat_messages_path(@chat) do |f| %>
+        <%= f.hidden_field :content, value: "What should I do?" %>
+        <button class="card text-left hover:bg-opacity-50 w-full">
+          <div class="card-body">
+            <h6 class="font-semibold">What should I do?</h6>
+            <span class="opacity-50">Maybe another perspective would help.</span>
+          </div>
+        </button>
+      <% end %>
+      <%= form_with model: Message.new, url: chat_messages_path(@chat) do |f| %>
+        <%= f.hidden_field :content, value: "What advice can you give me?" %>
+        <button class="card text-left hover:bg-opacity-50 w-full">
+          <div class="card-body">
+            <h6 class="font-semibold">What advice can you give me?</h6>
+            <span class="opacity-50">Maybe another perspective would help.</span>
+          </div>
+        </button>
+      <% end %>
+      <%= form_with model: Message.new, url: chat_messages_path(@chat) do |f| %>
+        <%= f.hidden_field :content, value: "What can I do to feel better?" %>
+        <button class="card text-left hover:bg-opacity-50 w-full">
+          <div class="card-body">
+            <h6 class="font-semibold">What can I do to feel better?</h6>
+            <span class="opacity-50">Maybe another perspective would help.</span>
+          </div>
+        </button>
+      <% end %>
+      <%= form_with model: Message.new, url: chat_messages_path(@chat) do |f| %>
+        <%= f.hidden_field :content, value: "How can I improve?" %>
+        <button class="card text-left hover:bg-opacity-50 w-full">
+          <div class="card-body">
+            <h6 class="font-semibold">How can I improve?</h6>
+            <span class="opacity-50">Maybe another perspective would help.</span>
+          </div>
+        </button>
+      <% end %>
+    </div>
+  <% end %>
+  <%= render "messages/collection" %>
+<% end %>

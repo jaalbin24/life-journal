@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
   concern :paginatable do
     get '(page/:page)', action: :index, on: :collection, as: ''
   end
@@ -14,6 +15,9 @@ Rails.application.routes.draw do
       get ':tab/page/:page',   action: :index, constraints: { tab: /(all|published|drafts|trash)/ }
     end
     resources :mentions, only: [:create, :new]
+    resources :chats, shallow: true do
+      resources :messages, shallow: true
+    end
   end
   resource :email, only: [:edit, :update]
   resource :password, only: [:edit, :update], controller: 'passwords'

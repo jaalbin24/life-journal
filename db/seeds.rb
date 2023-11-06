@@ -39,11 +39,12 @@ me = User.create(
   password: "123"
 )
 
-quotes.each do |q|
+quotes.each_with_index do |q, i|
   Quote.create(
     content: q['body'],
     author: (q['author'] unless q['author'].blank?),
-    source: (q['source'] unless q['source'].blank?)
+    source: (q['source'] unless q['source'].blank?),
+    last_quote_of_the_day_at: i.days.ago
   )
 end
 

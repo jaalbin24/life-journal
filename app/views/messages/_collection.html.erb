@@ -1,0 +1,5 @@
+<%= turbo_frame_tag :message_collection, class: "flex flex-col gap-2" do %>
+  <% @messages.each do |m| %>
+    <%= render "messages/member", message: m %>
+  <% end %>
+<% end %>

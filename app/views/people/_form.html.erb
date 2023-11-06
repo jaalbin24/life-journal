@@ -10,14 +10,14 @@
     <div class="gap-3 grid grid-cols-6 grid-rows-3">
       <div class="col-span-2">
         <div class="relative">
-          <%= f.text_field :first_name, class: "input-field floating peer #{"error" if @person.errors[:first_name].any?}", placeholder: "" %>
+          <%= f.text_field :first_name, class: "form-field floating peer #{"error" if @person.errors[:first_name].any?}", placeholder: "" %>
           <%= f.label :first_name, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:first_name].any?}" %>
         </div>
         <span class="error-message"><%= @person.errors[:first_name].first%></span>
       </div>
       <div class="col-span-2">
         <div class="relative">
-          <%= f.text_field :nickname, class: "input-field floating peer #{"error" if @person.errors[:nickname].any?}", placeholder: "" %>
+          <%= f.text_field :nickname, class: "form-field floating peer #{"error" if @person.errors[:nickname].any?}", placeholder: "" %>
           <%= f.label :nickname, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:nickname].any?}" %>
         </div>
         <span class="error-message"><%= @person.errors[:nickname].first%></span>
@@ -35,28 +35,28 @@
       </div>
       <div class="col-span-2">
         <div class="relative">
-          <%= f.text_field :middle_name, class: "input-field floating peer #{"error" if @person.errors[:middle_name].any?}", placeholder: "" %>
+          <%= f.text_field :middle_name, class: "form-field floating peer #{"error" if @person.errors[:middle_name].any?}", placeholder: "" %>
           <%= f.label :middle_name, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:middle_name].any?}" %>
         </div>
         <span class="error-message"><%= @person.errors[:middle_name].first%></span>
       </div>
       <div class="col-span-2">
         <div class="relative">
-          <%= f.text_field :title, class: "input-field floating peer #{"error" if @person.errors[:title].any?}", placeholder: "" %>
+          <%= f.text_field :title, class: "form-field floating peer #{"error" if @person.errors[:title].any?}", placeholder: "" %>
           <%= f.label :title, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:title].any?}" %>
         </div>
         <span class="error-message"><%= @person.errors[:title].first%></span>
       </div>
       <div class="col-span-2">
         <div class="relative">
-          <%= f.text_field :last_name, class: "input-field floating peer #{"error" if @person.errors[:last_name].any?}", placeholder: "" %>
+          <%= f.text_field :last_name, class: "form-field floating peer #{"error" if @person.errors[:last_name].any?}", placeholder: "" %>
           <%= f.label :last_name, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:last_name].any?}" %>
         </div>
         <span class="error-message"><%= @person.errors[:last_name].first%></span>
       </div>      
       <div class="col-span-2">
         <div class="relative">
-          <%= f.text_field :gender, class: "input-field floating peer #{"error" if @person.errors[:gender].any?}", placeholder: "" %>
+          <%= f.text_field :gender, class: "form-field floating peer #{"error" if @person.errors[:gender].any?}", placeholder: "" %>
           <%= f.label :gender, class: "form-label floating bg-slate-900 #{"error" if @person.errors[:gender].any?}" %>
         </div>
         <span class="error-message"><%= @person.errors[:gender].first%></span>

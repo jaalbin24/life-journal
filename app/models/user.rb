@@ -38,7 +38,9 @@ class User < ApplicationRecord
   has_many :entries,  dependent: :destroy
   has_many :people,   dependent: :destroy
   has_many :notes,    dependent: :destroy, foreign_key: :user_id
-  has_many :mentions
+  has_many :mentions, dependent: :destroy
+  has_many :chats,    dependent: :destroy
+  has_many :messages, dependent: :destroy
   has_one_attached :avatar
   validate_images :avatar
 

@@ -39,6 +39,8 @@ class Entry < ApplicationRecord
   has_many :mentions, dependent: :destroy
   accepts_nested_attributes_for :mentions, allow_destroy: true
   has_many :people, through: :mentions
+  has_many :chats
+  has_many :messages, through: :chats
 
   before_create :init_status
   before_save :cache_plain_content, :update_published_at

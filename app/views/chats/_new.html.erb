@@ -1,0 +1,10 @@
+<%= turbo_frame_tag :chat do %>
+  <div class="flex flex-col gap-3 w-2/3 mx-auto">
+    <%= form_with model: @chat, url: entry_chats_path(@chat.entry), local: true do |f| %>
+      <%= f.submit "Talk about this", class: "btn-primary w-full"%>
+    <% end %>
+    <h6 class="text-center">
+      Or you can continue a <%= link_to "previous conversation", nil, class: "hyperlink" %>.
+    </h6>
+  </div>
+<% end %>

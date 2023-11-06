@@ -1,0 +1,12 @@
+<%= turbo_frame_tag :message_form, class: "absolute right-1/2 transform translate-x-1/2 w-full pb-3 pt-10 bottom-0 bg-gradient-to-b from-transparent to-slate-900" do %>
+  <% if @message %>
+    <%= form_with model: Message.new, url: chat_messages_path(@message.chat), local: true do |f| %>
+      <div class="relative mx-auto w-3/4">
+        <%= f.text_field :content, class: "form-field rounded-lg p-4 pr-10 resize-none", placeholder: "Send a message...", rows: 1 %>
+        <button class="absolute top-1/2 transform -translate-y-1/2 right-3 btn-primary p-2">
+          <%= embedded_svg "send.svg", class: "h-5 w-5" %>
+        </button>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

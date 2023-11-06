@@ -42,6 +42,7 @@ class EntriesController < ApplicationController
 
   # GET /entries/:id
   def show
+    @chat = @entry.chats.build
     respond_to do |format|
       format.html do
         render :show
