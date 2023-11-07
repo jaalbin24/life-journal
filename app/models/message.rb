@@ -26,6 +26,10 @@ class Message < ApplicationRecord
   belongs_to :user
   before_validation :set_user, on: :create
   
+  def by_user?
+    role == "user"
+  end
+
   private
 
   def set_user

@@ -1,6 +1,6 @@
 <%= turbo_frame_tag :message_index, class: "flex flex-col gap-2" do %>
   <%= turbo_frame_tag :message_reccomendations do %>
-    <div class="grid grid-cols-2 gap-3">
+    <div class="grid grid-cols-2 gap-2">
       <%= form_with model: Message.new, url: chat_messages_path(@chat) do |f| %>
         <%= f.hidden_field :content, value: "What should I do?" %>
         <button class="card text-left hover:bg-opacity-50 w-full">
@@ -40,4 +40,5 @@
     </div>
   <% end %>
   <%= render "messages/collection" %>
+  <%= turbo_stream_from @chat %>
 <% end %>

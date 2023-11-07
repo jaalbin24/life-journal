@@ -1,6 +1,11 @@
 <% message ||= @message %>
-<div class="card">
-  <div class="card-body">
+<div class="card odd:bg-slate-700">
+  <div class="card-body flex items-center gap-3">
+    <% if message.by_user? %>
+      <%= avatar message.user %>
+    <% else %>
+      <%= image_tag "favicon.ico", class: "w-10 h-10" %>
+    <% end %>
     <%= message.content %>
   </div>
 </div>

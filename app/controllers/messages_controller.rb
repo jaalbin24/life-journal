@@ -5,10 +5,18 @@ class MessagesController < ApplicationController
   def create
     respond_to do |format|
       @message = @chat.messages.build(message_params)
+      @message.role = "user"
       if @message.save
         format.turbo_stream do
-          render turbo_stream:  turbo_stream.append(:message_collection, partial: 'messages/member') +
-                                turbo_stream.replace(:message_form, partial: 'messages/form')
+          Turbo::StreamsChannel.broadcast_append_later_to(
+            @chat,
+            target: :message_collection,
+            partial: "messages/member",
+            locals: { message: @message }
+          )
+          render turbo_stream:  turbo_stream.replace(:message_form, partial: 'messages/form') +
+                                turbo_stream.remove(:message_reccomendations)
+
         end
       else
         
