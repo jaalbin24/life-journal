@@ -44,6 +44,7 @@ quotes.each_with_index do |q, i|
     content: q['body'],
     author: (q['author'] unless q['author'].blank?),
     source: (q['source'] unless q['source'].blank?),
+    description: (q['description'] unless q['description'].blank?),
     last_quote_of_the_day_at: i.days.ago
   )
 end
