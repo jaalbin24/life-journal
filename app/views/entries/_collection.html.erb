@@ -14,7 +14,7 @@
                   <h6 class="my-auto"><%= entry_last_updated(e) %></h6>
                   <div class="flex flex-row">
                     <% e.people.each_with_index do |p, i| %>
-                      <%= render partial: 'people/avatar', locals: { person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32 } %>
+                      <%= avatar p, class: "h-6 w-6 #{'-ml-2' unless i == 0}" %>
                     <% end %>
                   </div>
                 </div>
@@ -30,7 +30,7 @@
               <h6><%= entry_last_updated(e) %></h6>
               <div class="flex flex-row">
                 <% e.people.each_with_index do |p, i| %>
-                  <%= render partial: 'people/avatar', locals: {person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32} %>
+                  <%= avatar p, class: "h-6 w-6 #{'-ml-2' unless i == 0}" %>
                 <% end %>
               </div>
             </div>

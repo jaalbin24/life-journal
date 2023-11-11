@@ -4,7 +4,7 @@
       <%@people.each do |p|%>
         <%= link_to person_path(p), class: "card hover:bg-slate-700 transition-all hover:shadow hover:shadow-black/50", data: { turbo_frame: "_top" } do %>
           <div class="card-body flex flex-col justify-center items-center gap-2">
-            <%= avatar(p, size: 164) %>
+            <%= avatar p, class: "h-40 w-40" %>
             <h5 class="truncate max-w-full font-bold">
               <%= p.name %>
             </h5>

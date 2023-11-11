@@ -14,7 +14,7 @@
             <%= form.hidden_field :entry_id %>
             <button data-test-id="add-mention-<%=m.person.id%>" class=" flex justify-between w-full" data-action="click->mentions#closeResults">
               <div class="flex gap-2 items-center">
-                <%= avatar m.person, size: 28 %>
+                <%= avatar m.person, class: "w-6 h-6" %>
                 <h6 class="font-bold"><%= m.person.name %></h6>
               </div>
               <div class="hover:bg-slate-800 hover:bg-opacity-50 rounded-lg py-0.5 px-2 invisible group-hover/li:visible flex gap-1 items-center">

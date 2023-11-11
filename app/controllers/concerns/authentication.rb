@@ -15,8 +15,7 @@ module Authentication
       cookies.signed[:stay_signed_in] = {
         value: stay_signed_in_token,
         expires: user.stay_signed_in_token_expires_at,
-        http_only: true,
-        secure: Rails.env.production?
+        http_only: true
       }
     end
     user

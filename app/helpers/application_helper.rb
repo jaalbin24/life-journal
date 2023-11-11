@@ -1,10 +1,10 @@
 module ApplicationHelper
   def avatar(model, opt={size: 48, class: ""})
-    content_tag :div, class: "avatar-container", style: "width: #{opt[:size]}px; padding-bottom: #{opt[:size]}px;" do
+    content_tag :div, class: "avatar-container #{opt[:class]}" do
       if model.avatar.attached?
-        image_tag model.avatar.variant(resize_to_limit: [240, 240]), class: "avatar #{opt[:class]}", size: opt[:size]
+        image_tag model.avatar.variant(resize_to_limit: [240, 240]), class: "avatar #{opt[:class]}"
       else
-        image_tag 'default_profile_picture.png', class: "avatar #{opt[:class]}", size: opt[:size]
+        image_tag 'default_profile_picture.png', class: "avatar #{opt[:class]}"
       end
     end
   end

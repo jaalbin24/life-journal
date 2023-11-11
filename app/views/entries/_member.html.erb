@@ -6,7 +6,7 @@
       <h5 class="my-auto text-gray-400"><%= entry_last_updated(@entry) %></h5>
       <div class="flex flex-row">
         <% @entry.people.each_with_index do |p, i| %>
-          <%= render partial: 'people/avatar', locals: { person: p, css_class: "#{'-ml-2' unless i == 0}", size: 32 } %>
+          <%= avatar p, class: "h-6 w-6 #{'-ml-2' unless i == 0}" %>
         <% end %>
       </div>
     </div>

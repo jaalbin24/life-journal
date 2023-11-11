@@ -6,6 +6,15 @@ module PagesHelper
       link_to url, options, &block
     end
   end
+
+  def greeting(user)
+    current_hour = Time.use_zone(user.time_zone) { Time.now.hour }
+    if current_hour < 12
+      "Good morning."
+    else
+      "Hello."
+    end
+  end
 end
 
 

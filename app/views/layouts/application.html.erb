@@ -21,5 +21,8 @@
         <%= yield %>
       </div>
     </main>
+    <% if user_signed_in? %>
+      <div data-controller="time-zone" data-time-zone-current-value="<%= current_user.time_zone %>" data-time-zone-url-value="<%= user_path(current_user)%>"></div>
+    <% end %>
   </body>
 </html>

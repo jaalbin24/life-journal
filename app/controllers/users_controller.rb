@@ -39,9 +39,11 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
+        format.json { head :ok }
         format.html { redirect_to tab_user_path(@user, :account) }
       else
         @tab = :account
+        format.json { head :unprocessable_entity }
         format.html { render :show }
       end
     end
@@ -71,10 +73,10 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(
+      :time_zone,
       :email,
       :password,
-      :password_confirmation,
-      :password_challenge
+      :password_confirmation
     )
   end
 end

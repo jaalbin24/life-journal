@@ -11,7 +11,7 @@
         <li class="first:pt-0 last:pb-0 hover:bg-slate-700 rounded-lg flex justify-between items-center">
         <% raise if @entry.nil?%>
           <button class="flex gap-2 items-center grow" url="<%=entry_mentions_path(@entry)%>" data-action="click->mentions#create">
-            <%= avatar p, size: 24 %>
+            <%= avatar p, class: "h-6 w-6" %>
             <h6 class="font-bold"><%= p.name %></h6>
           </button>
         </li>
