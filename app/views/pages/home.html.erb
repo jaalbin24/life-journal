@@ -33,7 +33,7 @@
             <cite class="opacity-50">— <%= @quote_of_the_day&.citation %></cite>
           </figcaption>
           <hr class="my-4 border-slate-600">
-          <button class="btn-secondary float-right">What does this mean?</button>
+          <button class="btn-secondary float-right" data-controller="modal" data-action="click->modal#openModal" data-modal-url-value="<%= quote_path @quote_of_the_day %>">What does this mean?</button>
         </div>
       </div>
     </div>

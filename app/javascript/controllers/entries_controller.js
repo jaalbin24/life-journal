@@ -31,4 +31,4 @@ export default class extends Controller {
 
 let form;
 let statusField;
-let saveBar
+let saveBar;

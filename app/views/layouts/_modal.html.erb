@@ -1,8 +1,0 @@
-<%= turbo_frame_tag :modal do %>
-  <% if @modal %>
-    <% begin %>
-    <%= render "modals/#{@modal}" %>
-    <% rescue ActionView::MissingTemplate %>
-    <% end %>
-  <% end %>
-<% end %>

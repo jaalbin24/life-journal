@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   end
   resources :mentions
   resources :notes, only: [:destroy]
+  resources :quotes, only: :show
   get 'day/:month-:day-:year', to: 'days#show', as: "day"
 
   root to: 'pages#home'

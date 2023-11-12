@@ -11,6 +11,7 @@
 #  status                          :string
 #  stay_signed_in_token            :string
 #  stay_signed_in_token_expires_at :datetime
+#  time_zone                       :string           default("UTC")
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
 #
