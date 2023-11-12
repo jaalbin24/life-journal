@@ -134,7 +134,7 @@
     @apply absolute h-full rounded-none object-cover
   }
   .avatar {
-    @apply rounded-full shadow
+    @apply rounded-full shadow w-full h-full
   }
   .person-name {
     @apply flex items-center gap-1 rounded-full pr-1 pl-2 py-1 bg-slate-700
@@ -201,6 +201,9 @@
   }
   .modal-wrapper.extended {
     @apply opacity-100
+  }
+  .spinner {
+    @apply animate-spin text-slate-500 fill-sky-500
   }
 }
 

@@ -25,6 +25,7 @@ class Message < ApplicationRecord
   belongs_to :chat
   belongs_to :user
   before_validation :set_user, on: :create
+  validates :content, presence: { message: "Your message can't be blank" }, if: :by_user?
   
   def by_user?
     role == "user"

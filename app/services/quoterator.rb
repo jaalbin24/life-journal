@@ -45,4 +45,23 @@ module Quoterator
       end
     end
   end
+
+  def self.rebuild_quotes
+    # Get rid of all the preexisting quotes
+    puts "Destroying #{Quote.count} quotes before rebuilding again..."
+    Quote.all.each { |quote| quote.destroy }
+
+    # Then recreate them from the JSON file.
+    quotes = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
+    puts "Rebuilding #{quotes.length} quotes..."
+    quotes.each do |q|
+      Quote.create(
+        content: q['body'],
+        author: (q['author'] unless q['author'].blank?),
+        source: (q['source'] unless q['source'].blank?),
+        description: (q['description'] unless q['description'].blank?)
+      )
+    end
+    puts "Done. Rebuilt #{Quote.count} quotes."
+  end
 end

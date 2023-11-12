@@ -22,7 +22,6 @@ def generate_content_for(entry)
 end
 
 # traits    = JSON.parse(File.read(Rails.root.join('db/seed_data/traits.json')))
-quotes    = JSON.parse(File.read(Rails.root.join('db/seed_data/quotes.json')))
 notes     = JSON.parse(File.read(Rails.root.join('db/seed_data/notes.json')))
 
 # Sort traits.json by positivity rating
@@ -39,15 +38,7 @@ me = User.create(
   password: "123"
 )
 
-quotes.each_with_index do |q, i|
-  Quote.create(
-    content: q['body'],
-    author: (q['author'] unless q['author'].blank?),
-    source: (q['source'] unless q['source'].blank?),
-    description: (q['description'] unless q['description'].blank?),
-    last_quote_of_the_day_at: i.days.ago
-  )
-end
+Quoterator.rebuild_quotes
 
 # traits.each do |k, v|
 #   Trait.create!(

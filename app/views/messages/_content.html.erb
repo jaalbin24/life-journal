@@ -1,3 +1,7 @@
 <%= turbo_frame_tag "message_#{message.id}_content" do %>
-  <%= message.content %>
+  <% if message.content.blank? %>
+    <%= embedded_svg "spinner.svg", class: "spinner" %>
+  <% else %>
+    <%= message.content %>
+  <% end %>
 <% end %>

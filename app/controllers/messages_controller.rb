@@ -19,7 +19,9 @@ class MessagesController < ApplicationController
           OpenEar::Entry::Chat.next_message @chat
         end
       else
-        
+        format.turbo_stream do
+          render turbo_stream:  turbo_stream.replace(:message_form, partial: 'messages/form')
+        end
       end
     end
   end

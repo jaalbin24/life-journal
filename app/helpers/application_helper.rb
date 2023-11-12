@@ -1,10 +1,11 @@
 module ApplicationHelper
-  def avatar(model, opt={size: 48, class: ""})
+  def avatar(model, opt={class: nil})
     content_tag :div, class: "avatar-container #{opt[:class]}" do
+      concat(embedded_svg "avatar.svg", class: "animate-pulse absolute w-full h-full text-slate-200 dark:text-slate-700")
       if model.avatar.attached?
-        image_tag model.avatar.variant(resize_to_limit: [240, 240]), class: "avatar #{opt[:class]}"
+        concat(image_tag model.avatar.variant(resize_to_limit: [240, 240]), class: "avatar")
       else
-        image_tag 'default_profile_picture.png', class: "avatar #{opt[:class]}"
+        concat(image_tag 'default_profile_picture.png', class: "avatar")
       end
     end
   end
