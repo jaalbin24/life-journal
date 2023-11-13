@@ -97,6 +97,7 @@ RSpec.describe User, type: :model do
         :stay_signed_in_token,
         :stay_signed_in_token_expires_at,
         :signed_in_at,
+        :time_zone,
         :created_at,
         :updated_at
       ]

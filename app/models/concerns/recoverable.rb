@@ -27,6 +27,7 @@ module Recoverable
       @TIME_TO_WAIT_BEFORE_DELETION ||= 30.days # default to 30.days
     end
 
+    # Used to select records due for deletion
     def deletion_threshold
       DateTime.current - self.TIME_TO_WAIT_BEFORE_DELETION
     end

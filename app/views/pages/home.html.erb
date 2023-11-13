@@ -29,9 +29,11 @@
             </blockquote>
             <%= embedded_svg "right_quote_mark.svg", class: "w-4 h-4 mt-auto shrink-0 text-sky-600 align-right" %>
           </div>
-          <figcaption class="text-right">
-            <cite class="opacity-50">— <%= @quote_of_the_day&.citation %></cite>
-          </figcaption>
+          <% unless @quote_of_the_day.citation.blank? %>
+            <figcaption class="text-right">
+              <cite class="opacity-50">— <%= @quote_of_the_day.citation %></cite>
+            </figcaption>
+          <% end %>
           <hr class="my-4 border-slate-600">
           <button class="btn-secondary float-right" data-controller="modal" data-action="click->modal#openModal" data-modal-url-value="<%= quote_path @quote_of_the_day %>">What does this mean?</button>
         </div>

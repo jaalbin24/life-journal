@@ -7,6 +7,11 @@
       </blockquote>
       <%= embedded_svg "right_quote_mark.svg", class: "w-4 h-4 mt-auto shrink-0 text-sky-600 align-right" %>
     </div>
+    <% unless @quote.citation.blank? %>
+      <figcaption class="text-right">
+        <cite class="opacity-50">— <%= @quote.citation %></cite>
+      </figcaption>
+    <% end %>
     <h3 class="my-3">What does this mean?</h3>
     <%= formatted_quote_explanation(@quote).html_safe %>
     <div class="flex justify-end">

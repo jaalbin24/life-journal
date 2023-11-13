@@ -4,6 +4,7 @@
       <% @entries.each_with_index do |e, i| %>
         <% if e.content.embeds_blobs.count != 0 %>
           <div class="relative h-64 flex">
+            <%= deletion_timer e %>
             <%= image_tag e.content.embeds_blobs.sample.variant(resize_to_limit: [720, 720]), class: "absolute h-full w-full object-cover rounded-t-lg rounded-b-xl" %>
             <div class="z-10 mt-auto grow">
               <div class="bg-slate-800 p-2 rounded-b-lg">
