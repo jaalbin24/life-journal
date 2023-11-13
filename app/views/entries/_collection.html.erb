@@ -1,6 +1,6 @@
 <%= turbo_frame_tag :entries do %>
   <% if !@entries.empty?%>
-    <div class="grid grid-cols-3 gap-3"> 
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3"> 
       <% @entries.each_with_index do |e, i| %>
         <% if e.content.embeds_blobs.count != 0 %>
           <div class="relative h-64 flex">
