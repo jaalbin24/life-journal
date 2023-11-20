@@ -26,7 +26,11 @@ module ApplicationHelper
 
   def last_saved_at(model)
     if model.persisted?
-      "Last saved at #{model.updated_at.strftime('%-I:%M%P')}"
+      if model.updated_at >= 24.hours.ago # If the model was saved in the last 24 hours, use the XX:XX timestamp.
+        "Last saved at #{model.updated_at.strftime('%-I:%M%P')}"
+      else # Else use the day as the timestamp.
+        "Last saved #{model.updated_at.strftime("%b %d, %Y")}"
+      end
     else
       "Not saved"
     end

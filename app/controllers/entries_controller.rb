@@ -24,7 +24,7 @@ class EntriesController < ApplicationController
       @entries = current_user.entries.not_deleted.drafts.order(created_at: :desc).page page
     when :trash
       @tab = :trash
-      @entries = current_user.entries.deleted.order(deleted_at: :desc).page page
+      @entries = current_user.entries.deleted.order(deleted_at: :asc).page page
     else
       @tab = :all
       @entries = current_user.entries.order(updated_at: :desc).page page

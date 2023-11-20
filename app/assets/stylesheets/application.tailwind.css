@@ -128,7 +128,7 @@
     @apply hover:bg-zinc-600 cursor-pointer
   }
   .avatar-container {
-    @apply relative shrink-0 shadow shadow-black/70 rounded-full overflow-hidden transition-transform hover:delay-100 hover:z-50
+    @apply relative shrink-0 shadow shadow-black/70 rounded-full overflow-hidden transition-transform hover:delay-100
   }
   .avatar-container .avatar {
     @apply absolute h-full rounded-none object-cover

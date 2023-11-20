@@ -19,7 +19,7 @@ class PeopleController < ApplicationController
     case tab
     when :trash
       @tab = :trash
-      @people = current_user.people.deleted.order(deleted_at: :desc).page page
+      @people = current_user.people.deleted.order(deleted_at: :asc).page page
     else
       @tab = :all
       @people = current_user.people.not_deleted.order(updated_at: :desc).page page
