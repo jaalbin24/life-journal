@@ -132,6 +132,7 @@ ActiveRecord::Schema[7.0].define(version: 920) do
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_person_of_the_day_at"
     t.index ["deleted"], name: "index_people_on_deleted"
     t.index ["deleted_at"], name: "index_people_on_deleted_at"
     t.index ["user_id"], name: "index_people_on_user_id"

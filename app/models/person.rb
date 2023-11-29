@@ -2,20 +2,21 @@
 #
 # Table name: people
 #
-#  id          :uuid             not null, primary key
-#  biography   :string
-#  deleted     :boolean
-#  deleted_at  :datetime
-#  first_name  :string
-#  gender      :string
-#  last_name   :string
-#  middle_name :string
-#  nickname    :string
-#  notes       :string
-#  title       :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  user_id     :uuid
+#  id                        :uuid             not null, primary key
+#  biography                 :string
+#  deleted                   :boolean
+#  deleted_at                :datetime
+#  first_name                :string
+#  gender                    :string
+#  last_name                 :string
+#  last_person_of_the_day_at :datetime
+#  middle_name               :string
+#  nickname                  :string
+#  notes                     :string
+#  title                     :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  user_id                   :uuid
 #
 # Indexes
 #
@@ -47,6 +48,8 @@ class Person < ApplicationRecord
   belongs_to :user
   validate :casual_name_is_present
   validate_images :avatar
+
+  scope :eligible_for_person_of_the_day, -> { where("last_person_of_the_day_at < ?", 10.days.ago).or(where(last_person_of_the_day_at: nil)) }
 
   def name
     [(nickname.blank? ? first_name : nickname), last_name].reject(&:blank?).join(" ").downcase.titleize

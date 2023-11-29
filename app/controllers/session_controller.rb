@@ -19,16 +19,25 @@ class SessionController < ApplicationController
         format.turbo_stream do
           redirect_to after_sign_in_path
         end
+        format.html do
+          redirect_to after_sign_in_path
+        end
         cookies.delete(:after_sign_in_path)
       else
         @user = User.new(user_params)
         format.turbo_stream do
           alerts_now.append Alert::Error.new(
             title: "Username or password incorrect",
-            #body: "The username and password pair you provided do not match any users in our records."
+            body: "The username and password pair you provided do not match our records."
           ).flash
-          render turbo_stream: 
-            turbo_stream.append(:alerts, partial: "layouts/alert")
+          render turbo_stream: turbo_stream.append(:alerts, partial: "layouts/alert")
+        end
+        format.html do
+          alerts_now.append Alert::Error.new(
+            title: "Username or password incorrect",
+            body: "The username and password pair you provided do not match our records."
+          ).flash
+          render turbo_stream: turbo_stream.append(:alerts, partial: "layouts/alert")
         end
       end
     end

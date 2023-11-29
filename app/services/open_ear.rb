@@ -37,4 +37,14 @@ module OpenEar
       end
     end
   end
+
+  module People
+    def self.generate_bio_for(person)
+      # Take all mentions. Generate notes specific to this person based on the mentioned entries.
+      # This is where JSON mode can come in handy. Handle an API response from OpenAI that contains the original text within the entry that the note was extracted from.
+      # 
+      # Take all notes.
+      # 
+    end
+  end
 end

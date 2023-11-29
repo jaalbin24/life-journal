@@ -9,7 +9,6 @@
     <div class="flex flex-col lg:flex-row gap-2 w-full">
       <div class="card w-full">
         <div class="card-body">
-          <% @person_of_the_day = Person.all.sample %>
           <div class="flex gap-2 items-center">
             <%= avatar @person_of_the_day, class: "w-20 h-20" %>
             <div class="flex flex-col">
